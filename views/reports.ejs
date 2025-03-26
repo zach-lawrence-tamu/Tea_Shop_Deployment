@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<head>
+   <title>Reports Page</title>
+</head>
+<body>
+   <h1>Orders</h1>
+   <% for (var i in orders) {%>
+       <p>Order details: order number: <%=orders[i].order_number%>, date: <%=orders[i].date%>, time: <%=orders[i].time%>, tea type: <%=orders[i].tea_type%>, flavor: <%=orders[i].flavor%><p>
+   <% } %>
+</body>

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<head>
+   <title>Menu and Inventory Page</title>
+</head>
+<body>
+   <h1>Inventory</h1>
+   <% for (var i in inventory) {%>
+       <p>Name: <%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
+   <% } %>
+</body>
