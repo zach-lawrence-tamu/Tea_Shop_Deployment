@@ -21,12 +21,6 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
-// / refers to default page index.ejs
-router.get('/', (req, res) => {
-    const data = {name: 'Mario'};
-    res.render('index', data);
-});
-
 router.get('/menu_inventory', (req, res) => {
     inventory = []
     pool
