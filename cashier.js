@@ -21,10 +21,19 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
-// / refers to default page index.ejs
 router.get('/', (req, res) => {
-    const data = {name: 'LANDING PAGE'};
-    res.render('landing_page', data);
+    const data = {name: 'Cashier page'};
+    res.render('cashier_order_page', data);
+});
+
+router.get('/orders', (req, res) => {
+    const data = {name: 'Order page'};
+    res.render('orders', data);
+});
+
+router.get('/transactions', (req, res) => {
+    const data = {name: 'Transaction page'};
+    res.render('transactions', data);
 });
 
 module.exports = router;

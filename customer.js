@@ -23,8 +23,8 @@ process.on('SIGINT', function() {
 
 // / refers to default page index.ejs
 router.get('/', (req, res) => {
-    const data = {name: 'LANDING PAGE'};
-    res.render('landing_page', data);
+    const data = {name: 'Customer page'};
+    res.render('customer_order_page', data);
 });
 
 module.exports = router;
