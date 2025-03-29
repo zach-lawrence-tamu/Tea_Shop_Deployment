@@ -6,6 +6,11 @@
 
 <body>
     <h1>Employees</h1>
+    <h1> <a href="/"> Home page</a></h1>
+    <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
+    <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
+    <h1> <a href="/manager/menu_inventory"> This is a link to reports page</a></h1>
+
     <% for (var i in employees) {%>
         <p>Employee info: employee #<%=employees[i].employee_id%>, weekly hours worked:
         <%=employees[i].weekly_hours_worked%>, manager?: <%=employees[i].manager_access%>, password:

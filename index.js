@@ -1,20 +1,20 @@
-const express = require('express');
-const manager = require('./manager.js');
+const express = require('express'), 
+manager = require('./manager.js'), 
+landing = require('./landing_page.js'),
+customer = require('./customer.js'),
+cashier = require('./cashier.js');
+const path = require('path');
 
 // Create express app
 const app = express();
 const port = 3000;
 
-// Set view engine
 app.set("view engine", "ejs");
-
-// Define a route for landing_page.ejs
-app.get('/', (req, res) => {
-    res.render('landing_page'); // This will render landing_page.ejs
-});
-
-// Include manager routes
+app.use(express.static(path.join(__dirname, 'views')));
+app.use('/', landing);
 app.use('/manager', manager);
+app.use('/customer', customer);
+app.use('/cashier', cashier);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

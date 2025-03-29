@@ -7,6 +7,12 @@
 
 <body>
     <h1>Inventory</h1>
+    
+    <h1> <a href="/"> Home page</a></h1>
+    <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
+    <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
+    <h1> <a href="/manager/menu_inventory"> This is a link to reports page</a></h1>
+
     <% for (var i in inventory) {%>
         <div class="inventory-container">
             <p>Name: <%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
