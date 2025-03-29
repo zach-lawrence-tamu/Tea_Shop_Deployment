@@ -21,18 +21,30 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
-router.get('/menu_inventory', (req, res) => {
-    inventory = []
-    pool
-        .query('SELECT * FROM inventory_items;')
-        .then(query_res => {
-            for (let i = 0; i < query_res.rowCount; i++){
-                inventory.push(query_res.rows[i]);
-            }
-            const data = {inventory: inventory};
-            console.log(inventory);
-            res.render('menu_inventory', data);
-        });
+// Need to be able to modify addons, tea types, inventory items, and flavors
+router.get('/menu_inventory', async (req, res) => {
+    try {
+        const[all_inventory_items, all_menu_items, all_addons, all_flavors] = await Promise.all([
+            pool.query('SELECT * FROM inventory_items'),
+            pool.query('SELECT * FROM valid_tea_types'),
+            pool.query('SELECT * FROM valid_addons'),
+            pool.query('SELECT * FROM valid_flavors')
+        ])
+
+        const data = {
+            inventory: all_inventory_items.rows,
+            menu_items: all_menu_items.rows,
+            addons: all_addons.rows,
+            flavors: all_flavors.rows
+        };
+
+        console.log(data);
+        res.render('menu_inventory', data);
+    }
+    catch(e) {
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 router.get('/reports', (req, res) => {
