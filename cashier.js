@@ -26,14 +26,31 @@ router.get('/', (req, res) => {
     res.render('cashier_order_page', data);
 });
 
-router.get('/orders', (req, res) => {
-    const data = {name: 'Order page'};
-    res.render('orders', data);
-});
 
 router.get('/transactions', (req, res) => {
     const data = {name: 'Transaction page'};
     res.render('transactions', data);
 });
 
+router.get('/orders', async (req, res) => {
+
+    try{
+        const[all_menu_items, all_addons, all_flavors] = await Promise.all([
+            pool.query('SELECT name, price FROM valid_tea_types'),
+            pool.query('SELECT name, price FROM valid_addons'),
+            pool.query('SELECT name FROM valid_flavors')
+        ])
+
+        const data = {
+            menu_items: all_menu_items.rows,
+            addons: all_addons.rows,
+            flavors: all_flavors.rows
+        };
+        console.log(data);
+        res.render('orders', data);
+    }catch(e){
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
+});
 module.exports = router;

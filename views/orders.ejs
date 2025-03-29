@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%# This will be for displaying past orders%>
 
 <head>
     <title>Orders</title>
@@ -10,5 +11,11 @@
     <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
     <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
     <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
+    <% for (var i in menu_items) {%>
+        <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
+    <% } %>
+    <% for (var i in flavors) {%>
+        <p>Flavor: <%=flavors[i].name%> </p>
+    <% } %>
     
 </body>
