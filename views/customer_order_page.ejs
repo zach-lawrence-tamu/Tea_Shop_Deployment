@@ -1,11 +1,39 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <title>customer order Page</title>
+    <link rel="stylesheet" href="css/customer_style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Order Page</title>
 </head>
-
 <body>
-    <h1>Customer order page</h1>
-    <h1> <a href="/"> This is a link to home page</a></h1>
-    
+    <div class="content">
+        <h1>Customer Order Page</h1>
+        <h1><a href="/">This is a link to home page</a></h1>
+
+        <div class="grid-container">
+            <% teas.forEach(tea => { %>
+                <div class="container">
+                    <div class="img-box">img</div>
+                    <div class="details">
+                        <p><strong><%= tea.name %></strong></p>
+
+                        <%
+                        let tea_price = tea.price; // Example tea_price value
+                        let tea_price_str = tea_price.toString(); // Convert to string
+                        if(tea_price_str.length == 1) 
+                            tea_price_str += ".00"; // (ex. 2 -> 2.00)
+                        else if(tea_price_str.length === 3)
+                            tea_price_str += '0'; // Append '0' to the end (ex. 2.5 -> 2.50)
+                        %>
+                        <p>Cost: $<%= tea_price_str %></p>
+
+                        <div class="customize-button">Customize</div>
+                        <div class="add-to-cart-button">Add to Cart</div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
 </body>
+</html>
