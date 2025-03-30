@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Reports Page</title>
+   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-   <h1>Orders</h1>
-   
-   <h1> <a href="/"> Home page</a></h1>
-   <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
-   <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
-   <h1> <a href="/manager/menu_inventory"> This is a link to menu_inventory page</a></h1>
+   <header>
+      <h1>Reports</h1>
+      
+      <nav>
+          <a href="/">Home</a>
+          <a href="/manager/employees">Employees</a>
+          <a href="/manager/reports">Reports</a>
+          <a href="/manager/menu_inventory">Inventory and Menu</a>
+      </nav>
+  </header>
+
    <% for (var i in orders) {%>
        <p>Order details: order number: <%=orders[i].order_number%>, date: <%=orders[i].date%>, time: <%=orders[i].time%>, tea type: <%=orders[i].tea_type%>, flavor: <%=orders[i].flavor%><p>
    <% } %>
