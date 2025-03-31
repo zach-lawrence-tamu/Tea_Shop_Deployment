@@ -37,6 +37,7 @@ header a {
     position: fixed;
     right: 2%;
     top: 25%;
+    z-index: 2;
 }
 
 .modify-window h2 {
@@ -79,4 +80,36 @@ button {
 .delete-button {
     background-color: rgb(201, 30, 30);
 
+}
+
+.reports-container {
+    display: grid;
+    grid-template-columns: 300px 300px;
+    grid-template-rows: auto;
+    gap: 100px;
+    justify-content: center;
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+
+.graph-area {
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
+}
+
+.graph-area h1 {
+    margin-bottom: 20px;
+}
+
+.z-report {
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
+}
+
+.x-report {
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
 }

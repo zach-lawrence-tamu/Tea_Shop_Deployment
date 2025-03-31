@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const dotenv = require('dotenv').config();
 
 var router = express.Router();
+var hits = 0;
 
 // Create pool
 const pool = new Pool({
@@ -74,6 +75,17 @@ router.get('/employees', (req, res) => {
             console.log(employees);
             res.render('employees', data);
         });
+});
+
+router.get('/hitNum', function (req, res) {
+    console.log('hits req');
+    res.status(200).send('' + hits);
+});
+
+router.get('/add', function (req, res) {
+    console.log('added hits');
+    hits++;
+    res.status(200).end();
 });
 
 module.exports = router;

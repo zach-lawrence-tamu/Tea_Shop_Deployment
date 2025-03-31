@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu and Inventory Page</title>
     <link rel="stylesheet" href="/css/style.css">
+    
+    <script>
+        var add = function () {
+            fetch('add');
+            fetch('hitNum')
+                .then(response => response.json())
+                .then(data => document.getElementById('hits').innerText = data)
+                .catch(error => console.log(error));
+        }
+    </script>
 </head>
 
 <body>
@@ -21,6 +31,8 @@
     
     <div class="modify-window">
         <h2>Modify placeholder window</h2>
+        <button onclick='add()'>Hi</button>
+        <p id='hits'>d</p>
     </div>
 
     <div class="container">
