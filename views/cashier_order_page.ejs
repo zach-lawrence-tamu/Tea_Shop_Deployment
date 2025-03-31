@@ -4,12 +4,11 @@
     <title>Cashier Order Page</title>
     <link rel="stylesheet" href="css/cashier-style.css">
 </head>
-
+<script src="../cashier.js"></script>
 <body>
     <header>
     <h1>Orders</h1>
     <!-- Weather should be dislayed here at the top right-->
-     <!-- "Welcome [User] Should be displayed on the top left"-->
       <div class = "dropdown">
         <button class = "dropbtn">Welcome [User]</button>
         <div class = "dropdown-content">
@@ -17,15 +16,16 @@
             <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
             <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
             <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
+            <p>Logout</p>
         </div>
       </div>
     </header>
     
 
-    <div class = "wrapper-class" style ="display: grid; grid-template-columns: 4fr 1fr;">
+    <div class = "wrapper-class">
         <div class= "menu-items">
             <% for (var i in menu_items) {%>
-                <button class = "menu-item-button">
+                <button class = "menu-item-button" id = "'<%=menu_items[i].name%>'">
                     <img>
                     <h4>Name: <%=menu_items[i].name%></h4>
                     <h6>Price: <%=menu_items[i].price%></h6>
@@ -33,9 +33,10 @@
             <% } %>
         </div>
         <div class = "checkout-menu">
-            <button class ="checkout-button">
-                
-            </button>
+            <div class="checkout-items" id = "checkout-items">
+
+            </div>
+            <button class ="checkout-button">Checkout</button>
         </div>
     </div>
 
@@ -50,6 +51,11 @@
           </div>
 
     </footer>
+
+
+<div class = "popup" id = "popup">
+    <button onclick="updateCheckout()"></button>
+</div>
 <!-- 
     <% for (var i in menu_items) {%>
         <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
@@ -57,3 +63,7 @@
     <% for (var i in flavors) {%>
         <p>Flavor: <%=flavors[i].name%> </p>
     <% } %> -->
+
+
+
+<!--FF: creep is important for turbine engines. it elongates as usage increases-->

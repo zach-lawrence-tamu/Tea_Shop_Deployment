@@ -15,6 +15,8 @@ const pool = new Pool({
 });
 
 // Add process hook to shutdown pool
+let menu_items = [];
+
 process.on('SIGINT', function() {
     pool.end();
     console.log('Application successfully shutdown');
@@ -34,7 +36,6 @@ router.get('/', async (req, res) => {
             addons: all_addons.rows,
             flavors: all_flavors.rows
         };
-        console.log(data);
         res.render('cashier_order_page', data);
     }catch(e){
         console.error("Database query error:", e);
@@ -53,13 +54,24 @@ router.get('/orders', async (req, res) => {
     res.render('orders', data);
 });
 
+
+function giveMenuItemID(position){
+    this.setAttribute('id', menu_items[position]);
+    console.log(menu_items[position]);
+}
+
 //scripting for checkout menu
 
 let selecteditem = {};
 let cart = [];
 
-function openpopup(){
-
+function openPopup(){
+    let popup = document.getElementById("popup");
+    // let teaType = this.get
 }
+
+// function updateCheckout(){
+    
+// }
 
 module.exports = router;

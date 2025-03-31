@@ -15,20 +15,22 @@
     </header>
     
 
-    <div class = "wrapper class">
-        <div class= "menu items">
-
-        </div>
-        <div class = "Checkout Menu">
-
+    <div class = "wrapper-class">
+        <div class = main-interface>
+            <!-- Will have a loop similar to this that will load the most recent orders based on 
+             a query performed in cashier.js which will query the 20 most recent orders
+            <% for (var i in menu_items) {%>
+                <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
+            <% } %> -->
+            <button class = "refund-button" id="refund-item" onclick="refundItem()"> X </button>
         </div>
     </div>
 
-    <% for (var i in menu_items) {%>
+    <!-- <% for (var i in menu_items) {%>
         <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
     <% } %>
     <% for (var i in flavors) {%>
         <p>Flavor: <%=flavors[i].name%> </p>
-    <% } %>
+    <% } %> -->
     
 </body>
