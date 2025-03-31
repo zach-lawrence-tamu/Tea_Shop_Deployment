@@ -1,14 +1,48 @@
 <!DOCTYPE html>
-<%# This will be for making orders for customers%>
+<!-- This will be for making orders for customers -->
 <head>
-    <title>cashier order Page</title>
+    <title>Orders</title>
 </head>
 
 <body>
-    <h1>Cashier order page</h1>
+    <header>
+    <h1>Orders page</h1>
     <h1> <a href="/"> This is a link to home page</a></h1>
     <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
     <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
     <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
+    <!-- Weather should be dislayed here at the top right-->
+     <!-- "Welcome [User] Should be displayed on the top left"-->
+    </header>
     
-</body>
+
+    <div class = "wrapper-class" style ="display: grid; grid-template-columns: 4fr 1fr;">
+        <div class= "menu-items">
+            <% for (var i in menu_items) {%>
+                <button class = "menu-item-button">
+                    <img>
+                    <h4>Name: <%=menu_items[i].name%></h4>
+                    <h6>Price: <%=menu_items[i].price%> *</h6>>
+                </button>
+            <% } %>
+        </div>
+        <div class = "Checkout Menu">
+
+        </div>
+    </div>
+
+    <footer>
+        <button class = "change-language-button">
+
+        </button>
+
+    </footer>
+
+    <% for (var i in menu_items) {%>
+        <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
+    <% } %>
+    <% for (var i in flavors) {%>
+        <p>Flavor: <%=flavors[i].name%> </p>
+    <% } %>
+
+<title>cashier order Page</title>
