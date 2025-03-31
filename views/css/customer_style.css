@@ -62,3 +62,12 @@ body {
 .add-to-cart-button:hover {
     background-color: #357c39;
 }
+
+.checkout-box {
+    border: 2px solid #000;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    width: 100px;
+    height: 500px;
+}
