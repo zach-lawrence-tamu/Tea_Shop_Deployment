@@ -1,15 +1,38 @@
 <!DOCTYPE html>
+
 <head>
-   <title>Reports Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Page</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-   <h1>Orders</h1>
-   
-   <h1> <a href="/"> Home page</a></h1>
-   <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
-   <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
-   <h1> <a href="/manager/menu_inventory"> This is a link to reports page</a></h1>
-   <% for (var i in orders) {%>
-       <p>Order details: order number: <%=orders[i].order_number%>, date: <%=orders[i].date%>, time: <%=orders[i].time%>, tea type: <%=orders[i].tea_type%>, flavor: <%=orders[i].flavor%><p>
-   <% } %>
+    <header>
+        <h1>Reports</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/manager/employees">Employees</a>
+            <a href="/manager/reports">Reports</a>
+            <a href="/manager/menu_inventory">Inventory and Menu</a>
+        </nav>
+
+        <div class="reports-container">
+            <div class="graph-area">
+                <h1>Graph</h1>
+                <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+                <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+                <button>Graph</button>
+            </div>
+
+            <div class="z-report">
+                <h1>Z-Report</h1>
+            </div>
+
+            <div class="x-report">
+                <h1>X-Report</h1>
+            </div>
+        </div>
+    </header>
 </body>

@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Employee Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees Page</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    <h1>Employees</h1>
-    <h1> <a href="/"> Home page</a></h1>
-    <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
-    <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
-    <h1> <a href="/manager/menu_inventory"> This is a link to reports page</a></h1>
+    <header>
+        <h1>Employees</h1>
+        
+        <nav>
+            <a href="/">Home</a>
+            <a href="/manager/employees">Employees</a>
+            <a href="/manager/reports">Reports</a>
+            <a href="/manager/menu_inventory">Inventory and Menu</a>
+        </nav>
+    </header>
 
-    <% for (var i in employees) {%>
-        <p>Employee info: employee #<%=employees[i].employee_id%>, weekly hours worked:
-        <%=employees[i].weekly_hours_worked%>, manager?: <%=employees[i].manager_access%>, password:
-        <%=employees[i].password%>
-        <p>
-        <button>View</button>
-        <button>Edit</button>
-        <button>Delete</button>
-    <% } %>
+    <div class="modify-window">
+        <h2>View/Modify placeholder window</h2>
+    </div>
+
+    <div class="container">
+        <% for (var i in employees) {%>
+            <div class="grid">
+                <p>Employee info: Employee #<%=employees[i].employee_id%><p>
+                <button>View</button>
+                <button>Edit</button>
+                <button class="delete-button">Delete</button>
+            </div>
+        <% } %>
+    </div>
 </body>

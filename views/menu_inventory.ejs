@@ -1,24 +1,85 @@
 <!DOCTYPE html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu and Inventory Page</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script>
+        var add = function () {
+            fetch('add');
+            fetch('hitNum')
+                .then(response => response.json())
+                .then(data => document.getElementById('hits').innerText = data)
+                .catch(error => console.log(error));
+        }
+    </script>
 </head>
 
 <body>
-    <h1>Inventory</h1>
+    <header>
+        <h1>Inventory and Menu</h1>
+        
+        <nav>
+            <a href="/">Home</a>
+            <a href="/manager/employees">Employees</a>
+            <a href="/manager/reports">Reports</a>
+            <a href="/manager/menu_inventory">Inventory and Menu</a>
+        </nav>
+    </header>
     
-    <h1> <a href="/"> Home page</a></h1>
-    <h1> <a href="/manager/employees"> This is a link to employee page</a></h1>
-    <h1> <a href="/manager/reports"> This is a link to reports page</a></h1>
-    <h1> <a href="/manager/menu_inventory"> This is a link to reports page</a></h1>
+    <div class="modify-window">
+        <h2>Modify placeholder window</h2>
+        <button onclick='add()'>Hi</button>
+        <p id='hits'>d</p>
+    </div>
 
-    <% for (var i in inventory) {%>
-        <div class="inventory-container">
-            <p>Name: <%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
-            <button>View</button>
-            <button>Edit</button>
-            <button>Delete</button>
-        </div>
-    <% } %>
+    <div class="container">
+        <h2>Inventory Items</h2>
+        <% for (var i in inventory) {%>
+            <div class="grid">
+                <p><%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
+                <button>Edit</button>
+                <button class="delete-button">Delete</button>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="container">
+        <h2>Menu Items</h2>
+        <% for (var i in menu_items) {%>
+            <div class="grid">
+                <p>Name: <%=menu_items[i].name%> Price: <%=menu_items[i].price%><p>
+                <button>Edit</button>
+                <button class="delete-button">Delete</button>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="container">
+        <h2>Addons</h2>
+        <% for (var i in addons) {%>
+            <div class="grid">
+                <p>Name: <%=addons[i].name%><p>
+                <button>Edit</button>
+                <button class="delete-button">Delete</button>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="container">
+        <h2>Flavors</h2>
+        <% for (var i in flavors) {%>
+            <div class="grid">
+                <p>Name: <%=flavors[i].name%><p>
+                <button>Edit</button>
+                <button class="delete-button">Delete</button>
+            </div>
+        <% } %>
+    </div>
+
+    <footer>
+        <p>Footer</p>
+    </footer>
 </body>
