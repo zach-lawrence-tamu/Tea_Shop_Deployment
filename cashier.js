@@ -21,19 +21,7 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
-router.get('/', (req, res) => {
-    const data = {name: 'Cashier page'};
-    res.render('cashier_order_page', data);
-});
-
-
-router.get('/transactions', (req, res) => {
-    const data = {name: 'Transaction page'};
-    res.render('transactions', data);
-});
-
-router.get('/orders', async (req, res) => {
-
+router.get('/', async (req, res) => {
     try{
         const[all_menu_items, all_addons, all_flavors] = await Promise.all([
             pool.query('SELECT name, price FROM valid_tea_types'),
@@ -47,10 +35,31 @@ router.get('/orders', async (req, res) => {
             flavors: all_flavors.rows
         };
         console.log(data);
-        res.render('orders', data);
+        res.render('cashier_order_page', data);
     }catch(e){
         console.error("Database query error:", e);
         res.status(500).send("Internal Server Error");
     }
 });
+
+
+router.get('/transactions', (req, res) => {
+    const data = {name: 'Transaction page'};
+    res.render('transactions', data);
+});
+
+router.get('/orders', async (req, res) => {
+    const data = {name: 'Orders page'};
+    res.render('orders', data);
+});
+
+//scripting for checkout menu
+
+let selecteditem = {};
+let cart = [];
+
+function openpopup(){
+
+}
+
 module.exports = router;

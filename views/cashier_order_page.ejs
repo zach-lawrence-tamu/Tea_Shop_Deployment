@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <!-- This will be for making orders for customers -->
 <head>
-    <title>Orders</title>
+    <title>Cashier Order Page</title>
+    <link rel="stylesheet" href="css/cashier-style.css">
 </head>
 
 <body>
     <header>
-    <h1>Orders page</h1>
-    <h1> <a href="/"> This is a link to home page</a></h1>
-    <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
-    <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
-    <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
+    <h1>Orders</h1>
     <!-- Weather should be dislayed here at the top right-->
      <!-- "Welcome [User] Should be displayed on the top left"-->
+      <div class = "dropdown">
+        <button class = "dropbtn">Welcome [User]</button>
+        <div class = "dropdown-content">
+            <h1> <a href="/"> This is a link to home page</a></h1>
+            <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
+            <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
+            <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
+        </div>
+      </div>
     </header>
     
 
@@ -22,27 +28,32 @@
                 <button class = "menu-item-button">
                     <img>
                     <h4>Name: <%=menu_items[i].name%></h4>
-                    <h6>Price: <%=menu_items[i].price%> *</h6>>
+                    <h6>Price: <%=menu_items[i].price%></h6>
                 </button>
             <% } %>
         </div>
-        <div class = "Checkout Menu">
-
+        <div class = "checkout-menu">
+            <button class ="checkout-button">
+                
+            </button>
         </div>
     </div>
 
     <footer>
-        <button class = "change-language-button">
-
-        </button>
+        <div class = "dropdown">
+            <button class = "dropbtn">Change Language</button>
+            <div class = "dropdown-content">
+                <p>English</p>
+                <p>Spanish</p>
+                <p>Vietnamese</p>
+            </div>
+          </div>
 
     </footer>
-
+<!-- 
     <% for (var i in menu_items) {%>
         <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
     <% } %>
     <% for (var i in flavors) {%>
         <p>Flavor: <%=flavors[i].name%> </p>
-    <% } %>
-
-<title>cashier order Page</title>
+    <% } %> -->
