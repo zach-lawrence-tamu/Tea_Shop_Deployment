@@ -15,25 +15,63 @@ const pool = new Pool({
 });
 
 // Add process hook to shutdown pool
+let menu_items = [];
+
 process.on('SIGINT', function() {
     pool.end();
     console.log('Application successfully shutdown');
     process.exit(0);
 });
 
-router.get('/', (req, res) => {
-    const data = {name: 'Cashier page'};
-    res.render('cashier_order_page', data);
+router.get('/', async (req, res) => {
+    try{
+        const[all_menu_items, all_addons, all_flavors] = await Promise.all([
+            pool.query('SELECT name, price FROM valid_tea_types'),
+            pool.query('SELECT name, price FROM valid_addons'),
+            pool.query('SELECT name FROM valid_flavors')
+        ])
+
+        const data = {
+            menu_items: all_menu_items.rows,
+            addons: all_addons.rows,
+            flavors: all_flavors.rows
+        };
+        res.render('cashier_order_page', data);
+    }catch(e){
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-router.get('/orders', (req, res) => {
-    const data = {name: 'Order page'};
-    res.render('orders', data);
-});
 
 router.get('/transactions', (req, res) => {
     const data = {name: 'Transaction page'};
     res.render('transactions', data);
 });
+
+router.get('/orders', async (req, res) => {
+    const data = {name: 'Orders page'};
+    res.render('orders', data);
+});
+
+
+function giveMenuItemID(position){
+    this.setAttribute('id', menu_items[position]);
+    console.log(menu_items[position]);
+}
+
+//scripting for checkout menu
+
+let selecteditem = {};
+let cart = [];
+
+function openPopup(){
+    let popup = document.getElementById("popup");
+    // let teaType = this.get
+}
+
+// function updateCheckout(){
+    
+// }
 
 module.exports = router;
