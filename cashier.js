@@ -44,34 +44,38 @@ router.get('/', async (req, res) => {
 });
 
 
+router.get('/orders', (req, res) => {
+    let order_data = []
+    const limit = 20;
+    const offset = parseInt(req.query.offset) || 0;
+    pool
+        .query('SELECT id, time, date, cost FROM orders ORDER BY date DESC, time DESC LIMIT $1 OFFSET $2', [limit, offset])
+        .then(query_res => {
+            for (let i = 0; i < query_res.rowCount; i++){
+                order_data.push(query_res.rows[i]);
+            }
+            const data = {
+                order_data: order_data,
+                hasMore: query_res.rowCount === limit,
+                nextOffset: offset + limit
+            };
+            console.log(order_data);
+            res.render('orders', data);
+        });
+});
+
 router.get('/transactions', (req, res) => {
-    const data = {name: 'Transaction page'};
-    res.render('transactions', data);
+    let trans = []
+    pool
+        .query('SELECT * FROM orders ORDER BY date DESC, time DESC;')
+        .then(query_res => {
+            for (let i = 0; i < query_res.rowCount; i++){
+                trans.push(query_res.rows[i]);
+            }
+            const data = {trans: trans};
+            console.log(trans);
+            res.render('transactions', data);
+        });
 });
-
-router.get('/orders', async (req, res) => {
-    const data = {name: 'Orders page'};
-    res.render('orders', data);
-});
-
-
-function giveMenuItemID(position){
-    this.setAttribute('id', menu_items[position]);
-    console.log(menu_items[position]);
-}
-
-//scripting for checkout menu
-
-let selecteditem = {};
-let cart = [];
-
-function openPopup(){
-    let popup = document.getElementById("popup");
-    // let teaType = this.get
-}
-
-// function updateCheckout(){
-    
-// }
 
 module.exports = router;
