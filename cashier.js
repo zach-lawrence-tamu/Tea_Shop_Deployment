@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const dotenv = require('dotenv').config();
 
 var router = express.Router();
+const myfunctions = ('./cashier-logic.js');
 
 // Create pool
 const pool = new Pool({
@@ -34,8 +35,11 @@ router.get('/', async (req, res) => {
         const data = {
             menu_items: all_menu_items.rows,
             addons: all_addons.rows,
-            flavors: all_flavors.rows
+            flavors: all_flavors.rows,
+            cashierFunction:myfunctions
+
         };
+
         res.render('cashier_order_page', data);
     }catch(e){
         console.error("Database query error:", e);
@@ -53,25 +57,5 @@ router.get('/orders', async (req, res) => {
     const data = {name: 'Orders page'};
     res.render('orders', data);
 });
-
-
-function giveMenuItemID(position){
-    this.setAttribute('id', menu_items[position]);
-    console.log(menu_items[position]);
-}
-
-//scripting for checkout menu
-
-let selecteditem = {};
-let cart = [];
-
-function openPopup(){
-    let popup = document.getElementById("popup");
-    // let teaType = this.get
-}
-
-// function updateCheckout(){
-    
-// }
 
 module.exports = router;
