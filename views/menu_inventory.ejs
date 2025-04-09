@@ -14,6 +14,38 @@
                 .then(data => document.getElementById('hits').innerText = data)
                 .catch(error => console.log(error));
         }
+
+        var display_inventory_modifier = function (id, ingredient, amount, cost_per_amount) {
+            console.log(id, ingredient, amount, cost_per_amount);
+
+            document.getElementById('ingredient-name').innerText = "ingredient";
+            document.getElementById('ingredient').value = ingredient;
+            document.getElementById('amount-value').innerText = "amount";
+            document.getElementById('amount').value = amount;
+            document.getElementById('cost-per-value').innerText = "cost-per";
+            document.getElementById('cost-per').value = cost_per_amount;
+
+            var menu_element = document.getElementById("menu-item-forms");
+            menu_element.style.display = "none";
+            
+            var inventory_element = document.getElementById("inventory-forms");
+            inventory_element.style.display = "block";
+        }
+
+        var display_menu_item_modifier = function (id, tea_type, price) {
+            console.log(id, tea_type, price);
+            document.getElementById('tea-name').innerText = "tea type";
+            document.getElementById('tea-type').value = tea_type;
+            document.getElementById('tea-price-label').innerText = "price";
+            document.getElementById('tea-price').value = price;
+
+            var inventory_element = document.getElementById("inventory-forms");
+            inventory_element.style.display = "none";
+            
+            var menu_element = document.getElementById("menu-item-forms");
+            menu_element.style.display = "block";
+
+        }
     </script>
 </head>
 
@@ -31,8 +63,28 @@
     
     <div class="modify-window">
         <h2>Modify placeholder window</h2>
-        <button onclick='add()'>Hi</button>
-        <p id='hits'>d</p>
+        <!--
+            <button onclick='add()'>Hi</button>
+            <p id="hits"></p>
+        -->
+    
+        <div id="inventory-forms">
+            <label for="ingredient" id="ingredient-name"></label>
+            <input name="ingredient-form" id="ingredient" type="text"></input>
+            <label for="amount" id="amount-value"></label>
+            <input name="amount-form" id="amount" type="text"></input>
+            <label for="cost-per" id="cost-per-value"></label>
+            <input name="cost-per-form" id="cost-per" type="text"></input>
+            <button class="modify-window-button">Modify</button>
+        </div>
+
+        <div id="menu-item-forms">
+            <label for="tea-type" id="tea-name"></label>
+            <input name="tea-form" id="tea-type" type="text"></input>
+            <label for="tea-price" id="tea-price-label"></label>
+            <input name="tea-price-form" id="tea-price" type="text"></input>
+            <button class="modify-window-button">Modify</button>
+        </div>
     </div>
 
     <div class="container">
@@ -40,7 +92,7 @@
         <% for (var i in inventory) {%>
             <div class="grid">
                 <p><%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
-                <button>Edit</button>
+                <button onclick='display_inventory_modifier("<%=inventory[i].item_id%>", "<%=inventory[i].ingredient%>", "<%=inventory[i].amount%>", "<%=inventory[i].cost_per_amount%>")'>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
@@ -51,7 +103,7 @@
         <% for (var i in menu_items) {%>
             <div class="grid">
                 <p>Name: <%=menu_items[i].name%> Price: <%=menu_items[i].price%><p>
-                <button>Edit</button>
+                <button onclick='display_menu_item_modifier("<%=menu_items[i].id%>", "<%=menu_items[i].name%>", "<%=menu_items[i].price%>")'>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>

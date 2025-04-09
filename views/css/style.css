@@ -113,3 +113,19 @@ button {
     width: 300px;
     height: 300px;
 }
+
+#inventory-forms {
+    display: none;
+}
+
+#menu-item-forms {
+    display: none;
+}
+
+label {
+    display: block;
+}
+
+.modify-window-button {
+    display: block;
+}
