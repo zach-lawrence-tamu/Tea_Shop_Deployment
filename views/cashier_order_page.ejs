@@ -25,7 +25,7 @@
     <div class = "wrapper-class">
         <div class= "menu-items">
             <% for (var i in menu_items) {%>
-                <button class = "menu-item-button" id = "'<%=menu_items[i].name%>'" onclick="openPopup()">
+                <button class = "menu-item-button" id = "'<%=menu_items[i].name%>'" onclick="openPopup(this.id)">
                     <img>
                     <h4>Name: <%=menu_items[i].name%></h4>
                     <h6>Price: <%=menu_items[i].price%></h6>

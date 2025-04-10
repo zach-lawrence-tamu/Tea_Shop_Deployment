@@ -3,10 +3,9 @@
 let selecteditem = {};
 let cart = [];
 
-function openPopup(teaType= "none", price = 0.0){
+function openPopup(teaType = "none"){
     console.print("The code leads to here");
     let popup = document.getElementById("popup");
-    // let teaType = this.get
 }
 
 // function updateCheckout(){
