@@ -16,14 +16,15 @@
         }
 
         var display_inventory_modifier = function (id, ingredient, amount, cost_per_amount) {
-            console.log(id, ingredient, amount, cost_per_amount);
+            console.log("mod: ", id, ingredient, amount, cost_per_amount);
 
-            document.getElementById('ingredient-name').innerText = "ingredient";
             document.getElementById('ingredient').value = ingredient;
-            document.getElementById('amount-value').innerText = "amount";
             document.getElementById('amount').value = amount;
-            document.getElementById('cost-per-value').innerText = "cost-per";
             document.getElementById('cost-per').value = cost_per_amount;
+
+            document.getElementById('window-header').innerText = "Modify Inventory Item";
+            document.getElementById('add-window-button').style.display = "none";
+            document.getElementById('modify-window-button').style.display = "block";
 
             var menu_element = document.getElementById("menu-item-forms");
             menu_element.style.display = "none";
@@ -32,20 +33,33 @@
             inventory_element.style.display = "block";
         }
 
-        var display_menu_item_modifier = function (id, tea_type, price) {
-            console.log(id, tea_type, price);
-            document.getElementById('tea-name').innerText = "tea type";
-            document.getElementById('tea-type').value = tea_type;
-            document.getElementById('tea-price-label').innerText = "price";
-            document.getElementById('tea-price').value = price;
+        var display_inventory_adder = function () {
+            display_inventory_modifier("", "", "", "");
+            console.log("inventory adder");
+            document.getElementById('window-header').innerText = "Add Inventory Item";
+            
+            document.getElementById('add-window-button').style.display = "block";
+            document.getElementById('modify-window-button').style.display = "none";
+        }
+
+        var display_menu_item_adder = function () {
+            document.getElementById('tea-type').value = "";
+            document.getElementById('tea-price').value = "";
+
+            document.getElementById('window-header').innerText = "Add Menu Item";
 
             var inventory_element = document.getElementById("inventory-forms");
             inventory_element.style.display = "none";
             
             var menu_element = document.getElementById("menu-item-forms");
             menu_element.style.display = "block";
-
         }
+
+        
+        var display_addon_modifier = function (id, tea_type, price) {
+            console.log(id, tea_type, price);
+        }
+        
     </script>
 </head>
 
@@ -62,24 +76,34 @@
     </header>
     
     <div class="modify-window">
-        <h2>Modify placeholder window</h2>
+        <h2 id="window-header">Modify placeholder window</h2>
         <!--
             <button onclick='add()'>Hi</button>
             <p id="hits"></p>
         -->
     
         <div id="inventory-forms">
-            <label for="ingredient" id="ingredient-name"></label>
+            <label for="ingredient" id="ingredient-name">Ingredient</label>
             <input name="ingredient-form" id="ingredient" type="text"></input>
-            <label for="amount" id="amount-value"></label>
+            <label for="amount" id="amount-value">Amount</label>
             <input name="amount-form" id="amount" type="text"></input>
-            <label for="cost-per" id="cost-per-value"></label>
+            <label for="cost-per" id="cost-per-value">Cost Per Amount</label>
             <input name="cost-per-form" id="cost-per" type="text"></input>
-            <button class="modify-window-button">Modify</button>
+            <button Id="modify-window-button">Modify</button>
+            <button Id="add-window-button">Add</button>
         </div>
 
         <div id="menu-item-forms">
+            <label for="tea-type" id="tea-name">Tea Type</label>
+            <input name="tea-form" id="tea-type" type="text"></input>
+            <label for="tea-price" id="tea-price-label">Price</label>
+            <input name="tea-price-form" id="tea-price" type="text"></input>
+            <button class="add-window-button">Add</button>
+        </div>
+
+        <div id="addon-forms">
             <label for="tea-type" id="tea-name"></label>
+            <!--do not want modification for the tea type, but we want modification of pricing-->
             <input name="tea-form" id="tea-type" type="text"></input>
             <label for="tea-price" id="tea-price-label"></label>
             <input name="tea-price-form" id="tea-price" type="text"></input>
@@ -96,6 +120,8 @@
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
+        
+        <button class="add-button" onclick="display_inventory_adder()">+</button>
     </div>
 
     <div class="container">
@@ -103,10 +129,10 @@
         <% for (var i in menu_items) {%>
             <div class="grid">
                 <p>Name: <%=menu_items[i].name%> Price: <%=menu_items[i].price%><p>
-                <button onclick='display_menu_item_modifier("<%=menu_items[i].id%>", "<%=menu_items[i].name%>", "<%=menu_items[i].price%>")'>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
+        <button class="add-button" onclick='display_menu_item_adder()'>+</button>
     </div>
 
     <div class="container">
@@ -114,10 +140,10 @@
         <% for (var i in addons) {%>
             <div class="grid">
                 <p>Name: <%=addons[i].name%><p>
-                <button>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
+        <button class="add-button">+</button>
     </div>
 
     <div class="container">
@@ -125,10 +151,10 @@
         <% for (var i in flavors) {%>
             <div class="grid">
                 <p>Name: <%=flavors[i].name%><p>
-                <button>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
+        <button class="add-button">+</button>
     </div>
 
     <footer>
