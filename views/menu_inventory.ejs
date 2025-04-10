@@ -26,11 +26,9 @@
             document.getElementById('add-window-button').style.display = "none";
             document.getElementById('modify-window-button').style.display = "block";
 
-            var menu_element = document.getElementById("menu-item-forms");
-            menu_element.style.display = "none";
-            
-            var inventory_element = document.getElementById("inventory-forms");
-            inventory_element.style.display = "block";
+            document.getElementById("menu-item-forms").style.display = "none";
+            document.getElementById("inventory-forms").style.display = "block";
+            document.getElementById("addon-forms").style.display = "none";
         }
 
         var display_inventory_adder = function () {
@@ -40,6 +38,7 @@
             
             document.getElementById('add-window-button').style.display = "block";
             document.getElementById('modify-window-button').style.display = "none";
+            document.getElementById("addon-forms").style.display = "none";
         }
 
         var display_menu_item_adder = function () {
@@ -48,16 +47,20 @@
 
             document.getElementById('window-header').innerText = "Add Menu Item";
 
-            var inventory_element = document.getElementById("inventory-forms");
-            inventory_element.style.display = "none";
-            
-            var menu_element = document.getElementById("menu-item-forms");
-            menu_element.style.display = "block";
+            document.getElementById("inventory-forms").style.display = "none";
+            document.getElementById("menu-item-forms").style.display = "block";
+            document.getElementById("addon-forms").style.display = "none";
         }
 
-        
-        var display_addon_modifier = function (id, tea_type, price) {
-            console.log(id, tea_type, price);
+        var display_addon_adder = function () {
+            document.getElementById('addon-name').value = "";
+            document.getElementById('addon-price').value = "";
+
+            document.getElementById('window-header').innerText = "Add New Addon";
+
+            document.getElementById("inventory-forms").style.display = "none";
+            document.getElementById("menu-item-forms").style.display = "none";
+            document.getElementById("addon-forms").style.display = "block";
         }
         
     </script>
@@ -102,12 +105,12 @@
         </div>
 
         <div id="addon-forms">
-            <label for="tea-type" id="tea-name"></label>
+            <label for="addon" id="addon-name"></label>
             <!--do not want modification for the tea type, but we want modification of pricing-->
-            <input name="tea-form" id="tea-type" type="text"></input>
-            <label for="tea-price" id="tea-price-label"></label>
-            <input name="tea-price-form" id="tea-price" type="text"></input>
-            <button class="modify-window-button">Modify</button>
+            <input name="addon-form" id="addon" type="text"></input>
+            <label for="addon-price" id="addon-price-label"></label>
+            <input name="addon-price-form" id="addon-price" type="text"></input>
+            <button class="add-window-button">Add</button>
         </div>
     </div>
 
@@ -143,7 +146,7 @@
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
-        <button class="add-button">+</button>
+        <button class="add-button" onclick="display_addon_adder()">+</button>
     </div>
 
     <div class="container">

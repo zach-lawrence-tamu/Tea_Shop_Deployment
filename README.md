@@ -98,3 +98,24 @@ Zach: Allow manager to modify inventory items, flavors, addons, and employees. A
 Vikrum: Allow customer to add items to cart and customize.
 Anuraag: User authentication implementation.
 Elias: Get functionality and looks done for cashier page.
+
+Scrum meeting 2:
+Date: 4/10/2025
+
+Did you complete your previous task?
+Zach: yes
+Elias: No
+Vikrum: Yes
+Anuraag: Yes
+
+What challenges did you face?
+Zach: I had to figure out a way to hide and show specific groups of elements whenever a button was clicked.
+Vikrum: Deleting items from the checkout, and making the checkout panel dynamically scrollable.
+Anuraag: Creating the dropdown menu for showing certain amounts of transactions.
+Elias: Designing the dropdowns for the customization of the cashier window.
+
+What will you work on before our next scrum meeting?
+Zach: I will make the modify and add window display for employees page and make at least one of them functional.
+Vikrum: Make blank customization window for checkout.
+Elias: Finish dropdown for customization and external javascript.
+Anuraag: Start to figure out how google authentication works and start on making the login button work.
