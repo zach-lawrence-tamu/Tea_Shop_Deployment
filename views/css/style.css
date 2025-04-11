@@ -145,6 +145,14 @@ button {
     display: none;
 }
 
+#employee-forms {
+    display: none;
+}
+
+#employee-view {
+    display: none;
+}
+
 label {
     display: block;
 }

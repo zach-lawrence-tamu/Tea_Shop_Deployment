@@ -5,6 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employees Page</title>
     <link rel="stylesheet" href="/css/style.css">
+
+    <script>
+        var display_employee_data = function (id) {
+            console.log("view: ", id);
+            document.getElementById('window-header').innerText = "View Employee Data";
+            document.getElementById('employee-number-p').innerText = "Employee #" + id;
+
+            /*
+            document.getElementById('ingredient').value = ingredient;
+            document.getElementById('amount').value = amount;
+            document.getElementById('cost-per').value = cost_per_amount;
+
+            document.getElementById('window-header').innerText = "Modify Inventory Item";
+            document.getElementById('add-window-button').style.display = "none";
+            document.getElementById('modify-window-button').style.display = "block";
+            */
+
+            document.getElementById("employee-view").style.display = "block";
+            document.getElementById("employee-forms").style.display = "none";
+        }
+    
+        var display_employee_modifier = function (id) {
+            console.log("view: ", id);
+            document.getElementById('window-header').innerText = "Modify Employee Data";
+            document.getElementById('employee-number').innerText = "Employee #" + id;
+
+            /*
+            document.getElementById('employee-number').value = "Employee #" + id;
+            document.getElementById('amount').value = amount;
+            document.getElementById('cost-per').value = cost_per_amount;
+
+            document.getElementById('window-header').innerText = "Modify Inventory Item";
+            document.getElementById('add-window-button').style.display = "none";
+            document.getElementById('modify-window-button').style.display = "block";
+            */
+            document.getElementById('add-window-button').style.display = "none";
+            document.getElementById('modify-window-button').style.display = "block";
+
+            document.getElementById("employee-view").style.display = "none";
+            document.getElementById("employee-forms").style.display = "block";
+        }
+    
+        var display_employee_adder = function () {
+            console.log("view: ");
+            display_employee_modifier("");
+            document.getElementById('window-header').innerText = "Add Employee";
+            document.getElementById('employee-number').innerText = "";
+            
+            document.getElementById('add-window-button').style.display = "block";
+            document.getElementById('modify-window-button').style.display = "none";
+            /*
+            document.getElementById('ingredient').value = ingredient;
+            document.getElementById('amount').value = amount;
+            document.getElementById('cost-per').value = cost_per_amount;
+
+            document.getElementById('window-header').innerText = "Modify Inventory Item";
+            document.getElementById('add-window-button').style.display = "none";
+            document.getElementById('modify-window-button').style.display = "block";
+            */
+        }
+    
+    </script>
 </head>
 
 <body>
@@ -20,17 +82,38 @@
     </header>
 
     <div class="modify-window">
-        <h2>View/Modify placeholder window</h2>
+        <h2 id="window-header">View/Modify placeholder window</h2>
+
+        <div id="employee-view">
+            <p id="employee-number-p">Employee #x</p>
+            <p>Weekly Hours Worked x</p>
+            <p>Manager Access x</p>
+            <p>Password x</p>
+        </div>
+
+        <div id="employee-forms">
+            <label for="employee-id" id="employee-number"></label>
+            <!--
+            <label for="amount" id="amount-value">Amount</label>
+            <input name="amount-form" id="amount" type="text"></input>
+            <label for="cost-per" id="cost-per-value">Cost Per Amount</label>
+            <input name="cost-per-form" id="cost-per" type="text"></input>
+            -->
+            <button Id="modify-window-button">Modify</button>
+            <button Id="add-window-button">Add</button>
+        </div>
     </div>
 
     <div class="container">
         <% for (var i in employees) {%>
             <div class="grid">
                 <p>Employee info: Employee #<%=employees[i].employee_id%><p>
-                <button>View</button>
-                <button>Edit</button>
+                <button onclick='display_employee_data("<%=employees[i].employee_id%>")'>View</button>
+                <button onclick='display_employee_modifier("<%=employees[i].employee_id%>")'>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
+        
+        <button class="add-button" onclick="display_employee_adder()">+</button>
     </div>
 </body>
