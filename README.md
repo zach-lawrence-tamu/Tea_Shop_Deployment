@@ -119,3 +119,24 @@ Zach: I will make the modify and add window display for employees page and make 
 Vikrum: Make blank customization window for checkout.
 Elias: Finish dropdown for customization and external javascript.
 Anuraag: Start to figure out how google authentication works and start on making the login button work.
+
+Scrum meeting 3:
+Date: 4/11/2025
+
+Did you complete your previous task?
+Zach: No
+Elias: Yes
+Vikrum: Yes
+Anuraag: No
+
+What challenges did you face?
+Zach: None at this time.
+Vikrum: Not really.
+Anuraag: Figuring out how apis work
+Elias: None at this time.
+
+What will you work on before our next scrum meeting?
+Zach: I will make the inventory modification/deletion and addition as well as employee addition and modification/deletion.
+Vikrum: Finish the customize window.
+Elias: External scripting working.
+Anuraag: User authentication.
