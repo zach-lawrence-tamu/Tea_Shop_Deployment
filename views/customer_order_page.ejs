@@ -37,6 +37,12 @@
         </div>
     </div>
 
+    <!-- ✅ Customize Popup -->
+    <div id="customize-popup" class="popup hidden">
+        <p>This is the customize window</p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
     <script>
         let checkoutItems = [];
 
@@ -80,8 +86,15 @@
             totalPrice.textContent = total.toFixed(2);
         }
 
+        // ✅ Customize popup logic
         function customizeItem(name) {
-            alert(`Customize function for ${name} not implemented.`);
+            const popup = document.getElementById('customize-popup');
+            popup.classList.remove('hidden');
+            popup.querySelector('p').textContent = `This is the customize window for ${name}`;
+        }
+
+        function closePopup() {
+            document.getElementById('customize-popup').classList.add('hidden');
         }
     </script>
 </body>
