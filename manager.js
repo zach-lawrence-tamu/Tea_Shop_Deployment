@@ -54,6 +54,24 @@ router.post('/delete_inventory', (req, res) => {
     pool.query("DELETE FROM inventory_items WHERE item_id=" + req.body.id);
 });
 
+router.post('/delete_menu_item', (req, res) => {
+    console.log("post:", req.body);
+    console.log("id", req.body.id);
+    pool.query("DELETE FROM valid_tea_types WHERE id=" + req.body.id);
+});
+
+router.post('/delete_addon', (req, res) => {
+    console.log("post:", req.body);
+    console.log("id", req.body.id);
+    pool.query("DELETE FROM valid_addons WHERE id=" + req.body.id);
+});
+
+router.post('/delete_flavor', (req, res) => {
+    console.log("post:", req.body);
+    console.log("id", req.body.id);
+    pool.query("DELETE FROM valid_flavors WHERE id=" + req.body.id);
+});
+
 router.get('/reports', (req, res) => {
     orders = []
     pool
