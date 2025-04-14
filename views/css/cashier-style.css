@@ -86,6 +86,7 @@ footer{
   .popup {
     display: none;
     position: fixed;
+    width: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -109,10 +110,12 @@ footer{
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
+    justify-content: center;
+    align-items: center;
 }
 
 .popup-overlay.active {
-    display: block;
+    display: flex;
 }
 
 .checkout-menu {

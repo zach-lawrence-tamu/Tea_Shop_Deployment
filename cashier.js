@@ -16,7 +16,6 @@ const pool = new Pool({
 });
 
 // Add process hook to shutdown pool
-let menu_items = [];
 
 process.on('SIGINT', function() {
     pool.end();
@@ -35,9 +34,7 @@ router.get('/', async (req, res) => {
         const data = {
             menu_items: all_menu_items.rows,
             addons: all_addons.rows,
-            flavors: all_flavors.rows,
-            cashierFunction:myfunctions
-
+            flavors: all_flavors.rows
         };
 
         res.render('cashier_order_page', data);
