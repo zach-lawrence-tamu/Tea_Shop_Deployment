@@ -48,6 +48,12 @@ router.get('/menu_inventory', async (req, res) => {
     }
 });
 
+router.post('/delete_inventory', (req, res) => {
+    console.log("post:", req.body);
+    console.log("id", req.body.id);
+    pool.query("DELETE FROM inventory_items WHERE item_id=" + req.body.id);
+});
+
 router.get('/reports', (req, res) => {
     orders = []
     pool

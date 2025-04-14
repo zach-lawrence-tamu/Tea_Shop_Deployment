@@ -145,6 +145,10 @@ button {
     display: none;
 }
 
+#flavor-forms {
+    display: none;
+}
+
 #employee-forms {
     display: none;
 }

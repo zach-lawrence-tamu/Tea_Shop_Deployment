@@ -23,12 +23,13 @@
             document.getElementById('cost-per').value = cost_per_amount;
 
             document.getElementById('window-header').innerText = "Modify Inventory Item";
-            document.getElementById('add-window-button').style.display = "none";
-            document.getElementById('modify-window-button').style.display = "block";
+            document.getElementById('add-inventory-window-button').style.display = "none";
+            document.getElementById('modify-inventory-window-button').style.display = "block";
 
             document.getElementById("menu-item-forms").style.display = "none";
             document.getElementById("inventory-forms").style.display = "block";
             document.getElementById("addon-forms").style.display = "none";
+            document.getElementById("flavor-forms").style.display = "none";
         }
 
         var display_inventory_adder = function () {
@@ -36,33 +37,105 @@
             console.log("inventory adder");
             document.getElementById('window-header').innerText = "Add Inventory Item";
             
-            document.getElementById('add-window-button').style.display = "block";
-            document.getElementById('modify-window-button').style.display = "none";
-            document.getElementById("addon-forms").style.display = "none";
+            document.getElementById('add-inventory-window-button').style.display = "block";
+            document.getElementById('modify-inventory-window-button').style.display = "none";
         }
 
-        var display_menu_item_adder = function () {
-            document.getElementById('tea-type').value = "";
-            document.getElementById('tea-price').value = "";
+        var display_menu_item_modifier = function () {
+            document.getElementById('tea-type').value = "MOD";
+            document.getElementById('tea-price').value = "MOD";
 
-            document.getElementById('window-header').innerText = "Add Menu Item";
+            document.getElementById('window-header').innerText = "Modify Menu Item";
+            document.getElementById('add-menu-window-button').style.display = "block";
+            document.getElementById('modify-menu-window-button').style.display = "none";
 
             document.getElementById("inventory-forms").style.display = "none";
             document.getElementById("menu-item-forms").style.display = "block";
             document.getElementById("addon-forms").style.display = "none";
+            document.getElementById("flavor-forms").style.display = "none";
+        }
+
+        var display_menu_item_adder = function () {
+            display_menu_item_modifier();
+            document.getElementById('tea-type').value = "";
+            document.getElementById('tea-price').value = "";
+            document.getElementById('add-menu-window-button').style.display = "block";
+            document.getElementById('modify-menu-window-button').style.display = "none";
+
+            document.getElementById('window-header').innerText = "Add Menu Item";
+
+        }
+
+        var display_addon_modifier = function () {
+            document.getElementById('addon-name').value = "HEAP";
+            document.getElementById('addon-price').value = "test";
+
+            document.getElementById('window-header').innerText = "modify Addon";
+
+            document.getElementById('add-addon-window-button').style.display = "none";
+            document.getElementById('modify-addon-window-button').style.display = "block";
+
+            document.getElementById("inventory-forms").style.display = "none";
+            document.getElementById("menu-item-forms").style.display = "none";
+            document.getElementById("addon-forms").style.display = "block";
+            document.getElementById("flavor-forms").style.display = "none";
         }
 
         var display_addon_adder = function () {
+            display_addon_modifier();
             document.getElementById('addon-name').value = "";
             document.getElementById('addon-price').value = "";
 
             document.getElementById('window-header').innerText = "Add New Addon";
 
+            document.getElementById('add-addon-window-button').style.display = "block";
+            document.getElementById('modify-addon-window-button').style.display = "none";
+        }
+
+        var display_flavor_adder = function () {
+            document.getElementById('flavor-name').value = "";
+            document.getElementById('window-header').innerText = "Add New Flavor";
             document.getElementById("inventory-forms").style.display = "none";
-            document.getElementById("menu-item-forms").style.display = "block";
+            document.getElementById("menu-item-forms").style.display = "none";
             document.getElementById("addon-forms").style.display = "none";
+            document.getElementById("flavor-forms").style.display = "block";
         }
         
+        async function delete_inventory(id) {
+            console.log("function: ", id);
+            fetch('delete_inventory', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"id": id})
+            })
+            .then (response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            await fetch('menu_inventory');
+            console.log("test");
+            window.location.reload();
+        }
+
+        async function delete_menu_item(id) {
+            console.log("delete menu", id);
+        }
+
+        async function delete_addon(id) {
+            console.log("delete addon", id);
+        }
+
+        async function delete_flavor(id) {
+            console.log("delete flavor", id);
+        }
     </script>
 </head>
 
@@ -92,8 +165,8 @@
             <input name="amount-form" id="amount" type="text"></input>
             <label for="cost-per" id="cost-per-value">Cost Per Amount</label>
             <input name="cost-per-form" id="cost-per" type="text"></input>
-            <button Id="modify-window-button">Modify</button>
-            <button Id="add-window-button">Add</button>
+            <button id="modify-inventory-window-button">Modify</button>
+            <button id="add-inventory-window-button">Add</button>
         </div>
 
         <div id="menu-item-forms">
@@ -101,16 +174,24 @@
             <input name="tea-form" id="tea-type" type="text"></input>
             <label for="tea-price" id="tea-price-label">Price</label>
             <input name="tea-price-form" id="tea-price" type="text"></input>
-            <button class="add-window-button">Add</button>
+            <button id="modify-menu-window-button">Modify</button>
+            <button id="add-menu-window-button">Add</button>
         </div>
 
         <div id="addon-forms">
-            <label for="addon" id="addon-name"></label>
+            <label for="addon-name" id="addon-label">Addon</label>
+            <input name="addon-name-form" id="addon-name" type="text"></input>
             <!--do not want modification for the tea type, but we want modification of pricing-->
-            <input name="addon-form" id="addon" type="text"></input>
-            <label for="addon-price" id="addon-price-label"></label>
+            <label for="addon-price" id="addon-price-label">Price</label>
             <input name="addon-price-form" id="addon-price" type="text"></input>
-            <button class="add-window-button">Add</button>
+            <button id="modify-addon-window-button">Modify</button>
+            <button id="add-addon-window-button">Add</button>
+        </div>
+
+        <div id="flavor-forms">
+            <label for="flavor-name" id="flavor-label">Flavor</label>
+            <input name="flavor-name-form" id="flavor-name" type="text"></input>
+            <button id="add-addon-window-button">Add</button>
         </div>
     </div>
 
@@ -120,7 +201,7 @@
             <div class="grid">
                 <p><%=inventory[i].ingredient%>, amount: <%=inventory[i].amount%>, cost: <%=inventory[i].cost_per_amount%><p>
                 <button onclick='display_inventory_modifier("<%=inventory[i].item_id%>", "<%=inventory[i].ingredient%>", "<%=inventory[i].amount%>", "<%=inventory[i].cost_per_amount%>")'>Edit</button>
-                <button class="delete-button">Delete</button>
+                <button class="delete-button" onclick='delete_inventory("<%=inventory[i].item_id%>")'>Delete</button>
             </div>
         <% } %>
         
@@ -132,7 +213,8 @@
         <% for (var i in menu_items) {%>
             <div class="grid">
                 <p>Name: <%=menu_items[i].name%> Price: <%=menu_items[i].price%><p>
-                <button class="delete-button">Delete</button>
+                <button onclick='display_menu_item_modifier()'>Edit</button>
+                <button class="delete-button" onclick='delete_menu_item("<%=menu_items[i].id%>")'>Delete</button>
             </div>
         <% } %>
         <button class="add-button" onclick='display_menu_item_adder()'>+</button>
@@ -143,7 +225,8 @@
         <% for (var i in addons) {%>
             <div class="grid">
                 <p>Name: <%=addons[i].name%><p>
-                <button class="delete-button">Delete</button>
+                <button onclick='display_addon_modifier()'>Edit</button>
+                <button class="delete-button" onclick='delete_addon("<%=addons[i].id%>")'>Delete</button>
             </div>
         <% } %>
         <button class="add-button" onclick="display_addon_adder()">+</button>
@@ -154,10 +237,10 @@
         <% for (var i in flavors) {%>
             <div class="grid">
                 <p>Name: <%=flavors[i].name%><p>
-                <button class="delete-button">Delete</button>
+                <button class="delete-button" onclick='delete_flavor("<%=flavors[i].id%>")'>Delete</button>
             </div>
         <% } %>
-        <button class="add-button">+</button>
+        <button class="add-button" onclick='display_flavor_adder()'>+</button>
     </div>
 
     <footer>
