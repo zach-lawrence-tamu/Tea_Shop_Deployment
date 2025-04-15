@@ -86,6 +86,7 @@ footer{
   .popup {
     display: none;
     position: fixed;
+    width: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -94,6 +95,8 @@ footer{
     border: 2px solid #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    overflow-y: auto;
+    max-height: 100%;
 }
 
 .popup.active {
@@ -109,10 +112,12 @@ footer{
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
+    justify-content: center;
+    align-items: center;
 }
 
 .popup-overlay.active {
-    display: block;
+    display: flex;
 }
 
 .checkout-menu {
@@ -120,6 +125,8 @@ footer{
     padding: 10px;
     min-height: 200px;
     position: relative;
+    max-height: 100%;
+    overflow-y: auto;
 }
 
 .checkout-items{

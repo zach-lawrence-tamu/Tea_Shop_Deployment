@@ -4,7 +4,6 @@
     <title>Cashier Order Page</title>
     <link rel="stylesheet" href="css/cashier-style.css">
 </head>
-<script src="../cashier.js"></script>
 <body>
     <header>
     <h1>Orders</h1>
@@ -25,7 +24,8 @@
     <div class = "wrapper-class">
         <div class= "menu-items">
             <% for (var i in menu_items) {%>
-                <button class = "menu-item-button" id = "'<%=menu_items[i].name%>'">
+                <button class = "menu-item-button" 
+                    onclick="openPopup('<%=menu_items[i].name%>', '<%=menu_items[i].price%>')">
                     <img>
                     <h4>Name: <%=menu_items[i].name%></h4>
                     <h6>Price: <%=menu_items[i].price%></h6>
@@ -33,10 +33,8 @@
             <% } %>
         </div>
         <div class = "checkout-menu">
-            <div class="checkout-items" id = "checkout-items">
-
-            </div>
-            <button class ="checkout-button">Checkout</button>
+            <div class="checkout-items" id = "checkout-items"></div>    
+            <a href="/cashier/checkout"><button class ="checkout-button">Checkout</button></a>
         </div>
     </div>
 
@@ -52,18 +50,51 @@
 
     </footer>
 
+<script src="/js/cashier-logic.js"></script>
 
-<div class = "popup" id = "popup">
-    <button onclick="updateCheckout()"></button>
+</body>
+
+<div class = "popup-overlay" id = "popup-overlay">
+    <div class="popup" id="popup">
+        <div class = "dropdown" id="flavor-dropdown" style="padding: 20px; align-self: center;">
+            <button class = "dropbtn" id="flavor-display">Choose a flavor &darr;</button>
+            <div class = "dropdown-content">
+                <% for(var i in flavors){%>
+                    <button class="popupBtn" onclick="flavorDropdownUpdate('<%=flavors[i].name%>')"><%=flavors[i].name%></button>
+             <%}%>
+            </div>
+        </div>
+        <div>
+            <label for="Quantity" style="padding: 20px;" value="1">Quantity:</label>
+            <input type="text" id="Quantity" name="Quantity">
+        </div>
+
+        <!--https://stackoverflow.com/questions/26612700/ticks-for-type-range-html-input-->
+
+        <div class = "slider-container" id="sugar-slider" style="padding: 20px;">
+            <span>0%</span>
+            <input type ="range" min="0" max="100" step="20" onchange="updateSugarSlider()" value="80">
+            <span>120%</span>
+            <div>Sugar Level: <span id="sugar-level">100%</span></div>
+        </div>
+        <div class = "slider-container" id="ice-slider" style="padding: 20px">
+            <span>No Ice</span>
+            <input type ="range" min="0" max="3" step="1" onchange="updateIceSlider()" value="2">
+            <span>Extra Ice</span>
+            <div>Ice Level:<span id="ice-level">Regular</span></div>
+        </div>
+        <div>
+            <% for (var i in addons){%>
+                <input type="checkbox" name="addon" value="false" data-name = "<%=addons[i].name%>" data-price="<%=addons[i].price%>">
+                <label for="addon" style="display: block;">
+                    <img height="20px" width="20px"><br>
+                    <h4><%=addons[i].name%></h4><br>
+                    <h6>Price: <%=addons[i].price%></h6>
+                </label>
+            <%}%>
+        </div>
+        <button onclick="returnToMenu()">Return to menu</button>
+        <button onclick="updateCheckout()">Proceed to checkout</button>
+    </div>
 </div>
-<!-- 
-    <% for (var i in menu_items) {%>
-        <p>Menu Item: <%=menu_items[i].name%>, price<%=menu_items[i].price%> </p>
-    <% } %>
-    <% for (var i in flavors) {%>
-        <p>Flavor: <%=flavors[i].name%> </p>
-    <% } %> -->
-
-
-
-<!--FF: creep is important for turbine engines. it elongates as usage increases-->
+</html>

@@ -9,6 +9,8 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+app.use(express.static('public'));
+
 app.set("view engine", "ejs");
 // app.use('/css', express.static(path.join(__dirname, 'views/css')));
 app.use(express.static(path.join(__dirname, 'views')));
