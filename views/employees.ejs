@@ -7,39 +7,27 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <script>
-        var display_employee_data = function (id) {
+        var display_employee_data = function (id, hours, manager_access, password) {
             console.log("view: ", id);
             document.getElementById('window-header').innerText = "View Employee Data";
             document.getElementById('employee-number-p').innerText = "Employee #" + id;
-
-            /*
-            document.getElementById('ingredient').value = ingredient;
-            document.getElementById('amount').value = amount;
-            document.getElementById('cost-per').value = cost_per_amount;
-
-            document.getElementById('window-header').innerText = "Modify Inventory Item";
-            document.getElementById('add-window-button').style.display = "none";
-            document.getElementById('modify-window-button').style.display = "block";
-            */
+            document.getElementById('employee-hours-p').innerText = "Weekly Hours Worked: " + hours;
+            document.getElementById('employee-access-p').innerText = "Manager Access: " + manager_access;
+            document.getElementById('employee-password-p').innerText = "Password: " + password;
 
             document.getElementById("employee-view").style.display = "block";
             document.getElementById("employee-forms").style.display = "none";
         }
     
-        var display_employee_modifier = function (id) {
+        var display_employee_modifier = function (id, hours, manager_access, password) {
             console.log("view: ", id);
             document.getElementById('window-header').innerText = "Modify Employee Data";
             document.getElementById('employee-number').innerText = "Employee #" + id;
 
-            /*
-            document.getElementById('employee-number').value = "Employee #" + id;
-            document.getElementById('amount').value = amount;
-            document.getElementById('cost-per').value = cost_per_amount;
-
-            document.getElementById('window-header').innerText = "Modify Inventory Item";
-            document.getElementById('add-window-button').style.display = "none";
-            document.getElementById('modify-window-button').style.display = "block";
-            */
+            document.getElementById('employee-hours').value = hours;
+            document.getElementById('employee-access').value = manager_access;
+            document.getElementById('employee-password').value = password;
+            
             document.getElementById('add-window-button').style.display = "none";
             document.getElementById('modify-window-button').style.display = "block";
 
@@ -52,18 +40,13 @@
             display_employee_modifier("");
             document.getElementById('window-header').innerText = "Add Employee";
             document.getElementById('employee-number').innerText = "";
+
+            document.getElementById('employee-hours').value = "";
+            document.getElementById('employee-access').value = "";
+            document.getElementById('employee-password').value = "";
             
             document.getElementById('add-window-button').style.display = "block";
             document.getElementById('modify-window-button').style.display = "none";
-            /*
-            document.getElementById('ingredient').value = ingredient;
-            document.getElementById('amount').value = amount;
-            document.getElementById('cost-per').value = cost_per_amount;
-
-            document.getElementById('window-header').innerText = "Modify Inventory Item";
-            document.getElementById('add-window-button').style.display = "none";
-            document.getElementById('modify-window-button').style.display = "block";
-            */
         }
     
     </script>
@@ -85,31 +68,33 @@
         <h2 id="window-header">View/Modify placeholder window</h2>
 
         <div id="employee-view">
-            <p id="employee-number-p">Employee #x</p>
-            <p>Weekly Hours Worked x</p>
-            <p>Manager Access x</p>
-            <p>Password x</p>
+            <p id="employee-number-p"></p>
+            <p id="employee-hours-p"></p>
+            <p id="employee-access-p"></p>
+            <p id="employee-password-p"></p>
         </div>
 
-        <div id="employee-forms">
+        <form id="employee-forms">
             <label for="employee-id" id="employee-number"></label>
-            <!--
-            <label for="amount" id="amount-value">Amount</label>
-            <input name="amount-form" id="amount" type="text"></input>
-            <label for="cost-per" id="cost-per-value">Cost Per Amount</label>
-            <input name="cost-per-form" id="cost-per" type="text"></input>
-            -->
+            
+            <label for="employee-hours" id="hours">Hours</label>
+            <input name="employee-hours-form" id="employee-hours" type="text"></input>
+            <label for="employee-access" id="access">Manager</label>
+            <input name="employee-access-form" id="employee-access" type="text"></input>
+            <label for="employee-password" id="password">Password</label>
+            <input name="employee-password-form" id="employee-password" type="text"></input>
+
             <button Id="modify-window-button">Modify</button>
             <button Id="add-window-button">Add</button>
-        </div>
+        </form>
     </div>
 
     <div class="container">
         <% for (var i in employees) {%>
             <div class="grid">
                 <p>Employee info: Employee #<%=employees[i].employee_id%><p>
-                <button onclick='display_employee_data("<%=employees[i].employee_id%>")'>View</button>
-                <button onclick='display_employee_modifier("<%=employees[i].employee_id%>")'>Edit</button>
+                <button onclick='display_employee_data("<%=employees[i].employee_id%>", "<%=employees[i].weekly_hours_worked%>", "<%=employees[i].manager_access%>", "<%=employees[i].password%>")'>View</button>
+                <button onclick='display_employee_modifier("<%=employees[i].employee_id%>", "<%=employees[i].weekly_hours_worked%>", "<%=employees[i].manager_access%>", "<%=employees[i].password%>")'>Edit</button>
                 <button class="delete-button">Delete</button>
             </div>
         <% } %>
