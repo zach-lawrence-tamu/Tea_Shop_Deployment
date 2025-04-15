@@ -1,11 +1,14 @@
+/* Body background color */
 body {
     background-color: #f1f3f5;
 }
 
+/* Header text color */
 h1, h2 {
     color: #343a40;
 }
 
+/* Main wrapper: flexbox layout for content */
 .main-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -14,16 +17,19 @@ h1, h2 {
     margin: auto;
 }
 
+/* Content area: takes up 70% of available space */
 .content {
     flex: 1 1 70%;
 }
 
+/* Grid layout for containers */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 20px;
 }
 
+/* Container style: light background, rounded corners, and shadow */
 .container {
     background-color: #f8f9fa;
     border-radius: 10px;
@@ -35,6 +41,7 @@ h1, h2 {
     flex-direction: column;
 }
 
+/* Image box style */
 .img-box {
     width: 100px;
     height: 100px;
@@ -47,10 +54,12 @@ h1, h2 {
     color: #6c757d;
 }
 
+/* Details section takes up full width */
 .details {
     width: 100%;
 }
 
+/* Button style for customization and add-to-cart */
 .customize-button, .add-to-cart-button {
     width: 100%;
     margin-top: 5px;
@@ -64,22 +73,23 @@ h1, h2 {
     box-sizing: border-box;
 }
 
+/* Customize button colors */
 .customize-button {
     background-color: #007bff;
 }
-
 .customize-button:hover {
     background-color: #0056b3;
 }
 
+/* Add to cart button colors */
 .add-to-cart-button {
     background-color: #28a745;
 }
-
 .add-to-cart-button:hover {
     background-color: #218838;
 }
 
+/* Checkout box layout */
 .checkout-box {
     flex: 0 0 300px;
     background-color: #f8f9fa;
@@ -88,11 +98,13 @@ h1, h2 {
     padding: 20px;
 }
 
+/* Checkout item row style */
 .checkout-item {
     border-bottom: 1px solid #dee2e6;
     padding: 10px 0;
 }
 
+/* Header of each checkout item (space between name and price) */
 .checkout-item-header {
     display: flex;
     justify-content: space-between;
@@ -100,12 +112,14 @@ h1, h2 {
     font-size: 15px;
 }
 
+/* Checkout item action buttons (edit, delete) */
 .checkout-item-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
 }
 
+/* Edit and delete button styles */
 .edit-button, .delete-button {
     padding: 6px 12px;
     font-size: 12px;
@@ -115,22 +129,23 @@ h1, h2 {
     color: white;
 }
 
+/* Edit button colors */
 .edit-button {
     background-color: #007bff;
 }
-
 .edit-button:hover {
     background-color: #0056b3;
 }
 
+/* Delete button colors */
 .delete-button {
     background-color: #dc3545;
 }
-
 .delete-button:hover {
     background-color: #c82333;
 }
 
+/* Pay section styling (layout and spacing) */
 .pay-section {
     display: flex;
     justify-content: space-between;
@@ -142,6 +157,7 @@ h1, h2 {
     font-size: 16px;
 }
 
+/* Pay button styling */
 .pay-button {
     background-color: #ffc107;
     color: #343a40;
@@ -152,12 +168,11 @@ h1, h2 {
     font-weight: bold;
     font-size: 14px;
 }
-
 .pay-button:hover {
     background-color: #e0a800;
 }
 
-/* ✅ Customize popup styling */
+/* Popup modal styling */
 .popup {
     position: fixed;
     top: 50%;
@@ -174,10 +189,12 @@ h1, h2 {
     text-align: center;
 }
 
+/* Hide the popup */
 .popup.hidden {
     display: none;
 }
 
+/* Popup button style */
 .popup button {
     margin-top: 10px;
     padding: 8px 16px;
@@ -187,7 +204,6 @@ h1, h2 {
     border-radius: 6px;
     cursor: pointer;
 }
-
 .popup button:hover {
     background-color: #0056b3;
 }
