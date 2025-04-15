@@ -3,7 +3,6 @@ const { Pool } = require('pg');
 const dotenv = require('dotenv').config();
 
 var router = express.Router();
-const myfunctions = ('./cashier-logic.js');
 
 // Create pool
 const pool = new Pool({

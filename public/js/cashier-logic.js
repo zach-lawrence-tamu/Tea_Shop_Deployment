@@ -9,6 +9,14 @@ const iceLevelMap = {
   2: "Regular",
   3: "Extra"
 };
+const sugarLevelMap ={
+  0: "0%",
+  20: "20%",
+  40: "50%",
+  60: "80%",
+  80: "100%",
+  100: "120%"
+}
 
 function openPopup(teaType = "none", teaPrice=0.0){
     const overlay = document.getElementById("popup-overlay");
@@ -60,8 +68,14 @@ function updateCheckout(){
 
 
     /*RESET VALUES*/ 
-    document.getElementById("flavor-display").innerHTML="Choose a flavor";
+    document.getElementById("flavor-display").innerHTML="Choose a flavor &darr;";
     document.getElementById("Quantity").innerHTML=null;
+    document.getElementById("sugar-level").innerHTML="100%";
+    document.getElementById("ice-level").innerHTML="Regular";
+    document.querySelectorAll("input[type='checkbox']:checked").forEach((element)=>
+    {
+      element.click();
+    });
 }
 
 function returnToMenu(){
@@ -70,6 +84,16 @@ function returnToMenu(){
 
   const popup = document.getElementById("popup");
   popup.classList.remove("active");
+
+  /*RESET VALUES*/
+  document.getElementById("flavor-display").innerHTML="Choose a flavor &darr;";
+  document.getElementById("Quantity").innerHTML=null;
+  document.getElementById("sugar-level").innerHTML="100%";
+  document.getElementById("ice-level").innerHTML="Regular";
+  document.querySelectorAll("input[type='checkbox']:checked").forEach((element)=>
+  {
+    element.click();
+  });
 }
 
 function flavorDropdownUpdate(selectedflavor){
@@ -78,4 +102,8 @@ function flavorDropdownUpdate(selectedflavor){
 
 function updateIceSlider(){
   document.getElementById("ice-level").innerHTML = iceLevelMap[document.querySelector("#ice-slider input").value];
+}
+
+function updateSugarSlider(){
+  document.getElementById("sugar-level").innerHTML= sugarLevelMap[document.querySelector("#sugar-slider input").value];
 }

@@ -72,7 +72,9 @@
         <!--https://stackoverflow.com/questions/26612700/ticks-for-type-range-html-input-->
 
         <div class = "slider-container" id="sugar-slider" style="padding: 20px;">
-            <input type ="range" min="0" max="120" step="20" list="steplist">
+            <span>0%</span>
+            <input type ="range" min="0" max="100" step="20" list="steplist" onchange="updateSugarSlider()" value="80">
+            <span>120%</span>
             <datalist id="steplist">
                 <option>0%</option>
                 <option>20%</option>
@@ -81,17 +83,20 @@
                 <option>100%</option>
                 <option>120%</option>
             </datalist>
+            <div>Sugar Level: <span id="sugar-level">100%</span></div>
         </div>
         <div class = "slider-container" id="ice-slider" style="padding: 20px">
+            <span>No Ice</span>
             <input type ="range" min="0" max="3" step="1" list="steplist" onchange="updateIceSlider()">
+            <span>Extra Ice</span>
             <div>Ice Level:<span id="ice-level">Regular</span></div>
         </div>
         <div>
             <% for (var i in addons){%>
                 <input type="checkbox" id="'<%addons[i].name%>'" name="addon" value="false">
-                <label for="addon" style="display: flex;">
-                    <img height="20px" width="20px">
-                    <h4><%=addons[i].name%></h4>
+                <label for="addon" style="display: block;">
+                    <img height="20px" width="20px"><br>
+                    <h4><%=addons[i].name%></h4><br>
                     <h6>Price: <%=addons[i].price%></h6>
                 </label>
             <%}%>
