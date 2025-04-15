@@ -72,6 +72,29 @@ router.post('/delete_flavor', (req, res) => {
     pool.query("DELETE FROM valid_flavors WHERE id=" + req.body.id);
 });
 
+router.post('/modify-inventory', (req, res) => {
+    if (req.body.data['amount-form'] === '') {
+        req.body.data['amount-form'] = 0;
+    }
+    if (req.body.data['cost-per-form'] === '') {
+        req.body.data['cost-per-form'] = 0;
+    }
+
+    pool.query("UPDATE inventory_items SET ingredient = '" + req.body.data['ingredient-form'] + "', amount = " + req.body.data['amount-form']
+        + ", cost_per_amount = " + req.body.data['cost-per-form'] + " WHERE item_id = " + req.body.id);
+});
+
+router.post('/add-inventory', (req, res) => {
+    if (req.body.data['amount-form'] === '') {
+        req.body.data['amount-form'] = 0;
+    }
+    if (req.body.data['cost-per-form'] === '') {
+        req.body.data['cost-per-form'] = 0;
+    }
+    
+    pool.query("INSERT INTO inventory_items (item_id, ingredient, amount, cost_per_amount) VALUES (" + req.body.id + ", '" + req.body.data['ingredient-form'] + "', " + req.body.data['amount-form'] + ", " + req.body.data['cost-per-form'] + ")");
+});
+
 router.get('/reports', (req, res) => {
     orders = []
     pool
@@ -99,6 +122,14 @@ router.get('/employees', (req, res) => {
             console.log(employees);
             res.render('employees', data);
         });
+});
+
+router.get('/max_inventory_id', async (req, res) => {
+    pool.query("select item_id from inventory_items where item_id = (select max(item_id) from inventory_items)")
+    .then(query_res => {
+        res.status(200).send('' + query_res.rows[0].item_id);
+    })
+
 });
 
 router.get('/hitNum', function (req, res) {
