@@ -12,6 +12,7 @@ const port = 3000;
 app.set("view engine", "ejs");
 // app.use('/css', express.static(path.join(__dirname, 'views/css')));
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.json());
 app.use('/', landing);
 app.use('/manager', manager);
 app.use('/customer', customer);

@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Roboto", "sans-serif";
 }
 
 header {
@@ -71,6 +74,22 @@ header a {
     padding-bottom: 15px;
 }
 
+.add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    min-width: 500px;
+    width: 50%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 button {
     cursor: pointer;
     border-radius: 5px;
@@ -122,10 +141,26 @@ button {
     display: none;
 }
 
+#addon-forms {
+    display: none;
+}
+
+#flavor-forms {
+    display: none;
+}
+
+#employee-forms {
+    display: none;
+}
+
+#employee-view {
+    display: none;
+}
+
 label {
     display: block;
 }
 
-.modify-window-button {
+.modify-window button {
     display: block;
 }
