@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/orders-page-style.css">
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+    <h1>Orders</h1>
+
+    <div class="nav-links">
+        <a href="/">Home</a> |
+        <a href="/cashier">Cashier</a> |
+        <a href="/cashier/orders">Orders</a> |
+        <a href="/cashier/transactions">Transactions</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Total Cost ($)</th>
+            </tr>
+        </thead>
+        <tbody id="orders-body">
+            <% for (let i = 0; i < order_data.length; i++) { %>
+                <tr>
+                    <td><%= order_data[i].id %></td>
+                    <td><%= order_data[i].time %></td>
+                    <td><%= order_data[i].date %></td>
+                    <td><%= order_data[i].cost.toFixed(2) %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div class="btn-container">
+        <% if (hasMore) { %>
+            <form method="GET" action="/cashier/orders">
+                <input type="hidden" name="offset" value="<%= nextOffset %>">
+                <button type="submit" class="btn">Load 20 More Orders</button>
+            </form>
+        <% } else { %>
+            <p>No more orders to load.</p>
+        <% } %>
+    </div>
+</body>
+</html>
