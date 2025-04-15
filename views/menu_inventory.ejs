@@ -173,13 +173,13 @@
                 console.error('Error:', error);
             });
 
-            await fetch('menu_inventory');
-            console.log("test");
-            window.location.reload();
+            //await fetch('menu_inventory');
+            //console.log("test");
+            //window.location.reload();
         }
 
         async function modify_inventory() {
-            add_modify_post('inventory-forms', 'modify-inventory');
+            add_modify_post('inventory-forms', 'modify_inventory');
         }
 
         async function add_inventory() {
@@ -188,28 +188,43 @@
                 .then(data => stored_id = data + 1)
                 .catch(error => console.log(error));
 
-            console.log("add inv stored: ", stored_id);
-            add_modify_post('inventory-forms', 'add-inventory');
+            add_modify_post('inventory-forms', 'add_inventory');
         }
 
         async function modify_menu_item() {
             console.log("mod menu stored: ", stored_id);
+            add_modify_post('menu-item-forms', 'modify_menu_item');
         }
 
         async function add_menu_item() {
-            console.log("add menu stored: ", stored_id);
+            await fetch('max_menu_id')
+                .then(response => response.json())
+                .then(data => stored_id = data + 1)
+                .catch(error => console.log(error));
+
+            add_modify_post('menu-item-forms', 'add_menu_item');
         }
 
         async function modify_addon() {
-            console.log("mod addon stored: ", stored_id);
+            add_modify_post('addon-forms', 'modify_addon');
         }
 
         async function add_addon() {
-            console.log("add addon stored: ", stored_id);
+            await fetch('max_addon_id')
+                .then(response => response.json())
+                .then(data => stored_id = data + 1)
+                .catch(error => console.log(error));
+
+            add_modify_post('addon-forms', 'add_addon');
         }
 
         async function add_flavor() {
-            console.log("add flavor stored: ", stored_id);
+            await fetch('max_flavor_id')
+                .then(response => response.json())
+                .then(data => stored_id = data + 1)
+                .catch(error => console.log(error));
+
+            add_modify_post('flavor-forms', 'add_flavor');
         }
     </script>
 </head>

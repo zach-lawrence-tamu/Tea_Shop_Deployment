@@ -72,7 +72,7 @@ router.post('/delete_flavor', (req, res) => {
     pool.query("DELETE FROM valid_flavors WHERE id=" + req.body.id);
 });
 
-router.post('/modify-inventory', (req, res) => {
+router.post('/modify_inventory', (req, res) => {
     if (req.body.data['amount-form'] === '') {
         req.body.data['amount-form'] = 0;
     }
@@ -84,15 +84,51 @@ router.post('/modify-inventory', (req, res) => {
         + ", cost_per_amount = " + req.body.data['cost-per-form'] + " WHERE item_id = " + req.body.id);
 });
 
-router.post('/add-inventory', (req, res) => {
+router.post('/add_inventory', (req, res) => {
     if (req.body.data['amount-form'] === '') {
         req.body.data['amount-form'] = 0;
     }
     if (req.body.data['cost-per-form'] === '') {
         req.body.data['cost-per-form'] = 0;
     }
-    
+
     pool.query("INSERT INTO inventory_items (item_id, ingredient, amount, cost_per_amount) VALUES (" + req.body.id + ", '" + req.body.data['ingredient-form'] + "', " + req.body.data['amount-form'] + ", " + req.body.data['cost-per-form'] + ")");
+});
+
+router.post('/modify_menu_item', (req, res) => {
+    if (req.body.data['tea-price-form'] === '') {
+        req.body.data['tea-price-form'] = 0.01;
+    }
+    
+    pool.query("UPDATE valid_tea_types SET name = '" + req.body.data['tea-form'] + "', price = " + req.body.data['tea-price-form'] + " WHERE id = " + req.body.id);
+});
+
+router.post('/add_menu_item', (req, res) => {
+    if (req.body.data['tea-price-form'] === '') {
+        req.body.data['tea-price-form'] = 0.01;
+    }
+
+    pool.query("INSERT INTO valid_tea_types (id, name, price) VALUES (" + req.body.id + ", '" + req.body.data['tea-form'] + "', " + req.body.data['tea-price-form'] + ")");
+});
+
+router.post('/modify_addon', (req, res) => {
+    if (req.body.data['addon-price-form'] === '') {
+        req.body.data['addon-price-form'] = 0.01;
+    }
+    
+    pool.query("UPDATE valid_addons SET name = '" + req.body.data['addon-name-form'] + "', price = " + req.body.data['addon-price-form'] + " WHERE id = " + req.body.id);
+});
+
+router.post('/add_addon', (req, res) => {
+    if (req.body.data['addon-price-form'] === '') {
+        req.body.data['addon-price-form'] = 0.01;
+    }
+
+    pool.query("INSERT INTO valid_addons (id, name, price) VALUES (" + req.body.id + ", '" + req.body.data['addon-name-form'] + "', " + req.body.data['addon-price-form'] + ")");
+});
+
+router.post('/add_flavor', (req, res) => {
+    pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + req.body.data['flavor-name-form'] + "')");
 });
 
 router.get('/reports', (req, res) => {
@@ -129,7 +165,27 @@ router.get('/max_inventory_id', async (req, res) => {
     .then(query_res => {
         res.status(200).send('' + query_res.rows[0].item_id);
     })
+});
 
+router.get('/max_menu_id', async (req, res) => {
+    pool.query("select id from valid_tea_types where id = (select max(id) from valid_tea_types)")
+    .then(query_res => {
+        res.status(200).send('' + query_res.rows[0].id);
+    })
+});
+
+router.get('/max_addon_id', async (req, res) => {
+    pool.query("select id from valid_addons where id = (select max(id) from valid_addons)")
+    .then(query_res => {
+        res.status(200).send('' + query_res.rows[0].id);
+    })
+});
+
+router.get('/max_flavor_id', async (req, res) => {
+    pool.query("select id from valid_flavors where id = (select max(id) from valid_flavors)")
+    .then(query_res => {
+        res.status(200).send('' + query_res.rows[0].id);
+    })
 });
 
 router.get('/hitNum', function (req, res) {
