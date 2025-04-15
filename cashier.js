@@ -64,18 +64,31 @@ router.get('/orders', (req, res) => {
         });
 });
 
-router.get('/transactions', (req, res) => {
+router.get('/transactions', async (req, res) => {
     let trans = []
+    const limit = 5000;
+    const offset = parseInt(req.query.offset) || 0;
+    const totalResult = await pool.query('SELECT COUNT(*) FROM orders');
+    const totalOrders = parseInt(totalResult.rows[0].count);
+    
     pool
-        .query('SELECT * FROM orders ORDER BY date DESC, time DESC;')
+        .query('SELECT * FROM orders ORDER BY date DESC, time DESC LIMIT $1 OFFSET $2', [limit, offset])
         .then(query_res => {
             for (let i = 0; i < query_res.rowCount; i++){
                 trans.push(query_res.rows[i]);
             }
-            const data = {trans: trans};
+            const data = {
+                trans: trans,
+                hasMore: query_res.rowCount === limit,
+                nextOffset: offset + limit,
+                totalOrders: totalOrders,
+                currentOffset: offset
+            };
+            //const data = {trans: trans};
             console.log(trans);
             res.render('transactions', data);
         });
 });
 
 module.exports = router;
+
