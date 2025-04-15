@@ -22,6 +22,8 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
+//menu and inventory page
+
 // Need to be able to modify addons, tea types, inventory items, and flavors
 router.get('/menu_inventory', async (req, res) => {
     try {
@@ -131,6 +133,8 @@ router.post('/add_flavor', (req, res) => {
     pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + req.body.data['flavor-name-form'] + "')");
 });
 
+//reports
+
 router.get('/reports', (req, res) => {
     orders = []
     pool
@@ -146,6 +150,8 @@ router.get('/reports', (req, res) => {
         });
 });
 
+//employees
+
 router.get('/employees', (req, res) => {
     employees = []
     pool
@@ -159,6 +165,30 @@ router.get('/employees', (req, res) => {
             res.render('employees', data);
         });
 });
+
+router.post('/delete_employee', (req, res) => {
+    console.log("post:", req.body);
+    console.log("id", req.body.id);
+    pool.query("DELETE FROM employees WHERE employee_id=" + req.body.id);
+});
+
+router.post('/modify_employee', (req, res) => {
+    if (req.body.data['employee-hours-form'] === '') {
+        req.body.data['employee-hours-form'] = 0;
+    }
+
+    pool.query("UPDATE employees SET weekly_hours_worked = " + req.body.data['employee-hours-form'] + ", manager_access = " + req.body.data['employee-access-form'] + ", password = '" + req.body.data['employee-password-form'] + "' WHERE employee_id = " + req.body.id);
+});
+
+router.post('/add_employee', (req, res) => {
+    if (req.body.data['employee-hours-form'] === '') {
+        req.body.data['employee-hours-form'] = 0;
+    }
+
+    pool.query("INSERT INTO employees (employee_id, weekly_hours_worked, manager_access, password) VALUES (" + req.body.id + ", " + req.body.data['employee-hours-form'] + ", " + req.body.data['employee-access-form'] + ", '" + req.body.data['employee-password-form'] + "')");
+});
+
+//max ids
 
 router.get('/max_inventory_id', async (req, res) => {
     pool.query("select item_id from inventory_items where item_id = (select max(item_id) from inventory_items)")
@@ -185,6 +215,13 @@ router.get('/max_flavor_id', async (req, res) => {
     pool.query("select id from valid_flavors where id = (select max(id) from valid_flavors)")
     .then(query_res => {
         res.status(200).send('' + query_res.rows[0].id);
+    })
+});
+
+router.get('/max_employee_id', async (req, res) => {
+    pool.query("select employee_id from employees where employee_id = (select max(employee_id) from employees)")
+    .then(query_res => {
+        res.status(200).send('' + query_res.rows[0].employee_id);
     })
 });
 
