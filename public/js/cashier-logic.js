@@ -17,7 +17,7 @@ const sugarLevelMap ={
   80: "100%",
   100: "120%"
 }
-
+/*LOGIC FOR POPUP*/
 function openPopup(teaType = "none", teaPrice=0.0){
     const overlay = document.getElementById("popup-overlay");
     overlay.classList.add("active");
@@ -38,13 +38,15 @@ function updateCheckout(){
     const flavor = document.getElementById("flavor-display").innerText;
     const sugar = document.querySelector("#sugar-slider input").value;
     const ice = document.querySelector("#ice-slider input").value;
+
+    const totalPrice = (parseFloat(teaPrice)+getAddonTotal())*quantity;
   
     const addons = Array.from(document.querySelectorAll("input[name='addon']:checked"))
-      .map(cb => cb.id);
+      .map(cb => cb.dataset.name);
   
     const item = {
       name: teaType,
-      teaPrice,
+      price: totalPrice,
       quantity,
       flavor,
       sugar,
@@ -69,9 +71,11 @@ function updateCheckout(){
 
     /*RESET VALUES*/ 
     document.getElementById("flavor-display").innerHTML="Choose a flavor &darr;";
-    document.getElementById("Quantity").innerHTML=null;
+    document.getElementById("Quantity").value="";
     document.getElementById("sugar-level").innerHTML="100%";
+    document.querySelector("#sugar-slider input").value=80;
     document.getElementById("ice-level").innerHTML="Regular";
+    document.querySelector("#ice-slider input").value=2;
     document.querySelectorAll("input[type='checkbox']:checked").forEach((element)=>
     {
       element.click();
@@ -87,14 +91,29 @@ function returnToMenu(){
 
   /*RESET VALUES*/
   document.getElementById("flavor-display").innerHTML="Choose a flavor &darr;";
-  document.getElementById("Quantity").innerHTML=null;
+  document.getElementById("Quantity").value="";
   document.getElementById("sugar-level").innerHTML="100%";
+  document.querySelector("#sugar-slider input").value=100;
   document.getElementById("ice-level").innerHTML="Regular";
+  document.querySelector("#ice-slider input").value=2;
   document.querySelectorAll("input[type='checkbox']:checked").forEach((element)=>
   {
     element.click();
   });
 }
+
+function getAddonTotal() {
+  let total = 0;
+  document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
+    const price = parseFloat(cb.dataset.price);
+    if (!isNaN(price)) {
+      total += price;
+    }
+  });
+  console.log(total);
+  return total;
+}
+
 
 function flavorDropdownUpdate(selectedflavor){
   document.getElementById("flavor-display").innerHTML = selectedflavor;
@@ -107,3 +126,4 @@ function updateIceSlider(){
 function updateSugarSlider(){
   document.getElementById("sugar-level").innerHTML= sugarLevelMap[document.querySelector("#sugar-slider input").value];
 }
+/*END LOGIC FOR POPUP*/

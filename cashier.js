@@ -54,4 +54,9 @@ router.get('/orders', async (req, res) => {
     res.render('orders', data);
 });
 
+router.get('/checkout', async(req, res)=>{
+    const data = {name: 'Checkout page'};
+    res.render('checkout', data);
+});
+
 module.exports = router;
