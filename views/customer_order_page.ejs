@@ -20,7 +20,7 @@
                             <% let tea_price = parseFloat(tea.price).toFixed(2); %>
                             <p>Cost: $<%= tea_price %></p>
                             <div class="customize-button" onclick="customizeItem('<%= tea.name %>')">Customize</div>
-                            <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', <%= tea.price %>)">Add to Cart</div>
+                            <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', '<%= tea.price %>')">Add to Cart</div>
                         </div>
                     </div>
                 <% }); %>
