@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports Page</title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -17,22 +18,26 @@
             <a href="/manager/reports">Reports</a>
             <a href="/manager/menu_inventory">Inventory and Menu</a>
         </nav>
-
-        <div class="reports-container">
-            <div class="graph-area">
-                <h1>Graph</h1>
-                <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-                <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-                <button>Graph</button>
-            </div>
-
-            <div class="z-report">
-                <h1>Z-Report</h1>
-            </div>
-
-            <div class="x-report">
-                <h1>X-Report</h1>
-            </div>
-        </div>
     </header>
+
+    <div class="reports-container">
+        <div class="graph-area">
+            <h1>Graph</h1>
+            <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <button>Graph</button>
+            
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="z-report">
+            <h1>Z-Report</h1>
+        </div>
+
+        <div class="x-report">
+            <h1>X-Report</h1>
+        </div>
+    </div>
+    
+    <script src="/js/chart_generation.js"></script>
 </body>
