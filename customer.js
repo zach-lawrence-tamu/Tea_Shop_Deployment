@@ -24,15 +24,17 @@ process.on('SIGINT', function() {
 // Route to get tea items from database
 router.get('/', async (req, res) => {
     try {
-        const result = await pool.query(`
-            SELECT name, price 
-            FROM valid_tea_types 
-            ORDER BY id ASC
-            OFFSET 0 
-            LIMIT (SELECT COUNT(*) - 1 FROM valid_tea_types)
-        `);
-        console.log('Query successful:', result.rows); // Debugging line
-        res.render('customer_order_page', { teas: result.rows });
+        const teaQuery = pool.query(`SELECT name, price FROM valid_tea_types ORDER BY id ASC`);
+        const flavorQuery = pool.query(`SELECT name FROM valid_flavors ORDER BY id ASC`);
+        const addonsQuery = pool.query(`SELECT name, price FROM valid_addons ORDER BY id ASC`);
+
+        const [teas, flavors, addons] = await Promise.all([teaQuery, flavorQuery, addonsQuery]);
+
+        res.render('customer_order_page', {
+            teas: teas.rows,
+            flavors: flavors.rows,
+            addons: addons.rows
+        });
     } catch (err) {
         console.error('Database query error:', err);
         res.status(500).send('Internal Server Error: ' + err.message);

@@ -19,7 +19,7 @@
                             <p><strong><%= tea.name %></strong></p>
                             <% let tea_price = parseFloat(tea.price).toFixed(2); %>
                             <p>Cost: $<%= tea_price %></p>
-                            <div class="customize-button" onclick="customizeItem('<%= tea.name %>')">Customize</div>
+                            <div class="customize-button" onclick="customizeItem('<%= tea.name %>', null, <%= tea.price %>)">Customize</div>
                             <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', <%= tea.price %>)">Add to Cart</div>
                         </div>
                     </div>
@@ -37,17 +37,73 @@
         </div>
     </div>
 
+    <!-- Dim background overlay -->
+    <div id="dim-background" class="dim hidden"></div>
+
     <!-- Customize Popup -->
     <div id="customize-popup" class="popup hidden">
-        <p>This is the customize window</p>
-        <button onclick="closePopup()">Close</button>
+        <h2>Customize Your Tea</h2>
+
+        <!-- Flavor Dropdown -->
+        <div class="dropdown">
+            <button onclick="toggleDropdown()">Choose a flavor ↓</button>
+            <div id="flavor-options" class="dropdown-content hidden">
+                <% flavors.forEach(flavor => { %>
+                    <div onclick="selectFlavor('<%= flavor.name %>')"><%= flavor.name %></div>
+                <% }) %>
+            </div>
+            <div>Selected Flavor: <span id="selected-flavor">Default</span></div>
+        </div>
+
+        <!-- Sugar Slider -->
+        <div class="slider-section">
+            <label for="sugar-slider">Sugar Level:</label>
+            <input type="range" id="sugar-slider" min="0" max="4" value="4">
+            <div id="sugar-label">100%</div>
+        </div>
+
+        <!-- Ice Slider -->
+        <div class="slider-section">
+            <label for="ice-slider">Ice Level:</label>
+            <input type="range" id="ice-slider" min="0" max="3" value="2">
+            <div id="ice-label">Regular</div>
+        </div>
+
+        <!-- Addons -->
+        <div class="addon-section">
+            <h4>Addons</h4>
+            <% addons.forEach(addon => { %>
+                <label>
+                    <input type="checkbox" value="<%= addon.name %>" class="addon-checkbox">
+                    <span><%= addon.name %> ($<%= addon.price %>)</span>
+                </label>
+            <% }); %>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <button onclick="closePopup()">Close</button>
+            <button class="confirm-button" onclick="confirmCustomization()">Confirm</button>
+        </div>
+
     </div>
 
     <script>
         let checkoutItems = [];
+        let currentItemIndex = null;  // Keeps track of the item being edited, if any
+        let currentItemName = null;  // Keeps track of the name of the item being customized
+        let currentItemPrice = null; // Keeps track of the price of the item being customized
 
         function addToCart(name, price) {
-            const item = { name, price: parseFloat(price).toFixed(2), modifications: '' };
+            const item = { 
+                name, 
+                price: parseFloat(price).toFixed(2), 
+                modifications: {
+                    flavor: 'Default',
+                    sugar: 4,
+                    ice: 2,
+                    addons: []
+                }
+            };
             checkoutItems.push(item);
             updateCheckout();
         }
@@ -60,23 +116,31 @@
         function updateCheckout() {
             const container = document.getElementById('checkout-items');
             const totalPrice = document.getElementById('total-price');
-            container.innerHTML = '';
+            container.innerHTML = '';  // Clear current items in the checkout
 
             let total = 0;
 
             checkoutItems.forEach((item, index) => {
-                const itemTotal = parseFloat(item.price);
-                total += itemTotal;
+                // Calculate the price based on the base price (currentItemPrice) + addons price
+                const addonsPrice = 0.75 * item.modifications.addons.length;
+                const itemPrice = parseFloat(item.price) + addonsPrice;  // Add the addon price here
+                total += itemPrice;
 
                 const div = document.createElement('div');
                 div.className = 'checkout-item';
                 div.innerHTML = `
                     <div class="checkout-item-header">
                         <strong>${item.name}</strong>
-                        <span>$${item.price}</span>
+                        <span>$${itemPrice.toFixed(2)}</span>
                     </div>
+                    <ul>
+                        <li>Flavor: ${item.modifications.flavor}</li>
+                        <li>Sugar: ${['0%', '30%', '50%', '80%', '100%'][item.modifications.sugar]}</li>
+                        <li>Ice: ${['No Ice', 'Light', 'Regular', 'Extra'][item.modifications.ice]}</li>
+                        ${item.modifications.addons.map(addon => `<li>Addon: ${addon}</li>`).join('')}
+                    </ul>
                     <div class="checkout-item-actions">
-                        <button class="edit-button" onclick="customizeItem('${item.name}')">Edit</button>
+                        <button class="edit-button" onclick="customizeItem('${item.name}', ${index}, ${item.price})">Edit</button>
                         <button class="delete-button" onclick="removeItem(${index})">Delete</button>
                     </div>
                 `;
@@ -86,16 +150,120 @@
             totalPrice.textContent = total.toFixed(2);
         }
 
-        // Customize popup logic
-        function customizeItem(name) {
-            const popup = document.getElementById('customize-popup');
-            popup.classList.remove('hidden');
-            popup.querySelector('p').textContent = `This is the customize window for ${name}`;
+
+        function customizeItem(name, index = null, price = null) {
+            currentItemName = name;  // Store the name of the item being customized
+            currentItemIndex = index;  // If editing, store the index
+            currentItemPrice = price;  // Store the price of the item being customized
+
+            document.getElementById('customize-popup').classList.remove('hidden');
+            document.getElementById('dim-background').classList.remove('hidden');
+            document.getElementById('selected-flavor').innerText = 'Default';
+            document.getElementById('sugar-slider').value = 4;
+            document.getElementById('sugar-label').innerText = '100%';
+            document.getElementById('ice-slider').value = 2;
+            document.getElementById('ice-label').innerText = 'Regular';
+            // Reset addon checkboxes
+            const checkboxes = document.querySelectorAll('.addon-section input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+
+            if (index !== null) {
+                const item = checkoutItems[index];
+                // Pre-select the current customizations for editing
+                document.getElementById('selected-flavor').innerText = item.modifications.flavor || 'Default';
+                document.getElementById('sugar-slider').value = item.modifications.sugar || 4;
+                document.getElementById('ice-slider').value = item.modifications.ice || 2;
+                
+                // Pre-select addons
+                item.modifications.addons.forEach(addon => {
+                    const checkbox = document.querySelector(`input[value="${addon}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
         }
 
         function closePopup() {
             document.getElementById('customize-popup').classList.add('hidden');
+            document.getElementById('dim-background').classList.add('hidden');
         }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('flavor-options');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function selectFlavor(name) {
+            document.getElementById('selected-flavor').innerText = name;
+            toggleDropdown();
+        }
+
+        document.getElementById('sugar-slider').addEventListener('input', function () {
+            const sugarMap = ['0%', '30%', '50%', '80%', '100%'];
+            document.getElementById('sugar-label').innerText = sugarMap[this.value];
+        });
+
+        document.getElementById('ice-slider').addEventListener('input', function () {
+            const iceMap = ['No Ice', 'Light', 'Regular', 'Extra'];
+            document.getElementById('ice-label').innerText = iceMap[this.value];
+        });
+
+        function confirmCustomization() {
+            const flavor = document.getElementById('selected-flavor').innerText;
+            const sugar = document.getElementById('sugar-slider').value;
+            const ice = document.getElementById('ice-slider').value;
+
+            // Get the selected addons
+            const addons = [];
+            const checkboxes = document.querySelectorAll('.addon-section input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => addons.push(checkbox.value));
+
+            const modifications = [
+                `Flavor: ${flavor}`,
+                `Sugar: ${['0%', '30%', '50%', '80%', '100%'][sugar]}`,
+                `Ice: ${['No Ice', 'Light', 'Regular', 'Extra'][ice]}`,
+                ...addons.map(addon => `${addon}`)
+            ];
+
+            // Calculate addon price here
+            const addonsPrice = 0.75 * addons.length;
+
+            // Calculate the total price (base price + addon price)
+            const totalPrice = parseFloat(currentItemPrice) + addonsPrice;
+
+            if(currentItemIndex === null) {
+                // New item customization
+                const item = { 
+                    name: currentItemName,
+                    price: currentItemPrice,  // Store the base price only here
+                    modifications: { flavor, sugar, ice, addons }
+                };
+                checkoutItems.push(item);
+            } 
+            else {
+                // Editing existing item
+                const item = checkoutItems[currentItemIndex];
+                item.modifications = { flavor, sugar, ice, addons };
+                item.price = currentItemPrice;  // Keep the base price here
+            }
+
+            updateCheckout();
+            closePopup();
+        }
+
+
+        function recalculateItemPrice(item) {
+            let addonsPrice = 0;
+            item.modifications.addons.forEach(addon => {
+                const addonElement = document.querySelector(`input[value="${addon}"]`);
+                if(addonElement) {
+                    const price = parseFloat(addonElement.nextElementSibling.textContent.split('$')[1]);
+                    addonsPrice += price;
+                }
+            });
+
+            return parseFloat(item.price) + addonsPrice;
+        }
+
     </script>
 </body>
 </html>
