@@ -286,9 +286,16 @@ var display_employee_adder = function () {
 }
 
 var display_x_report = function () {
-    
+    console.log("X report");
+    fetch('x_report');
 }
 
 var display_z_report = function () {
-    
+    console.log("Z report");
+    fetch('z_report');
+}
+
+var display_graph = function () {
+    console.log("Graph");
+    fetch('graph');
 }

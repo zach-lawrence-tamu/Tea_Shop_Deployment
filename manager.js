@@ -156,6 +156,18 @@ router.get('/reports', async (req, res) => {
     }
 });
 
+router.get("/x_report", (req, res) => {
+    console.log("activated x report get request");
+});
+
+router.get("/z_report", (req, res) => {
+    console.log("activated z report get request");
+});
+
+router.get("/graph", (req, res) => {
+    console.log("graph get request");
+})
+
 //employees
 
 router.get('/employees', (req, res) => {
