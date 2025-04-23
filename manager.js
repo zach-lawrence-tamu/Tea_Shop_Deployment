@@ -135,19 +135,25 @@ router.post('/add_flavor', (req, res) => {
 
 //reports
 
-router.get('/reports', (req, res) => {
-    orders = []
-    pool
-    //TODO: modify queries needed for graphs and reports, for now it just displays some orders
-        .query('SELECT * FROM orders where id <= 20;')
-        .then(query_res => {
-            for (let i = 0; i < query_res.rowCount; i++){
-                orders.push(query_res.rows[i]);
-            }
-            const data = {orders: orders};
-            console.log(orders);
-            res.render('reports', data);
-        });
+router.get('/reports', async (req, res) => {
+    try {
+        const[all_menu_items, all_flavors] = await Promise.all([
+            pool.query('SELECT * FROM valid_tea_types'),
+            pool.query('SELECT * FROM valid_flavors')
+        ])
+
+        const data = {
+            menu_items: all_menu_items.rows,
+            flavors: all_flavors.rows
+        };
+
+        console.log(data);
+        res.render('reports', data);
+    }
+    catch(e) {
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 //employees
@@ -225,15 +231,6 @@ router.get('/max_employee_id', async (req, res) => {
     })
 });
 
-router.get('/hitNum', function (req, res) {
-    console.log('hits req');
-    res.status(200).send('' + hits);
-});
 
-router.get('/add', function (req, res) {
-    console.log('added hits');
-    hits++;
-    res.status(200).end();
-});
 
 module.exports = router;

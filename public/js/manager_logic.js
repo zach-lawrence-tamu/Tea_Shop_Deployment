@@ -284,3 +284,11 @@ var display_employee_adder = function () {
     document.getElementById('add-window-button').style.display = "block";
     document.getElementById('modify-window-button').style.display = "none";
 }
+
+var display_x_report = function () {
+    
+}
+
+var display_z_report = function () {
+    
+}
