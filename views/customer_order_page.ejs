@@ -87,6 +87,14 @@
 
     </div>
 
+    <!-- Thank You Popup -->
+    <div id="thankyou-popup" class="popup thank-you-popup hidden">
+        <h2><strong>Thank You!</strong></h2>
+        <p>Your order will be with you shortly.</p>
+        <button onclick="goToLogin()">Back to Home</button>
+    </div>
+
+
     <script>
         let checkoutItems = [];
         let currentItemIndex = null;  // Keeps track of the item being edited, if any
@@ -263,6 +271,19 @@
 
             return parseFloat(item.price) + addonsPrice;
         }
+
+        // Redirect to login/home page
+        function goToLogin() {
+            window.location.href = '/';
+        }
+
+        // Pay button action
+        document.querySelector('.pay-button').addEventListener('click', function () {
+            // Show dim background and thank you popup
+            document.getElementById('dim-background').classList.remove('hidden');
+            document.getElementById('thankyou-popup').classList.remove('hidden');
+        });
+
 
     </script>
 </body>

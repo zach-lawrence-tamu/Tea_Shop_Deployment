@@ -275,3 +275,28 @@ h1, h2 {
 .popup .confirm-button:hover {
     background-color: #218838; /* Darker Green */
 }
+
+.thank-you-popup {
+    padding: 60px 0;
+    min-width: 400px;  
+    max-width: 700px;
+    text-align: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px; 
+    min-height: 100px;
+    height: auto;
+}
+
+.thank-you-popup h2 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.thank-you-popup p {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
