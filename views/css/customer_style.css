@@ -1,6 +1,7 @@
 /* Body background color */
 body {
     background-color: #f1f3f5;
+    margin: 0; /* Remove default body margin */
 }
 
 /* Header text color */
@@ -208,8 +209,7 @@ h1, h2 {
     background-color: #0056b3;
 }
 
-/* */
-
+/* Dropdown menu styles */
 .dropdown {
     position: relative;
 }
@@ -276,6 +276,7 @@ h1, h2 {
     background-color: #218838; /* Darker Green */
 }
 
+/* Thank you popup */
 .thank-you-popup {
     padding: 60px 0;
     min-width: 400px;  
@@ -300,3 +301,39 @@ h1, h2 {
     margin-bottom: 4px;
 }
 
+/* Banner style */
+.banner {
+    background-color: #007bff;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    color: black;
+    font-size: 24px;
+    position: relative;
+    margin-bottom: 20px; /* Gap between banner and content */
+}
+
+.banner h1 {
+    margin: 0;
+    color: rgb(48, 48, 48);  /* Customer Order Page text is black */
+}
+
+/* Home button on the top-right */
+.home-button {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    background-color: #ffc107;
+    color: #343a40;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.home-button:hover {
+    background-color: #e0a800;
+}
