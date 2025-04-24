@@ -137,18 +137,7 @@ router.post('/add_flavor', (req, res) => {
 
 router.get('/reports', async (req, res) => {
     try {
-        const[all_menu_items, all_flavors] = await Promise.all([
-            pool.query('SELECT * FROM valid_tea_types'),
-            pool.query('SELECT * FROM valid_flavors')
-        ])
-
-        const data = {
-            menu_items: all_menu_items.rows,
-            flavors: all_flavors.rows,
-        };
-
-        console.log(data);
-        res.render("reports", data);
+        res.render("reports");
     }
     catch(e) {
         console.error("Database query error:", e);
@@ -167,31 +156,27 @@ router.get("/z_report", async (req, res) => {
             pool.query('SELECT * FROM valid_flavors')
         ])
 
-        console.log("FIELDS: ", all_menu_items.fields.length);
-        console.log("DATA: ", all_menu_items.rows.toString());
-        
-        var test = "SUM(CASE WHEN tea_type = '" + all_menu_items.rows[0].name + "' THEN quantity ELSE 0 END) AS \"" + all_menu_items.rows[0].name + "\"";
-        console.log("QUERY: ", test);
-
-
         var count_queries = "SELECT SUM(cost) AS total_cost, SUM(tip) AS total_tip, " +
                         "SUM(quantity) AS item_sold,  " +
                         "SUM(addon_price) AS total_addon_cost,  " +
-                        "date,  " +
-                        "SUM(CASE WHEN tea_type = 'Milk Tea' THEN quantity ELSE 0 END) AS milk,  " +
-                        "SUM(CASE WHEN tea_type = 'Ice Blended Tea' THEN quantity ELSE 0 END) AS iced,  " +
-                        "SUM(CASE WHEN tea_type = 'Brewed Tea' THEN quantity ELSE 0 END) AS \"brewed tea\",  " +
-                        "SUM(CASE WHEN tea_type = 'Fruit Tea' THEN quantity ELSE 0 END) AS Fruit_Tea,  " +
-                        "SUM(CASE WHEN tea_type = 'Fresh Milk' THEN quantity ELSE 0 END) AS Fresh_Milk,  " +
-                        "SUM(CASE WHEN tea_type = 'Tea Mojito' THEN quantity ELSE 0 END) AS Tea_Mojito,  " +
-                        "SUM(CASE WHEN flavor = 'chocolate' THEN quantity ELSE 0 END) AS chocolate,  " +
-                        "SUM(CASE WHEN flavor = 'vanilla' THEN quantity ELSE 0 END) AS vanilla,  " +
-                        "SUM(CASE WHEN flavor = 'strawberry' THEN quantity ELSE 0 END) AS strawberry,  " +
-                        "SUM(CASE WHEN flavor = 'blueberry' THEN quantity ELSE 0 END) AS blueberry,  " +
-                        "SUM(CASE WHEN flavor = 'banana' THEN quantity ELSE 0 END) AS banana  " +
-                        "FROM orders " +
-                        "WHERE date = '2024-05-28'" +
-                        "GROUP BY date;"
+                        "date";
+
+        //console.log("FIELDS: ", all_menu_items.rowCount);
+        //console.log("DATA: ", all_menu_items.rows.toString());
+        
+        for (let i = 0; i < all_menu_items.rowCount; i++)
+        {
+            count_queries += ", SUM(CASE WHEN tea_type = '" + all_menu_items.rows[i].name + "' THEN quantity ELSE 0 END) AS \"" + all_menu_items.rows[i].name + "\"";
+        }
+
+        for (let i = 0; i < all_flavors.rowCount; i++)
+        {
+            count_queries += ", SUM(CASE WHEN flavor = '" + all_flavors.rows[i].name.toLowerCase() + "' THEN quantity ELSE 0 END) AS \"" + all_flavors.rows[i].name.toLowerCase() + "\"";
+        }
+
+        count_queries += "FROM orders " +
+                        "WHERE date = '2024-05-28' " +
+                        "GROUP BY date;";
 
         const[sums] = await Promise.all([
             pool.query(count_queries)
@@ -200,7 +185,7 @@ router.get("/z_report", async (req, res) => {
         const data = {
             menu_items: all_menu_items.rows,
             flavors: all_flavors.rows,
-            counts: sums.rows
+            counts: sums.rows,
         };
 
         console.log(data);

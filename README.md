@@ -172,3 +172,27 @@ Zach: I will work on making the repors on the manager page and help on other tas
 Vikrum: Finish up customer checkout page.
 Anuraag: Work on remaining api tasks.
 Elias: Finish up customer cashier page.
+
+Scrum meeting 2:
+Date: 4/24/2025
+
+1.	Did you complete your previous task?
+
+Zach: No
+Elias: No
+Vikrum: No
+Anuraag: Yes
+
+2.	What challenges did you face?
+
+Zach: Displaying Z table data.
+Vikrum: No.
+Anuraag: Learning how to code with api.
+Elias: Sliders are tricky to make into odd intervals.
+
+3.	What will you work on before our next scrum meeting?
+
+Zach: Finish Z table and implement X table
+Vikrum: Nutrition and allergy, as well as sending orders to database.
+Elias: Send orders to database.
+Anuraag: Translation API.
