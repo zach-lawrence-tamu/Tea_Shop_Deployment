@@ -32,6 +32,19 @@
             <h2>Checkout</h2>
             <div id="checkout-items"></div>
             <div class="pay-section">
+                <div style="margin-top: 1rem; margin-bottom: 1rem;">
+                    <label for="tipAmount">Tip Amount ($):</label>
+                    <input
+                      type="number"
+                      id="tipAmount"
+                      name="tipAmount"
+                      min="0"
+                      step="0.01"
+                      style="width: 80px; margin-left: 0.5rem;"
+                      oninput="updateTotalWithTip()"
+                    />
+                </div>
+                <input type="hidden" id="original-total" value="0.00">
                 <span>Total: $<span id="total-price">0.00</span></span>
                 <button class="pay-button">Pay</button>
             </div>
@@ -106,6 +119,7 @@
             const item = { 
                 name, 
                 price: parseFloat(price).toFixed(2), 
+                quantity: 1,  // Default to quantity 1
                 modifications: {
                     flavor: 'Default',
                     sugar: 4,
@@ -130,17 +144,18 @@
             let total = 0;
 
             checkoutItems.forEach((item, index) => {
-                // Calculate the price based on the base price (currentItemPrice) + addons price
                 const addonsPrice = 0.75 * item.modifications.addons.length;
-                const itemPrice = parseFloat(item.price) + addonsPrice;  // Add the addon price here
-                total += itemPrice;
+                const itemPrice = parseFloat(item.price) + addonsPrice;  // Add addon price here
+                const quantity = item.quantity || 1;  // Default to 1 if no quantity is set
+                const itemTotal = itemPrice * quantity;  // Calculate the total price for this item based on quantity
+                total += itemTotal;
 
                 const div = document.createElement('div');
                 div.className = 'checkout-item';
                 div.innerHTML = `
                     <div class="checkout-item-header">
                         <strong>${item.name}</strong>
-                        <span>$${itemPrice.toFixed(2)}</span>
+                        <span>$${itemPrice.toFixed(2)} each</span>
                     </div>
                     <ul>
                         <li>Flavor: ${item.modifications.flavor}</li>
@@ -149,6 +164,9 @@
                         ${item.modifications.addons.map(addon => `<li>Addon: ${addon}</li>`).join('')}
                     </ul>
                     <div class="checkout-item-actions">
+                        <label for="quantity-${index}">Quantity:</label>
+                        <input type="number" id="quantity-${index}" value="${quantity}" min="1" onchange="updateQuantity(${index}, this.value)" style="width: 50px;">
+                        <span>Total: $${itemTotal.toFixed(2)}</span>
                         <button class="edit-button" onclick="customizeItem('${item.name}', ${index}, ${item.price})">Edit</button>
                         <button class="delete-button" onclick="removeItem(${index})">Delete</button>
                     </div>
@@ -156,7 +174,14 @@
                 container.appendChild(div);
             });
 
+            // Set the original total (excluding tip)
+            document.getElementById('original-total').value = total.toFixed(2);
+
+            // Update the total price without tip, which will later be updated with the tip
             totalPrice.textContent = total.toFixed(2);
+
+            // Call updateTotalWithTip to recalculate the total with the tip
+            updateTotalWithTip();
         }
 
 
@@ -239,16 +264,16 @@
             // Calculate the total price (base price + addon price)
             const totalPrice = parseFloat(currentItemPrice) + addonsPrice;
 
-            if(currentItemIndex === null) {
+            if (currentItemIndex === null) {
                 // New item customization
                 const item = { 
                     name: currentItemName,
                     price: currentItemPrice,  // Store the base price only here
+                    quantity: 1,  // Default to 1 quantity
                     modifications: { flavor, sugar, ice, addons }
                 };
                 checkoutItems.push(item);
-            } 
-            else {
+            } else {
                 // Editing existing item
                 const item = checkoutItems[currentItemIndex];
                 item.modifications = { flavor, sugar, ice, addons };
@@ -280,12 +305,56 @@
 
         // Pay button action
         document.querySelector('.pay-button').addEventListener('click', function () {
-            // Show dim background and thank you popup
-            document.getElementById('dim-background').classList.remove('hidden');
-            document.getElementById('thankyou-popup').classList.remove('hidden');
+            const orderData = {
+                orders: checkoutItems,
+                tip: document.getElementById('tipAmount').value || 0
+            };
+
+            // Send the order data to the backend
+            fetch('/customer/submit-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show dim background and thank you popup on success
+                    document.getElementById('dim-background').classList.remove('hidden');
+                    document.getElementById('thankyou-popup').classList.remove('hidden');
+                } else {
+                    alert('There was an error with your order.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error with your order.');
+            });
         });
 
+        function updateTotalWithTip() {
+            const tipInput = document.getElementById('tipAmount');
+            const tip = parseFloat(tipInput.value) || 0;
 
+            // Get the current total of items in the cart (without tip)
+            const originalTotal = parseFloat(document.getElementById('original-total').value);
+
+            // Calculate the new total (original total + tip)
+            const newTotal = (originalTotal + tip).toFixed(2);
+
+            // Update the total price displayed
+            document.getElementById('total-price').textContent = newTotal;
+        }
+
+        function updateQuantity(index, newQuantity) {
+            const quantity = parseInt(newQuantity, 10);
+            if (quantity > 0) {
+                checkoutItems[index].quantity = quantity;  // Update the quantity
+                updateCheckout();  // Recalculate the total and refresh the checkout view
+            }
+        }
     </script>
 </body>
 </html>

@@ -120,6 +120,12 @@ h1, h2 {
     margin-top: 8px;
 }
 
+/* Checkout item actions: Quantity input box size */
+.checkout-item-actions input[type="number"] {
+    width: 30px !important; /* Adjusted the width to make the input box smaller */
+    padding: 5px; /* Optional: Adjust padding for a more consistent look */
+}
+
 /* Edit and delete button styles */
 .edit-button, .delete-button {
     padding: 6px 12px;
@@ -337,3 +343,4 @@ h1, h2 {
 .home-button:hover {
     background-color: #e0a800;
 }
+
