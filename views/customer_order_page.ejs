@@ -88,7 +88,8 @@
             <h4>Addons</h4>
             <% addons.forEach(addon => { %>
                 <label>
-                    <input type="checkbox" value="<%= addon.name %>" class="addon-checkbox">
+                    <input type="checkbox" value="<%= addon.name %>" data-price="<%= addon.price %>" class="addon-checkbox">
+                    <!-- <input type="checkbox" value="<%= addon.name %>" class="addon-checkbox"> -->
                     <span><%= addon.name %> ($<%= addon.price %>)</span>
                 </label>
             <% }); %>
@@ -118,8 +119,9 @@
         function addToCart(name, price) {
             const item = { 
                 name, 
-                price: parseFloat(price).toFixed(2), 
-                quantity: 1,  // Default to quantity 1
+                price: parseFloat(price), 
+                quantity: 1,
+                addon_price: 0.00, // ← Ensure this is set
                 modifications: {
                     flavor: 'Default',
                     sugar: 4,
@@ -246,44 +248,35 @@
             const sugar = document.getElementById('sugar-slider').value;
             const ice = document.getElementById('ice-slider').value;
 
-            // Get the selected addons
             const addons = [];
-            const checkboxes = document.querySelectorAll('.addon-section input[type="checkbox"]:checked');
-            checkboxes.forEach(checkbox => addons.push(checkbox.value));
+            let addon_price = 0;
 
-            const modifications = [
-                `Flavor: ${flavor}`,
-                `Sugar: ${['0%', '30%', '50%', '80%', '100%'][sugar]}`,
-                `Ice: ${['No Ice', 'Light', 'Regular', 'Extra'][ice]}`,
-                ...addons.map(addon => `${addon}`)
-            ];
+            // Get all selected addon checkboxes and accumulate their prices
+            const addonCheckboxes = document.querySelectorAll('.addon-section input[type="checkbox"]:checked');
+            addonCheckboxes.forEach(checkbox => {
+                addons.push(checkbox.value);
+                const price = parseFloat(checkbox.getAttribute('data-price')) || 0;
+                addon_price += price; // Sum up the addon prices
+            });
 
-            // Calculate addon price here
-            const addonsPrice = 0.75 * addons.length;
-
-            // Calculate the total price (base price + addon price)
-            const totalPrice = parseFloat(currentItemPrice) + addonsPrice;
+            // Create the item object
+            const item = {
+                name: currentItemName,
+                price: parseFloat(currentItemPrice), // Base tea price
+                quantity: 1,
+                modifications: { flavor, sugar, ice, addons },
+                addon_price: parseFloat(addon_price) // Total addon price
+            };
 
             if (currentItemIndex === null) {
-                // New item customization
-                const item = { 
-                    name: currentItemName,
-                    price: currentItemPrice,  // Store the base price only here
-                    quantity: 1,  // Default to 1 quantity
-                    modifications: { flavor, sugar, ice, addons }
-                };
-                checkoutItems.push(item);
+                checkoutItems.push(item); // New item added
             } else {
-                // Editing existing item
-                const item = checkoutItems[currentItemIndex];
-                item.modifications = { flavor, sugar, ice, addons };
-                item.price = currentItemPrice;  // Keep the base price here
+                checkoutItems[currentItemIndex] = item; // Update existing item
             }
 
             updateCheckout();
             closePopup();
         }
-
 
         function recalculateItemPrice(item) {
             let addonsPrice = 0;
@@ -305,9 +298,39 @@
 
         // Pay button action
         document.querySelector('.pay-button').addEventListener('click', function () {
+            const tip = parseFloat(document.getElementById('tipAmount').value) || 0;
+
             const orderData = {
-                orders: checkoutItems,
-                tip: document.getElementById('tipAmount').value || 0
+                tip,
+                orders: checkoutItems.map(item => {
+                    const quantity = item.quantity || 1;
+
+                    const menu_item_price = parseFloat(item.price); // base price per item
+                    let addon_price = 0; // Initialize addon_price to 0
+
+                    // Calculate total addon price based on selected addons
+                    item.modifications.addons.forEach(addon => {
+                        const addonElement = document.querySelector(`input[value="${addon}"]`);
+                        if (addonElement) {
+                            const price = parseFloat(addonElement.getAttribute('data-price')) || 0;
+                            addon_price += price; // Accumulate the addon price
+                        }
+                    });
+
+                    // Calculate the total cost for this item (base price + addon price)
+                    const singleItemTotal = menu_item_price + addon_price;
+                    const totalCost = singleItemTotal * quantity;
+
+                    // Ensure that values are sent as numbers with two decimal precision
+                    return {
+                        tea_type: item.name,
+                        flavor: item.modifications.flavor || 'Default',
+                        quantity,
+                        cost: totalCost.toFixed(2), // Final cost with addons and quantity
+                        menu_item_price: menu_item_price, // Base price
+                        addon_price: addon_price // Addon price
+                    };
+                })
             };
 
             // Send the order data to the backend
@@ -333,6 +356,7 @@
                 alert('There was an error with your order.');
             });
         });
+
 
         function updateTotalWithTip() {
             const tipInput = document.getElementById('tipAmount');
