@@ -295,6 +295,12 @@ async function display_z_report() {
     await fetch('z_report')
         .then(response => response.json())
         .then(data => {
+            if (Object.keys(data.counts).length === 0)
+            {
+                document.getElementById("report-header").innerHTML = "Z-Report: No sales yet today";
+                return;
+            }
+            
             console.log(data.counts);
             console.log(data.counts[0]["total_cost"]);
 

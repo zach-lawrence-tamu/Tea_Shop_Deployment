@@ -146,10 +146,30 @@ router.get('/reports', async (req, res) => {
 });
 
 router.get("/x_report", (req, res) => {
+    const currentDate = new Date();
+    var date = currentDate.getFullYear() + "-";
+    
+    if (currentDate.getMonth() < 10)
+        date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    else
+        date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+
+    //for testing date = 2024-05-28
+    date = "2024-05-28";
+
     console.log("activated x report get request");
 });
 
+//TODO: fix z report if day had no sales
 router.get("/z_report", async (req, res) => {
+    const currentDate = new Date();
+    var date = currentDate.getFullYear() + "-";
+    
+    if (currentDate.getMonth() < 10)
+        date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    else
+        date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    
     try {
         const[all_menu_items, all_flavors] = await Promise.all([
             pool.query('SELECT * FROM valid_tea_types'),
@@ -174,8 +194,9 @@ router.get("/z_report", async (req, res) => {
             count_queries += ", SUM(CASE WHEN flavor = '" + all_flavors.rows[i].name.toLowerCase() + "' THEN quantity ELSE 0 END) AS \"" + all_flavors.rows[i].name.toLowerCase() + "\"";
         }
 
+        //test date is 2024-05-28
         count_queries += "FROM orders " +
-                        "WHERE date = '2024-05-28' " +
+                        "WHERE date = '" + date + "' " +
                         "GROUP BY date;";
 
         const[sums] = await Promise.all([

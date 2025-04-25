@@ -22,6 +22,7 @@
     </header>
 
     <div class="reports-container">
+        <!--Container that holds the graph which graphs inventory and addons used-->
         <div class="graph-area">
             <h1>Graph</h1>
             <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
@@ -33,6 +34,7 @@
             <canvas id="myChart"></canvas>
         </div>
 
+        <!--Container that holds the z report data into two tables-->
         <div class="z-report">
             <h1 id="report-header">Z-Report</h1>
             <button onclick="display_z_report()">Display Z-Report</button>
@@ -46,8 +48,12 @@
             </table>
         </div>
 
+        <!--Container that holds the x report data into a table-->
         <div class="x-report">
             <h1>X-Report for today</h1>
+            <table id="hourly-sales" cellspacing=0 border=1>
+                
+            </table>
             <button onclick="display_x_report()">Display X-Report</button>
         </div>
     </div>
