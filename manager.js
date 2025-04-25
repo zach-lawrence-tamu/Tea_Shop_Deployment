@@ -130,7 +130,7 @@ router.post('/add_addon', (req, res) => {
 });
 
 router.post('/add_flavor', (req, res) => {
-    pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + req.body.data['flavor-name-form'] + "')");
+    pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + (req.body.data['flavor-name-form'].toLowerCase()) + "')");
 });
 
 //reports

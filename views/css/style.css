@@ -109,6 +109,7 @@ button {
     justify-content: center;
     margin-top: 50px;
     padding-bottom: 50px;
+    text-align: center;
 }
 
 .graph-area {
@@ -124,7 +125,7 @@ button {
 .z-report {
     border: 2px solid black;
     width: 400px;
-    height: 400px;
+    height: auto;
 }
 
 .x-report {
