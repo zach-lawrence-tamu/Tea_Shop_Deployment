@@ -147,20 +147,39 @@ router.get('/reports', async (req, res) => {
 
 router.get("/x_report", (req, res) => {
     const currentDate = new Date();
+    const currentTime = new Date();
+    const hours = currentTime.getHours();
     var date = currentDate.getFullYear() + "-";
+
     
     if (currentDate.getMonth() < 10)
         date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
     else
         date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
 
+    console.log(date, " ", hours);
+    
     //for testing date = 2024-05-28
     date = "2024-05-28";
 
     console.log("activated x report get request");
+
+    var query = "SELECT EXTRACT(HOUR FROM TO_TIMESTAMP(time, 'HH24:MI:SS')) AS sale_hour, " +
+                "COUNT(*) AS sales, SUM(cost + tip) AS total_revenue " +
+                "FROM orders " +
+                "WHERE date = '" + date + "' " +
+                "AND EXTRACT(HOUR FROM TO_TIMESTAMP(time, 'HH24:MI:SS')) BETWEEN 11 AND " + (hours - 1) +
+                " GROUP BY sale_hour ORDER BY sale_hour;";
+
+    pool.query(query)
+    .then(query_res => {
+        const data = {
+            menu_items: query_res.rows,
+        }
+        res.status(200).send(data);
+    });
 });
 
-//TODO: fix z report if day had no sales
 router.get("/z_report", async (req, res) => {
     const currentDate = new Date();
     var date = currentDate.getFullYear() + "-";
@@ -209,7 +228,6 @@ router.get("/z_report", async (req, res) => {
             counts: sums.rows,
         };
 
-        console.log(data);
         res.status(200).send(data);
     }
     catch(e) {

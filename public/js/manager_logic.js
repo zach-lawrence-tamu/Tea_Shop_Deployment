@@ -285,9 +285,14 @@ var display_employee_adder = function () {
     document.getElementById('modify-window-button').style.display = "none";
 }
 
-var display_x_report = function () {
+async function display_x_report() {
     console.log("X report");
-    fetch('x_report');
+    await fetch('x_report')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.log(error));
 }
 
 async function display_z_report() {
@@ -300,7 +305,7 @@ async function display_z_report() {
                 document.getElementById("report-header").innerHTML = "Z-Report: No sales yet today";
                 return;
             }
-            
+
             console.log(data.counts);
             console.log(data.counts[0]["total_cost"]);
 
