@@ -23,6 +23,7 @@
 
     <div class = "wrapper-class">
         <div class= "menu-items">
+            <!--Will display all the available menu items using the database-->
             <% for (var i in menu_items) {%>
                 <button class = "menu-item-button" 
                     onclick="openPopup('<%=menu_items[i].name%>', '<%=menu_items[i].price%>')">
@@ -33,6 +34,7 @@
             <% } %>
         </div>
         <div class = "checkout-menu">
+            <!--Will hold all items currently checkedout by the cashier-->
             <div class="checkout-items" id = "checkout-items"></div>    
             <a href="/cashier/checkout"><button class ="checkout-button">Checkout</button></a>
         </div>
@@ -40,6 +42,7 @@
 
     <footer>
         <div class = "dropdown">
+            <!--Will host the ability to change languages-->
             <button class = "dropbtn">Change Language</button>
             <div class = "dropdown-content">
                 <p>English</p>
@@ -55,6 +58,7 @@
 </body>
 
 <div class = "popup-overlay" id = "popup-overlay">
+    <!--All this does is darken the back of the popup-->
     <div class="popup" id="popup">
         <div class = "dropdown" id="flavor-dropdown" style="padding: 20px; align-self: center;">
             <button class = "dropbtn" id="flavor-display">Choose a flavor &darr;</button>
@@ -69,8 +73,6 @@
             <input type="text" id="Quantity" name="Quantity">
         </div>
 
-        <!--https://stackoverflow.com/questions/26612700/ticks-for-type-range-html-input-->
-
         <div class = "slider-container" id="sugar-slider" style="padding: 20px;">
             <span>0%</span>
             <input type ="range" min="0" max="100" step="20" onchange="updateSugarSlider()" value="80">
@@ -84,6 +86,7 @@
             <div>Ice Level:<span id="ice-level">Regular</span></div>
         </div>
         <div>
+            <!--Will display all addons through the database-->
             <% for (var i in addons){%>
                 <input type="checkbox" name="addon" value="false" data-name = "<%=addons[i].name%>" data-price="<%=addons[i].price%>">
                 <label for="addon" style="display: block;">

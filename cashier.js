@@ -90,5 +90,10 @@ router.get('/transactions', async (req, res) => {
         });
 });
 
+router.get('/checkout', async(req, res)=>{
+    const data = {name: 'checkout'};
+    res.render('checkout', data);
+});
+
 module.exports = router;
 
