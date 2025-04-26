@@ -23,7 +23,10 @@
     
     <div class="modify-window">
         <h2 id="window-header">Modify placeholder window</h2>
-    
+        
+        <!--This container will show up allowing manager to modify/add inventory data.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="inventory-forms" onsubmit="return false">
             <label for="ingredient" id="ingredient-name">Ingredient</label>
             <input name="ingredient-form" id="ingredient" type="text"></input>
@@ -35,6 +38,9 @@
             <button id="add-inventory-window-button" onclick='add_inventory()'>Add</button>
         </form>
 
+        <!--This container will show up allowing manager to modify/add menu items.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="menu-item-forms" onsubmit="return false">
             <label for="tea-type" id="tea-name">Tea Type</label>
             <input name="tea-form" id="tea-type" type="text"></input>
@@ -44,16 +50,21 @@
             <button id="add-menu-window-button" onclick='add_menu_item()'>Add</button>
         </form>
 
+        <!--This container will show up allowing manager to modify/add addons.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="addon-forms" onsubmit="return false">
             <label for="addon-name" id="addon-label">Addon</label>
             <input name="addon-name-form" id="addon-name" type="text"></input>
-            <!--do not want modification for the tea type, but we want modification of pricing-->
             <label for="addon-price" id="addon-price-label">Price</label>
             <input name="addon-price-form" id="addon-price" type="text"></input>
             <button id="modify-addon-window-button" onclick='modify_addon()'>Modify</button>
             <button id="add-addon-window-button" onclick='add_addon()'>Add</button>
         </form>
 
+        <!--This container will show up allowing manager to add flavors.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="flavor-forms" onsubmit="return false">
             <label for="flavor-name" id="flavor-label">Flavor</label>
             <input name="flavor-name-form" id="flavor-name" type="text"></input>
@@ -61,6 +72,8 @@
         </form>
     </div>
 
+    <!--This container includes all inventory items into an array which contain
+    buttons to modify, view, or delete specific inventory items.-->
     <div class="container">
         <h2>Inventory Items</h2>
         <% for (var i in inventory) {%>
@@ -74,6 +87,8 @@
         <button class="add-button" onclick="display_inventory_adder()">+</button>
     </div>
 
+    <!--This container includes all menu items into an array which contain
+    buttons to modify, view, or delete specific menu items.-->
     <div class="container">
         <h2>Menu Items</h2>
         <% for (var i in menu_items) {%>
@@ -86,6 +101,8 @@
         <button class="add-button" onclick='display_menu_item_adder()'>+</button>
     </div>
 
+    <!--This container includes all addons into an array which contain
+    buttons to modify, view, or delete specific addons.-->
     <div class="container">
         <h2>Addons</h2>
         <% for (var i in addons) {%>
@@ -98,6 +115,8 @@
         <button class="add-button" onclick="display_addon_adder()">+</button>
     </div>
 
+    <!--This container includes all flavors into an array which contain
+    buttons to modify, view, or delete specific flavors.-->
     <div class="container">
         <h2>Flavors</h2>
         <% for (var i in flavors) {%>
