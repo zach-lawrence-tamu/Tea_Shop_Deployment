@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports Page</title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/manager_logic.js"></script>
 </head>
 
 <body>
@@ -17,22 +19,44 @@
             <a href="/manager/reports">Reports</a>
             <a href="/manager/menu_inventory">Inventory and Menu</a>
         </nav>
-
-        <div class="reports-container">
-            <div class="graph-area">
-                <h1>Graph</h1>
-                <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-                <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-                <button>Graph</button>
-            </div>
-
-            <div class="z-report">
-                <h1>Z-Report</h1>
-            </div>
-
-            <div class="x-report">
-                <h1>X-Report</h1>
-            </div>
-        </div>
     </header>
+
+    <div class="reports-container">
+        <!--Container that holds the graph which graphs inventory and addons used-->
+        <div class="graph-area">
+            <h1>Graph</h1>
+            <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <button onclick="display_graph()">Graph</button>
+            
+            <!--When dynamically counting addons, use the addon column names and use a for loop for dynamics-->
+
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <!--Container that holds the z report data into two tables-->
+        <div class="z-report">
+            <h1 id="report-header">Z-Report</h1>
+            <button onclick="display_z_report()">Display Z-Report</button>
+            
+            <table id="sales-table" cellspacing=0 border=1>
+                
+            </table>
+
+            <table id="amount-sold-table" cellspacing=0 border=1>
+                
+            </table>
+        </div>
+
+        <!--Container that holds the x report data into a table-->
+        <div class="x-report">
+            <h1>X-Report for today</h1>
+            <table id="hourly-sales" cellspacing=0 border=1>
+                
+            </table>
+            <button onclick="display_x_report()">Display X-Report</button>
+        </div>
+    </div>
+    
+    <script src="/js/chart_generation.js"></script>
 </body>
