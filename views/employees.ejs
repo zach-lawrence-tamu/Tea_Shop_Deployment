@@ -24,6 +24,7 @@
     <div class="modify-window">
         <h2 id="window-header">View/Modify placeholder window</h2>
 
+        <!--This container will show up showcasing employee data when view button is clicked-->
         <div id="employee-view">
             <p id="employee-number-p"></p>
             <p id="employee-hours-p"></p>
@@ -31,6 +32,9 @@
             <p id="employee-password-p"></p>
         </div>
 
+        <!--This container will show up allowing manager to modify/add employee data.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="employee-forms" onsubmit="return false">
             <label for="employee-id" id="employee-number"></label>
             
@@ -46,6 +50,8 @@
         </form>
     </div>
 
+    <!--This container includes all employee ids into an array which contain
+    buttons to modify, view, or delete specific employees.-->
     <div class="container">
         <% for (var i in employees) {%>
             <div class="grid">
