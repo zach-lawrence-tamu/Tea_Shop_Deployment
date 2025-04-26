@@ -55,6 +55,13 @@ h1, h2 {
     color: #6c757d;
 }
 
+.img-box img {
+    width: 100%;
+    border-radius: 6px;
+    height: auto;
+    object-fit: cover;
+}
+
 /* Details section takes up full width */
 .details {
     width: 100%;
@@ -293,7 +300,7 @@ h1, h2 {
     align-items: center;
     flex-direction: column;
     gap: 8px; 
-    min-height: 100px;
+    min-height: 80px;
     height: auto;
 }
 
@@ -344,3 +351,76 @@ h1, h2 {
     background-color: #e0a800;
 }
 
+/* Contains allergens section */
+.contains-section {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+/* Allergen circle container */
+.allergen-circles {
+    display: flex;
+    gap: 8px; /* space between circles */
+    margin-top: 4px;
+}
+
+/* Each allergen circle */
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: #e9ecef; /* light gray background */
+    border-radius: 50%;
+    overflow: hidden; /* make sure images stay inside circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ced4da; /* subtle border */
+}
+
+/* Images inside circles */
+.circle img {
+    width: 105%; 
+    height: 105%;
+}
+
+
+/* Addon label flex layout */
+.addon-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+/* Small circle container after checkbox */
+.addon-allergen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+/* Allergen circle design */
+.addon-allergen .circle {
+    width: 25px;
+    height: 25px;
+    background-color: #e9ecef;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ced4da;
+}
+
+/* Image inside allergen circle */
+.addon-allergen .circle img {
+    width: 110%;
+    height: 110%;
+}

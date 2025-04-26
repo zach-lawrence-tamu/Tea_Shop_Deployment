@@ -19,11 +19,50 @@
             <div class="grid-container">
                 <% teas.forEach(tea => { %>
                     <div class="container">
-                        <div class="img-box">img</div>
+                        <div class="img-box">
+                            <% if (tea.name == 'Brewed Tea') { %>
+                                <img src="/tea_images/brewed_tea.png" alt="Brewed Tea">
+                            <% } else if (tea.name == 'Fresh Milk') { %>
+                                <img src="/tea_images/fresh_milk.png" alt="Fresh Milk">
+                            <% } else if (tea.name == 'Fruit Tea') { %>
+                                <img src="/tea_images/fruit_tea.png" alt="Fruit Tea">
+                            <% } else if (tea.name == 'Ice Blended Tea') { %>
+                                <img src="/tea_images/ice_blended_tea.png" alt="Ice Blended Tea">
+                            <% } else if (tea.name == 'Milk Tea') { %>
+                                <img src="/tea_images/milk_tea.png" alt="Milk Tea">
+                            <% } else if (tea.name == 'Tea Mojito') { %>
+                                <img src="/tea_images/tea_mojito.png" alt="Tea Mojito">
+                            <% } %>
+                        </div>
                         <div class="details">
                             <p><strong><%= tea.name %></strong></p>
                             <% let tea_price = parseFloat(tea.price).toFixed(2); %>
                             <p>Cost: $<%= tea_price %></p>
+                            <div class="contains-section">
+                                <span>Contains:</span>
+                                <div class="allergen-circles">
+                                    <% if (tea.name == 'Brewed Tea' || tea.name == 'Tea Mojito') { %>
+                                        <div class="circle">
+                                            <img src="/allergens/allergen_free.png" alt="Allergen Free">
+                                        </div>
+                                    <% } else if (tea.name == 'Fresh Milk' || tea.name == 'Milk Tea') { %>
+                                        <div class="circle">
+                                            <img src="/allergens/milk.png" alt="Milk">
+                                        </div>
+                                    <% } else if (tea.name == 'Fruit Tea') { %>
+                                        <div class="circle">
+                                            <img src="/allergens/soya.png" alt="Soya">
+                                        </div>
+                                    <% } else if (tea.name == 'Ice Blended Tea') { %>
+                                        <div class="circle">
+                                            <img src="/allergens/milk.png" alt="Milk">
+                                        </div>
+                                        <div class="circle">
+                                            <img src="/allergens/gluten.png" alt="Gluten">
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
                             <div class="customize-button" onclick="customizeItem('<%= tea.name %>', null, <%= tea.price %>)">Customize</div>
                             <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', <%= tea.price %>)">Add to Cart</div>
                         </div>
@@ -93,8 +132,20 @@
         <div class="addon-section">
             <h4>Addons</h4>
             <% addons.forEach(addon => { %>
-                <label>
+                <label class="addon-label">
                     <input type="checkbox" value="<%= addon.name %>" data-price="<%= addon.price %>" class="addon-checkbox">
+                    
+                    <% if (addon.name === 'Pudding' || addon.name === 'Ice Cream' || addon.name === 'Creama') { %>
+                        <div class="addon-allergen">
+                            <div class="circle">
+                                <img src="/allergens/milk.png" alt="Milk">
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <!-- Empty div to keep spacing consistent even if no allergen -->
+                        <div class="addon-allergen" style="width: 24px;"></div>
+                    <% } %>
+        
                     <span><%= addon.name %> ($<%= addon.price %>)</span>
                 </label>
             <% }); %>
