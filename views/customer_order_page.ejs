@@ -1,3 +1,4 @@
+<!-- Basic HTML setup with linked CSS and title -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +7,14 @@
     <link rel="stylesheet" href="/css/customer_style.css">
 </head>
 <body>
+    <!-- Page header with title and Home button -->
     <div class="banner">
         <h1>Customer Order Page</h1>
         <button class="home-button" onclick="goToLogin()">Home</button>
     </div>
+
     <div class="main-wrapper">
+        <!-- Tea menu section -->
         <div class="content">
             <div class="grid-container">
                 <% teas.forEach(tea => { %>
@@ -28,10 +32,12 @@
             </div>
         </div>
 
+        <!-- Checkout section -->
         <div class="checkout-box">
             <h2>Checkout</h2>
             <div id="checkout-items"></div>
             <div class="pay-section">
+                <!-- Tip input and total cost display -->
                 <div style="margin-top: 1rem; margin-bottom: 1rem;">
                     <label for="tipAmount">Tip Amount ($):</label>
                     <input
@@ -51,14 +57,14 @@
         </div>
     </div>
 
-    <!-- Dim background overlay -->
+    <!-- Background overlay for popup modals -->
     <div id="dim-background" class="dim hidden"></div>
 
-    <!-- Customize Popup -->
+    <!-- Tea customization popup -->
     <div id="customize-popup" class="popup hidden">
         <h2>Customize Your Tea</h2>
 
-        <!-- Flavor Dropdown -->
+        <!-- Flavor selection dropdown -->
         <div class="dropdown">
             <button onclick="toggleDropdown()">Choose a flavor ↓</button>
             <div id="flavor-options" class="dropdown-content hidden">
@@ -69,59 +75,60 @@
             <div>Selected Flavor: <span id="selected-flavor">Default</span></div>
         </div>
 
-        <!-- Sugar Slider -->
+        <!-- Sugar level slider -->
         <div class="slider-section">
             <label for="sugar-slider">Sugar Level:</label>
             <input type="range" id="sugar-slider" min="0" max="4" value="4">
             <div id="sugar-label">100%</div>
         </div>
 
-        <!-- Ice Slider -->
+        <!-- Ice level slider -->
         <div class="slider-section">
             <label for="ice-slider">Ice Level:</label>
             <input type="range" id="ice-slider" min="0" max="3" value="2">
             <div id="ice-label">Regular</div>
         </div>
 
-        <!-- Addons -->
+        <!-- Addon selection checkboxes -->
         <div class="addon-section">
             <h4>Addons</h4>
             <% addons.forEach(addon => { %>
                 <label>
                     <input type="checkbox" value="<%= addon.name %>" data-price="<%= addon.price %>" class="addon-checkbox">
-                    <!-- <input type="checkbox" value="<%= addon.name %>" class="addon-checkbox"> -->
                     <span><%= addon.name %> ($<%= addon.price %>)</span>
                 </label>
             <% }); %>
         </div>
 
+        <!-- Close and Confirm customization buttons -->
         <div style="margin-top: 10px;">
             <button onclick="closePopup()">Close</button>
             <button class="confirm-button" onclick="confirmCustomization()">Confirm</button>
         </div>
-
     </div>
 
-    <!-- Thank You Popup -->
+    <!-- Thank you popup after order submission -->
     <div id="thankyou-popup" class="popup thank-you-popup hidden">
         <h2><strong>Thank You!</strong></h2>
         <p>Your order will be with you shortly.</p>
         <button onclick="goToLogin()">Back to Home</button>
     </div>
 
-
+    <!-- JavaScript logic -->
     <script>
+        // Global state for checkout and current item being edited
         let checkoutItems = [];
-        let currentItemIndex = null;  // Keeps track of the item being edited, if any
-        let currentItemName = null;  // Keeps track of the name of the item being customized
-        let currentItemPrice = null; // Keeps track of the price of the item being customized
+        let currentItemIndex = null;
+        let currentItemName = null;
+        let currentItemPrice = null;
 
+        // Add a tea item to cart
         function addToCart(name, price) {
-            const item = { 
-                name, 
-                price: parseFloat(price), 
+            const item = {
+                name,
+                price: parseFloat(price),
                 quantity: 1,
-                addon_price: 0.00, // ← Ensure this is set
+                addon_price: 0.00,
                 modifications: {
                     flavor: 'Default',
                     sugar: 4,
@@ -133,25 +140,28 @@
             updateCheckout();
         }
 
+        // Remove item from checkout
         function removeItem(index) {
             checkoutItems.splice(index, 1);
             updateCheckout();
         }
 
+        // Refresh checkout display and total price
         function updateCheckout() {
             const container = document.getElementById('checkout-items');
             const totalPrice = document.getElementById('total-price');
-            container.innerHTML = '';  // Clear current items in the checkout
+            container.innerHTML = '';
 
             let total = 0;
 
             checkoutItems.forEach((item, index) => {
                 const addonsPrice = 0.75 * item.modifications.addons.length;
-                const itemPrice = parseFloat(item.price) + addonsPrice;  // Add addon price here
-                const quantity = item.quantity || 1;  // Default to 1 if no quantity is set
-                const itemTotal = itemPrice * quantity;  // Calculate the total price for this item based on quantity
+                const itemPrice = parseFloat(item.price) + addonsPrice;
+                const quantity = item.quantity || 1;
+                const itemTotal = itemPrice * quantity;
                 total += itemTotal;
 
+                // Create checkout item HTML
                 const div = document.createElement('div');
                 div.className = 'checkout-item';
                 div.innerHTML = `
@@ -176,41 +186,34 @@
                 container.appendChild(div);
             });
 
-            // Set the original total (excluding tip)
             document.getElementById('original-total').value = total.toFixed(2);
-
-            // Update the total price without tip, which will later be updated with the tip
             totalPrice.textContent = total.toFixed(2);
-
-            // Call updateTotalWithTip to recalculate the total with the tip
             updateTotalWithTip();
         }
 
-
+        // Show customization popup
         function customizeItem(name, index = null, price = null) {
-            currentItemName = name;  // Store the name of the item being customized
-            currentItemIndex = index;  // If editing, store the index
-            currentItemPrice = price;  // Store the price of the item being customized
+            currentItemName = name;
+            currentItemIndex = index;
+            currentItemPrice = price;
 
             document.getElementById('customize-popup').classList.remove('hidden');
             document.getElementById('dim-background').classList.remove('hidden');
+
+            // Reset customization options
             document.getElementById('selected-flavor').innerText = 'Default';
             document.getElementById('sugar-slider').value = 4;
             document.getElementById('sugar-label').innerText = '100%';
             document.getElementById('ice-slider').value = 2;
             document.getElementById('ice-label').innerText = 'Regular';
-            // Reset addon checkboxes
-            const checkboxes = document.querySelectorAll('.addon-section input[type="checkbox"]');
-            checkboxes.forEach(checkbox => checkbox.checked = false);
+            document.querySelectorAll('.addon-section input[type="checkbox"]').forEach(cb => cb.checked = false);
 
+            // Pre-fill options if editing an existing item
             if (index !== null) {
                 const item = checkoutItems[index];
-                // Pre-select the current customizations for editing
-                document.getElementById('selected-flavor').innerText = item.modifications.flavor || 'Default';
-                document.getElementById('sugar-slider').value = item.modifications.sugar || 4;
-                document.getElementById('ice-slider').value = item.modifications.ice || 2;
-                
-                // Pre-select addons
+                document.getElementById('selected-flavor').innerText = item.modifications.flavor;
+                document.getElementById('sugar-slider').value = item.modifications.sugar;
+                document.getElementById('ice-slider').value = item.modifications.ice;
                 item.modifications.addons.forEach(addon => {
                     const checkbox = document.querySelector(`input[value="${addon}"]`);
                     if (checkbox) checkbox.checked = true;
@@ -218,165 +221,122 @@
             }
         }
 
+        // Close customization popup
         function closePopup() {
             document.getElementById('customize-popup').classList.add('hidden');
             document.getElementById('dim-background').classList.add('hidden');
         }
 
+        // Flavor dropdown handlers
         function toggleDropdown() {
-            const dropdown = document.getElementById('flavor-options');
-            dropdown.classList.toggle('hidden');
+            document.getElementById('flavor-options').classList.toggle('hidden');
         }
-
         function selectFlavor(name) {
             document.getElementById('selected-flavor').innerText = name;
             toggleDropdown();
         }
 
+        // Update slider labels
         document.getElementById('sugar-slider').addEventListener('input', function () {
-            const sugarMap = ['0%', '30%', '50%', '80%', '100%'];
-            document.getElementById('sugar-label').innerText = sugarMap[this.value];
+            document.getElementById('sugar-label').innerText = ['0%', '30%', '50%', '80%', '100%'][this.value];
         });
-
         document.getElementById('ice-slider').addEventListener('input', function () {
-            const iceMap = ['No Ice', 'Light', 'Regular', 'Extra'];
-            document.getElementById('ice-label').innerText = iceMap[this.value];
+            document.getElementById('ice-label').innerText = ['No Ice', 'Light', 'Regular', 'Extra'][this.value];
         });
 
+        // Confirm customization and save it
         function confirmCustomization() {
             const flavor = document.getElementById('selected-flavor').innerText;
             const sugar = document.getElementById('sugar-slider').value;
             const ice = document.getElementById('ice-slider').value;
-
             const addons = [];
             let addon_price = 0;
 
-            // Get all selected addon checkboxes and accumulate their prices
-            const addonCheckboxes = document.querySelectorAll('.addon-section input[type="checkbox"]:checked');
-            addonCheckboxes.forEach(checkbox => {
-                addons.push(checkbox.value);
-                const price = parseFloat(checkbox.getAttribute('data-price')) || 0;
-                addon_price += price; // Sum up the addon prices
+            document.querySelectorAll('.addon-section input[type="checkbox"]:checked').forEach(cb => {
+                addons.push(cb.value);
+                addon_price += parseFloat(cb.getAttribute('data-price')) || 0;
             });
 
-            // Create the item object
             const item = {
                 name: currentItemName,
-                price: parseFloat(currentItemPrice), // Base tea price
+                price: parseFloat(currentItemPrice),
                 quantity: 1,
                 modifications: { flavor, sugar, ice, addons },
-                addon_price: parseFloat(addon_price) // Total addon price
+                addon_price
             };
 
             if (currentItemIndex === null) {
-                checkoutItems.push(item); // New item added
+                checkoutItems.push(item);
             } else {
-                checkoutItems[currentItemIndex] = item; // Update existing item
+                checkoutItems[currentItemIndex] = item;
             }
 
             updateCheckout();
             closePopup();
         }
 
-        function recalculateItemPrice(item) {
-            let addonsPrice = 0;
-            item.modifications.addons.forEach(addon => {
-                const addonElement = document.querySelector(`input[value="${addon}"]`);
-                if(addonElement) {
-                    const price = parseFloat(addonElement.nextElementSibling.textContent.split('$')[1]);
-                    addonsPrice += price;
-                }
-            });
-
-            return parseFloat(item.price) + addonsPrice;
-        }
-
-        // Redirect to login/home page
+        // Redirect to home page
         function goToLogin() {
             window.location.href = '/';
         }
 
-        // Pay button action
+        // Submit order data to backend
         document.querySelector('.pay-button').addEventListener('click', function () {
-            const tip = parseFloat(document.getElementById('tipAmount').value) || 0;
-
+            const tip = (parseFloat(document.getElementById('tipAmount').value) || 0).toFixed(2);
             const orderData = {
                 tip,
                 orders: checkoutItems.map(item => {
                     const quantity = item.quantity || 1;
-
-                    const menu_item_price = parseFloat(item.price); // base price per item
-                    let addon_price = 0; // Initialize addon_price to 0
-
-                    // Calculate total addon price based on selected addons
+                    let addon_price = 0;
                     item.modifications.addons.forEach(addon => {
-                        const addonElement = document.querySelector(`input[value="${addon}"]`);
-                        if (addonElement) {
-                            const price = parseFloat(addonElement.getAttribute('data-price')) || 0;
-                            addon_price += price; // Accumulate the addon price
-                        }
+                        const cb = document.querySelector(`input[value="${addon}"]`);
+                        if (cb) addon_price += parseFloat(cb.getAttribute('data-price')) || 0;
                     });
-
-                    // Calculate the total cost for this item (base price + addon price)
-                    const singleItemTotal = menu_item_price + addon_price;
-                    const totalCost = singleItemTotal * quantity;
-
-                    // Ensure that values are sent as numbers with two decimal precision
+                    const cost = (parseFloat(item.price) + addon_price) * quantity;
                     return {
                         tea_type: item.name,
-                        flavor: item.modifications.flavor || 'Default',
+                        flavor: item.modifications.flavor,
                         quantity,
-                        cost: totalCost.toFixed(2), // Final cost with addons and quantity
-                        menu_item_price: menu_item_price, // Base price
-                        addon_price: addon_price // Addon price
+                        cost: cost.toFixed(2),
+                        menu_item_price: item.price,
+                        addon_price
                     };
                 })
             };
 
-            // Send the order data to the backend
             fetch('/customer/submit-order', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // Show dim background and thank you popup on success
                     document.getElementById('dim-background').classList.remove('hidden');
                     document.getElementById('thankyou-popup').classList.remove('hidden');
                 } else {
                     alert('There was an error with your order.');
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
+            .catch(err => {
+                console.error('Error:', err);
                 alert('There was an error with your order.');
             });
         });
 
-
+        // Recalculate total with tip
         function updateTotalWithTip() {
-            const tipInput = document.getElementById('tipAmount');
-            const tip = parseFloat(tipInput.value) || 0;
-
-            // Get the current total of items in the cart (without tip)
+            const tip = parseFloat(document.getElementById('tipAmount').value) || 0;
             const originalTotal = parseFloat(document.getElementById('original-total').value);
-
-            // Calculate the new total (original total + tip)
-            const newTotal = (originalTotal + tip).toFixed(2);
-
-            // Update the total price displayed
-            document.getElementById('total-price').textContent = newTotal;
+            document.getElementById('total-price').textContent = (originalTotal + tip).toFixed(2);
         }
 
+        // Update item quantity and refresh checkout
         function updateQuantity(index, newQuantity) {
             const quantity = parseInt(newQuantity, 10);
             if (quantity > 0) {
-                checkoutItems[index].quantity = quantity;  // Update the quantity
-                updateCheckout();  // Recalculate the total and refresh the checkout view
+                checkoutItems[index].quantity = quantity;
+                updateCheckout();
             }
         }
     </script>
