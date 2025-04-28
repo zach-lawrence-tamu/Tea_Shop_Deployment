@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Customer Order Page</title>
+    <!-- Link to external CSS file for styling -->
     <link rel="stylesheet" href="/css/customer_style.css">
 </head>
 <body>
@@ -35,7 +36,7 @@
                             <% } %>
                         </div>
                         <div class="details">
-                            <p><strong><%= tea.name %></strong></p>
+                            <p><strong><%= tea.name %></strong></p> <!-- Tea name -->
                             <% let tea_price = parseFloat(tea.price).toFixed(2); %>
                             <p>Cost: $<%= tea_price %></p>
                             <div class="contains-section">
@@ -72,8 +73,10 @@
         </div>
 
         <!-- Checkout section -->
+        <!-- Checkout section -->
         <div class="checkout-box">
             <h2>Checkout</h2>
+            <!-- List of items in checkout -->
             <div id="checkout-items"></div>
             <div class="pay-section">
                 <!-- Tip input and total cost display -->
@@ -91,7 +94,7 @@
                 </div>
                 <input type="hidden" id="original-total" value="0.00">
                 <span>Total: $<span id="total-price">0.00</span></span>
-                <button class="pay-button">Pay</button>
+                <button class="pay-button">Pay</button> <!-- Pay button -->
             </div>
         </div>
     </div>
@@ -174,6 +177,7 @@
         let currentItemPrice = null;
 
         // Add a tea item to cart
+        // Add a tea item to cart
         function addToCart(name, price) {
             const item = {
                 name,
@@ -188,7 +192,7 @@
                 }
             };
             checkoutItems.push(item);
-            updateCheckout();
+            updateCheckout(); // Refresh checkout display
         }
 
         // Remove item from checkout
@@ -201,10 +205,11 @@
         function updateCheckout() {
             const container = document.getElementById('checkout-items');
             const totalPrice = document.getElementById('total-price');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear previous items
 
             let total = 0;
 
+            // Loop through cart items and display each
             checkoutItems.forEach((item, index) => {
                 const addonsPrice = 0.75 * item.modifications.addons.length;
                 const itemPrice = parseFloat(item.price) + addonsPrice;

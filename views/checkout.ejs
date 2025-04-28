@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="../css/cashier-style.css">
 </head>
 <body>
+
     <header>
         <h1>Orders</h1>
-    <!-- Weather should be dislayed here at the top right-->
       <div class = "dropdown">
         <button class = "dropbtn">Welcome [User]</button>
         <div class = "dropdown-content">
@@ -20,18 +20,21 @@
         </div>
       </div>
     </header>
-    <div style="overflow-y: auto;">
-      <!-- All order items will be here -->
+    <div class="wrapper-class">
+      <div id="order-summary" style="overflow-y: auto;">
+        <!-- All order items will be here -->
+      </div>
+      <div class = "payment-summary">
+        <!--Finalized total will be displayed here-->
+        <!-- Buttons should be fixated to the bottom of the div. -->
+        <a href="/cashier"><button>Return to Menu</button></a>
+        <button onclick="finalizeTransaction()">Finalize transaction</button>
+      </div>
     </div>
     <footer>
-      <div>
-       <!-- The ammount that is due will be here. Should allign with finalize transaction -->
-      </div>
-      <span>
-        <button>Return to Menu</button>
-        <button>Finalize transaction</button>
-      </span>
     </footer>
+
+<script src="/js/checkout-logic.js"></script>
 </body>
 
 </html>

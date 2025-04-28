@@ -6,125 +6,7 @@
     <title>Employees Page</title>
     <link rel="stylesheet" href="/css/style.css">
 
-    <script>
-        var stored_id;
-        //when this javascript and menu inventory javascript is combined, this duplicate will
-        //need to be removed
-        async function delete_with_post(id, route_name) {
-            fetch(route_name, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"id": id})
-            })
-            .then (response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-            await fetch('employees');
-            console.log("test");
-            window.location.reload();
-        }
-
-        async function delete_employee(id) {
-            delete_with_post(id, 'delete_employee');
-        }
-
-        async function add_modify_post(form_name, route_name) {
-            var form = document.getElementById(form_name);
-            var form_data = new FormData(form);
-
-            var checkbox = document.getElementById('employee-access');
-            form_data.set('employee-access-form', checkbox.checked);
-
-            const data = Object.fromEntries(form_data.entries());
-
-            fetch(route_name, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"id": stored_id, "data": data})
-            })
-            .then (response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-            await fetch('employees');
-            console.log("test");
-            window.location.reload();
-        }
-
-        async function modify_employee() {
-            add_modify_post('employee-forms', 'modify_employee');
-        }
-
-        async function add_employee() {
-            await fetch('max_employee_id')
-                .then(response => response.json())
-                .then(data => stored_id = data + 1)
-                .catch(error => console.log(error));
-
-            add_modify_post('employee-forms', 'add_employee');
-        }
-
-        var display_employee_data = function (id, hours, manager_access, password) {
-            stored_id = id;
-
-            document.getElementById('window-header').innerText = "View Employee Data";
-            document.getElementById('employee-number-p').innerText = "Employee #" + id;
-            document.getElementById('employee-hours-p').innerText = "Weekly Hours Worked: " + hours;
-            document.getElementById('employee-access-p').innerText = "Manager Access: " + manager_access;
-            document.getElementById('employee-password-p').innerText = "Password: " + password;
-
-            document.getElementById("employee-view").style.display = "block";
-            document.getElementById("employee-forms").style.display = "none";
-        }
-    
-        var display_employee_modifier = function (id, hours, manager_access, password) {
-            stored_id = id;
-
-            document.getElementById('window-header').innerText = "Modify Employee Data";
-            document.getElementById('employee-number').innerText = "Employee #" + id;
-
-            document.getElementById('employee-hours').value = hours;
-            document.getElementById('employee-access').checked = (manager_access === 'true');
-            document.getElementById('employee-password').value = password;
-            
-            document.getElementById('add-window-button').style.display = "none";
-            document.getElementById('modify-window-button').style.display = "block";
-
-            document.getElementById("employee-view").style.display = "none";
-            document.getElementById("employee-forms").style.display = "block";
-        }
-    
-        var display_employee_adder = function () {
-            display_employee_modifier("");
-            document.getElementById('window-header').innerText = "Add Employee";
-            document.getElementById('employee-number').innerText = "";
-
-            document.getElementById('employee-hours').value = "";
-            document.getElementById('employee-access').checked = false;
-            document.getElementById('employee-password').value = "";
-            
-            document.getElementById('add-window-button').style.display = "block";
-            document.getElementById('modify-window-button').style.display = "none";
-        }
-    
-    </script>
+    <script src="/js/manager_logic.js"></script>
 </head>
 
 <body>
@@ -142,6 +24,7 @@
     <div class="modify-window">
         <h2 id="window-header">View/Modify placeholder window</h2>
 
+        <!--This container will show up showcasing employee data when view button is clicked-->
         <div id="employee-view">
             <p id="employee-number-p"></p>
             <p id="employee-hours-p"></p>
@@ -149,6 +32,9 @@
             <p id="employee-password-p"></p>
         </div>
 
+        <!--This container will show up allowing manager to modify/add employee data.
+        Form information will be sent to server via a post request and the database will
+        be modified.-->
         <form id="employee-forms" onsubmit="return false">
             <label for="employee-id" id="employee-number"></label>
             
@@ -164,6 +50,8 @@
         </form>
     </div>
 
+    <!--This container includes all employee ids into an array which contain
+    buttons to modify, view, or delete specific employees.-->
     <div class="container">
         <% for (var i in employees) {%>
             <div class="grid">
