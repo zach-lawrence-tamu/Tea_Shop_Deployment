@@ -284,3 +284,83 @@ var display_employee_adder = function () {
     document.getElementById('add-window-button').style.display = "block";
     document.getElementById('modify-window-button').style.display = "none";
 }
+
+async function display_x_report() {
+    console.log("X report");
+    await fetch('x_report')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.log(error));
+}
+
+async function display_z_report() {
+    console.log("Z report");
+    await fetch('z_report')
+        .then(response => response.json())
+        .then(data => {
+            if (Object.keys(data.counts).length === 0)
+            {
+                document.getElementById("report-header").innerHTML = "Z-Report: No sales yet today";
+                return;
+            }
+
+            console.log(data.counts);
+            console.log(data.counts[0]["total_cost"]);
+
+            document.getElementById("report-header").innerHTML = "Z-Report as of: " + data.counts[0]["date"];
+            var sale_table = document.getElementById("sales-table");
+            sale_table.innerHTML = `
+            <tr>
+                <th>Sales Data</th>
+            </tr>
+            <tr>
+                <th>Total Cost ($)</th>
+                <th>${data.counts[0]["total_cost"]}</th>
+            </tr>
+            <tr>
+                <th>Total Tip ($)</th>
+                <th>${data.counts[0]["total_tip"]}</th>
+            </tr>
+            <tr>
+                <th>Items Sold</th>
+                <th>${data.counts[0]["item_sold"]}</th>
+            </tr>
+            <tr>
+                <th>Total Addons Used</th>
+                <th>${data.counts[0]["total_addon_cost"]}</th>
+            </tr>
+            `;
+
+            //delete unwanted data for the other table
+            delete data.counts[0]["total_cost"];
+            delete data.counts[0]["total_tip"];
+            delete data.counts[0]["item_sold"];
+            delete data.counts[0]["total_addon_cost"];
+            delete data.counts[0]["date"];
+
+            var amount_table = document.getElementById("amount-sold-table");
+            amount_table.innerHTML = `
+            <tr>
+                <th>name</th>
+                <th>amount</th>
+            </tr>
+            `;
+            for (let key in data.counts[0])
+            {
+                amount_table.innerHTML += `
+                <tr>
+                    <th>${key}</th>
+                    <th>${data.counts[0][key]}</th>
+                </tr>
+                `;
+            }
+        })
+        .catch(error => console.log(error));
+}
+
+var display_graph = function () {
+    console.log("Graph");
+    fetch('graph');
+}

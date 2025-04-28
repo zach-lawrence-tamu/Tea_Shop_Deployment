@@ -130,25 +130,121 @@ router.post('/add_addon', (req, res) => {
 });
 
 router.post('/add_flavor', (req, res) => {
-    pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + req.body.data['flavor-name-form'] + "')");
+    pool.query("INSERT INTO valid_flavors (id, name) VALUES (" + req.body.id + ", '" + (req.body.data['flavor-name-form'].toLowerCase()) + "')");
 });
 
 //reports
 
-router.get('/reports', (req, res) => {
-    orders = []
-    pool
-    //TODO: modify queries needed for graphs and reports, for now it just displays some orders
-        .query('SELECT * FROM orders where id <= 20;')
-        .then(query_res => {
-            for (let i = 0; i < query_res.rowCount; i++){
-                orders.push(query_res.rows[i]);
-            }
-            const data = {orders: orders};
-            console.log(orders);
-            res.render('reports', data);
-        });
+router.get('/reports', async (req, res) => {
+    try {
+        res.render("reports");
+    }
+    catch(e) {
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
+router.get("/x_report", (req, res) => {
+    const currentDate = new Date();
+    const currentTime = new Date();
+    const hours = currentTime.getHours();
+    var date = currentDate.getFullYear() + "-";
+
+    
+    if (currentDate.getMonth() < 10)
+        date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    else
+        date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+
+    console.log(date, " ", hours);
+    
+    //for testing date = 2024-05-28
+    date = "2024-05-28";
+
+    console.log("activated x report get request");
+
+    var query = "SELECT EXTRACT(HOUR FROM TO_TIMESTAMP(time, 'HH24:MI:SS')) AS sale_hour, " +
+                "COUNT(*) AS sales, SUM(cost + tip) AS total_revenue " +
+                "FROM orders " +
+                "WHERE date = '" + date + "' " +
+                "AND EXTRACT(HOUR FROM TO_TIMESTAMP(time, 'HH24:MI:SS')) BETWEEN 11 AND " + (hours - 1) +
+                " GROUP BY sale_hour ORDER BY sale_hour;";
+
+    pool.query(query)
+    .then(query_res => {
+        const data = {
+            menu_items: query_res.rows,
+        }
+        res.status(200).send(data);
+    });
+});
+
+router.get("/z_report", async (req, res) => {
+    const currentDate = new Date();
+    var date = currentDate.getFullYear() + "-";
+    
+    if (currentDate.getMonth() < 10)
+        date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    else
+        date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    
+    try {
+        const[all_menu_items, all_flavors] = await Promise.all([
+            pool.query('SELECT * FROM valid_tea_types'),
+            pool.query('SELECT * FROM valid_flavors')
+        ])
+
+        var count_queries = "SELECT SUM(cost) AS total_cost, SUM(tip) AS total_tip, " +
+                        "SUM(quantity) AS item_sold,  " +
+                        "SUM(addon_price) AS total_addon_cost,  " +
+                        "date";
+
+        //console.log("FIELDS: ", all_menu_items.rowCount);
+        //console.log("DATA: ", all_menu_items.rows.toString());
+        
+        for (let i = 0; i < all_menu_items.rowCount; i++)
+        {
+            count_queries += ", SUM(CASE WHEN tea_type = '" + all_menu_items.rows[i].name + "' THEN quantity ELSE 0 END) AS \"" + all_menu_items.rows[i].name + "\"";
+        }
+
+        for (let i = 0; i < all_flavors.rowCount; i++)
+        {
+            count_queries += ", SUM(CASE WHEN flavor = '" + all_flavors.rows[i].name.toLowerCase() + "' THEN quantity ELSE 0 END) AS \"" + all_flavors.rows[i].name.toLowerCase() + "\"";
+        }
+
+        //test date is 2024-05-28
+        count_queries += "FROM orders " +
+                        "WHERE date = '" + date + "' " +
+                        "GROUP BY date;";
+
+        const[sums] = await Promise.all([
+            pool.query(count_queries)
+        ])
+
+        const data = {
+            menu_items: all_menu_items.rows,
+            flavors: all_flavors.rows,
+            counts: sums.rows,
+        };
+
+        res.status(200).send(data);
+    }
+    catch(e) {
+        console.error("Database query error:", e);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+/*
+need these for adding/removing addons
+ALTER TABLE addon ADD COLUMN beets bool DEFAULT f;
+ALTER TABLE addon DROP COLUMN beets; 
+*/
+
+router.get("/graph", (req, res) => {
+    console.log("graph get request");
+})
 
 //employees
 
@@ -225,15 +321,6 @@ router.get('/max_employee_id', async (req, res) => {
     })
 });
 
-router.get('/hitNum', function (req, res) {
-    console.log('hits req');
-    res.status(200).send('' + hits);
-});
 
-router.get('/add', function (req, res) {
-    console.log('added hits');
-    hits++;
-    res.status(200).end();
-});
 
 module.exports = router;

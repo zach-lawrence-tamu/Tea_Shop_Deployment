@@ -140,3 +140,83 @@ Zach: I will make the inventory modification/deletion and addition as well as em
 Vikrum: Finish the customize window.
 Elias: External scripting working.
 Anuraag: User authentication.
+
+## Sprint 3 notes
+Scrum meeting 1:
+Date: 4/22/2025
+
+1.	Did you complete your previous task?
+
+Zach: Yes
+Elias: Yes
+Vikrum: Yes
+Anuraag: No
+
+2.	What challenges did you face?
+
+Zach: Figuring out how to graph stuff, and figuring out what the x and z reports are.
+Vikrum: Main problem was keeping track of total cost of order based on current items added.
+Anuraag: Creation of emails for user authentication.
+Elias: Nothing much.
+
+3.	What will you work on before our next scrum meeting?
+
+Zach: Get the z report working.
+Vikrum: Get the allergy and nutrition stuff done.
+Elias: Send orders to database.
+Anuraag: Finish up the user authentication.
+
+4.	What will you work on during sprint 2?
+
+Zach: I will work on making the repors on the manager page and help on other tasks if necessary.
+Vikrum: Finish up customer checkout page.
+Anuraag: Work on remaining api tasks.
+Elias: Finish up customer cashier page.
+
+Scrum meeting 2:
+Date: 4/24/2025
+
+1.	Did you complete your previous task?
+
+Zach: No
+Elias: No
+Vikrum: No
+Anuraag: Yes
+
+2.	What challenges did you face?
+
+Zach: Displaying Z table data.
+Vikrum: No.
+Anuraag: Learning how to code with api.
+Elias: Sliders are tricky to make into odd intervals.
+
+3.	What will you work on before our next scrum meeting?
+
+Zach: Finish Z table and implement X table
+Vikrum: Nutrition and allergy, as well as sending orders to database.
+Elias: Send orders to database.
+Anuraag: Translation API.
+
+Scrum meeting 3:
+Date: 4/25/2025
+
+1.	Did you complete your previous task?
+
+Zach: Yes
+Elias: No
+Vikrum: No
+Anuraag: Yes
+
+2.	What challenges did you face?
+
+Zach: Getting date and time to correct format
+Vikrum: Keeping track of total item cost with tip while seperating addon and other costs
+Anuraag: Learning how to use translation api
+Elias: No
+
+3.	What will you work on before the end?
+
+Zach: Make graph display database data based on entered dates, add form for employee email, modify addons table when adding/removing addon, and polish look of manager pages.
+Vikrum: Images for menu items, allergy and nutrition, and make it look better.
+Elias: Sending orders to database, allergy and nutrition, and make it look better.
+Anuraag: Weather API.

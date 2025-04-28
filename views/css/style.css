@@ -103,18 +103,19 @@ button {
 
 .reports-container {
     display: grid;
-    grid-template-columns: 300px 300px;
+    grid-template-columns: 500px 500px;
     grid-template-rows: auto;
     gap: 100px;
     justify-content: center;
     margin-top: 50px;
     padding-bottom: 50px;
+    text-align: center;
 }
 
 .graph-area {
     border: 2px solid black;
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 500px;
 }
 
 .graph-area h1 {
@@ -123,14 +124,14 @@ button {
 
 .z-report {
     border: 2px solid black;
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: auto;
 }
 
 .x-report {
     border: 2px solid black;
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
 }
 
 #inventory-forms {
@@ -164,3 +165,4 @@ label {
 .modify-window button {
     display: block;
 }
+
