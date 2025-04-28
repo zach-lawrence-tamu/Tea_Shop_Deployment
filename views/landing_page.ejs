@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+
+    <!-- Internal CSS Styling -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,7 +95,10 @@
     </style>
 </head>
 <body>
+    <!-- Main page wrapper -->
     <div class="page-wrapper">
+
+        <!-- Navigation Links -->
         <div class="nav-links">
             <a href="/">Home</a> |
             <a href="/cashier">Cashier</a> |
@@ -101,8 +106,11 @@
             <a href="/cashier/transactions">Transactions</a>
         </div>
 
+        <!-- Login form section -->
         <div class="login-container">
             <h2>Login</h2>
+
+            <!-- Form for username and password -->
             <form id="loginForm">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -111,11 +119,14 @@
                 <input type="password" id="password" name="password" required>
 
             </form>
+
+            <!-- Login button wrapped inside a link for redirecting -->
             <a href="/manager/reports">
                 <button type="button" class="button-login">Login</button>
             </a>
         </div>
 
+        <!-- Start order button section -->
         <div class="order-container">
             <a href="/customer">
                 <button type="button" class="button-order">Start Order</button>

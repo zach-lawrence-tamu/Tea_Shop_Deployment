@@ -3,6 +3,8 @@
 let selecteditem = {};
 let cart = [];
 
+//These maps will change the slider inputs to its respective inputs
+//Are hard coded as these values cannot change
 const iceLevelMap = {
   0: "None",
   1: "Light",
@@ -27,7 +29,8 @@ function openPopup(teaType = "none", teaPrice=0.0){
     popup.dataset.itemId = teaType;
     popup.dataset.price = teaPrice;
 }
-
+//Will grab all data from the popup, turn it to the correct values, 
+//add it to window data, then display in div id="checkout-menu"
 function updateCheckout(){
     const overlay = document.getElementById("popup-overlay");
     const popup = document.getElementById("popup");
@@ -39,7 +42,7 @@ function updateCheckout(){
     const sugar = document.querySelector("#sugar-slider input").value;
     const ice = document.querySelector("#ice-slider input").value;
 
-    const totalPrice = (parseFloat(teaPrice)+getAddonTotal())*quantity;
+    const totalPrice = (parseFloat(teaPrice) + getAddonTotal())*quantity;
   
     const addons = Array.from(document.querySelectorAll("input[name='addon']:checked"))
       .map(cb => cb.dataset.name);
@@ -49,13 +52,15 @@ function updateCheckout(){
       price: totalPrice,
       quantity,
       flavor,
-      sugar,
-      ice,
+      sugar: sugarLevelMap[sugar],
+      ice: iceLevelMap[ice],
       addons,
     };
   
-    if (!window.checkoutItems) window.checkoutItems = [];
-    window.checkoutItems.push(item);
+
+    let items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+    items.push(item);
+    localStorage.setItem("checkoutItems", JSON.stringify(items));
   
     const container = document.getElementById("checkout-items");
     const div = document.createElement("div");
@@ -102,6 +107,7 @@ function returnToMenu(){
   });
 }
 
+//Helper function: gets total based on addons selected
 function getAddonTotal() {
   let total = 0;
   document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
@@ -114,7 +120,8 @@ function getAddonTotal() {
   return total;
 }
 
-
+//next 3 function update their respective inputs so that when the user changes the input, 
+//it is reflected in the popup
 function flavorDropdownUpdate(selectedflavor){
   document.getElementById("flavor-display").innerHTML = selectedflavor;
 }
@@ -126,4 +133,24 @@ function updateIceSlider(){
 function updateSugarSlider(){
   document.getElementById("sugar-level").innerHTML= sugarLevelMap[document.querySelector("#sugar-slider input").value];
 }
-/*END LOGIC FOR POPUP*/
+
+//In case a user goes back from checkout.ejs... 
+//updates div id="checkout.ejs" to reflect current order
+function loadOrder(){
+  const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+  const container = document.getElementById("checkout-items");
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <p>${item.quantity}x ${item.name} - $${item.price.toFixed(2)}</p>
+      <p>Flavor: ${item.flavor}, Sugar: ${item.sugar}, Ice: ${item.ice}</p>
+      <p>Addons: ${item.addons.join(", ")}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+// helper function to force call loadOrder() on loading cashier view
+window.onload = function() {
+  loadOrder();
+};

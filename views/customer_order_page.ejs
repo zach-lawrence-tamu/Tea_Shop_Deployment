@@ -3,67 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>Customer Order Page</title>
+    <!-- Link to external CSS file for styling -->
     <link rel="stylesheet" href="/css/customer_style.css">
 </head>
 <body>
     <div class="main-wrapper">
         <div class="content">
             <h1>Customer Order Page</h1>
+            <!-- Link to the home page -->
             <h1><a href="/">This is a link to home page</a></h1>
 
+            <!-- Display tea items in a grid -->
             <div class="grid-container">
                 <% teas.forEach(tea => { %>
                     <div class="container">
-                        <div class="img-box">img</div>
+                        <div class="img-box">img</div> <!-- Placeholder for image -->
                         <div class="details">
-                            <p><strong><%= tea.name %></strong></p>
+                            <p><strong><%= tea.name %></strong></p> <!-- Tea name -->
                             <% let tea_price = parseFloat(tea.price).toFixed(2); %>
-                            <p>Cost: $<%= tea_price %></p>
+                            <p>Cost: $<%= tea_price %></p> <!-- Formatted tea price -->
+                            <!-- Button to open customize popup -->
                             <div class="customize-button" onclick="customizeItem('<%= tea.name %>')">Customize</div>
-                            <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', '<%= tea.price %>')">Add to Cart</div>
+                            <!-- Button to add item to cart -->
+                            <div class="add-to-cart-button" onclick="addToCart('<%= tea.name %>', <%= tea.price %>)">Add to Cart</div>
                         </div>
                     </div>
                 <% }); %>
             </div>
         </div>
 
+        <!-- Checkout section -->
         <div class="checkout-box">
             <h2>Checkout</h2>
+            <!-- List of items in checkout -->
             <div id="checkout-items"></div>
             <div class="pay-section">
+                <!-- Total price display -->
                 <span>Total: $<span id="total-price">0.00</span></span>
-                <button class="pay-button">Pay</button>
+                <button class="pay-button">Pay</button> <!-- Pay button -->
             </div>
         </div>
     </div>
 
-    <!-- Customize Popup -->
+    <!-- Popup for customizing items -->
     <div id="customize-popup" class="popup hidden">
-        <p>This is the customize window</p>
-        <button onclick="closePopup()">Close</button>
+        <p>This is the customize window</p> <!-- Placeholder text -->
+        <button onclick="closePopup()">Close</button> <!-- Close popup button -->
     </div>
 
     <script>
+        // List of items added to cart
         let checkoutItems = [];
 
+        // Add a tea item to cart
         function addToCart(name, price) {
             const item = { name, price: parseFloat(price).toFixed(2), modifications: '' };
             checkoutItems.push(item);
-            updateCheckout();
+            updateCheckout(); // Refresh checkout display
         }
 
+        // Remove an item from cart by index
         function removeItem(index) {
             checkoutItems.splice(index, 1);
             updateCheckout();
         }
 
+        // Update the checkout display with current items and total
         function updateCheckout() {
             const container = document.getElementById('checkout-items');
             const totalPrice = document.getElementById('total-price');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear previous items
 
             let total = 0;
 
+            // Loop through cart items and display each
             checkoutItems.forEach((item, index) => {
                 const itemTotal = parseFloat(item.price);
                 total += itemTotal;
@@ -76,23 +89,24 @@
                         <span>$${item.price}</span>
                     </div>
                     <div class="checkout-item-actions">
-                        <button class="edit-button" onclick="customizeItem('${item.name}')">Edit</button>
-                        <button class="delete-button" onclick="removeItem(${index})">Delete</button>
+                        <button class="edit-button" onclick="customizeItem('${item.name}')">Edit</button> <!-- Edit item -->
+                        <button class="delete-button" onclick="removeItem(${index})">Delete</button> <!-- Remove item -->
                     </div>
                 `;
                 container.appendChild(div);
             });
 
-            totalPrice.textContent = total.toFixed(2);
+            totalPrice.textContent = total.toFixed(2); // Display total cost
         }
 
-        // Customize popup logic
+        // Show customize popup with selected tea name
         function customizeItem(name) {
             const popup = document.getElementById('customize-popup');
             popup.classList.remove('hidden');
             popup.querySelector('p').textContent = `This is the customize window for ${name}`;
         }
 
+        // Hide the customize popup
         function closePopup() {
             document.getElementById('customize-popup').classList.add('hidden');
         }

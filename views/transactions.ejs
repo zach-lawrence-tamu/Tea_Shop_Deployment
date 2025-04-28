@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Link to external CSS for transaction page styling -->
     <link rel="stylesheet" href="/css/transactions-style.css">
     <meta charset="UTF-8">
     <title>Transactions</title>
 </head>
+
 <body>
+    <!-- Main page heading -->
     <h1>Transactions</h1>
 
+    <!-- Navigation bar links -->
     <div class="nav-links">
         <a href="/">Home</a> |
         <a href="/cashier">Cashier</a> |
@@ -15,11 +19,15 @@
         <a href="/cashier/transactions">Transactions</a>
     </div>
 
+    <!-- Dropdown form to select transactions based on order ranges -->
     <div class="btn-container">
         <form method="GET" action="/cashier/transactions" style="text-align: center;">
             <label for="offset">Orders:</label>
+
+            <!-- Dropdown menu populated dynamically based on total orders -->
             <select name="offset" id="offset" onchange="this.form.submit()">
                 <% for (let i = 0; i < totalOrders; i += 5000) { %>
+                    <!-- Each option represents a 5000 order range, selects current offset -->
                     <option value="<%= i %>" <%= i === currentOffset ? 'selected' : '' %>>
                         <%= i + 1 %> - <%= i + 5000 %>
                     </option>
@@ -28,6 +36,7 @@
         </form>
     </div>
 
+    <!-- Table displaying transaction data -->
     <table>
         <thead>
             <tr>
@@ -38,9 +47,12 @@
                 <th>Menu Item(s)</th>
             </tr>
         </thead>
+
+        <!-- Table body populated dynamically with transaction data -->
         <tbody>
             <% for (var i in trans) { %>
                 <tr>
+                    <!-- Displaying transaction details for each order -->
                     <td><%= trans[i].order_number %></td>
                     <td><%= trans[i].cost.toFixed(2) %></td>
                     <td><%= trans[i].date %></td>

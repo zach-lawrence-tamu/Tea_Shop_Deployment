@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Link to external CSS stylesheet for this page -->
     <link rel="stylesheet" href="/css/orders-page-style.css">
     <meta charset="UTF-8">
     <title>Orders</title>
 </head>
+
 <body>
+    <!-- Main page heading -->
     <h1>Orders</h1>
 
+    <!-- Navigation links -->
     <div class="nav-links">
         <a href="/">Home</a> |
         <a href="/cashier">Cashier</a> |
@@ -15,6 +19,7 @@
         <a href="/cashier/transactions">Transactions</a>
     </div>
 
+    <!-- Table displaying order information -->
     <table>
         <thead>
             <tr>
@@ -24,25 +29,30 @@
                 <th>Total Cost ($)</th>
             </tr>
         </thead>
+
+        <!-- Table body populated dynamically with order data -->
         <tbody id="orders-body">
             <% for (let i = 0; i < order_data.length; i++) { %>
                 <tr>
-                    <td><%= order_data[i].id %></td>
-                    <td><%= order_data[i].time %></td>
-                    <td><%= order_data[i].date %></td>
-                    <td><%= order_data[i].cost.toFixed(2) %></td>
+                    <td><%= order_data[i].id %></td> <!-- Display Order ID -->
+                    <td><%= order_data[i].time %></td> <!-- Display Time -->
+                    <td><%= order_data[i].date %></td> <!-- Display Date -->
+                    <td><%= order_data[i].cost.toFixed(2) %></td> <!-- Display Cost formatted to 2 decimal places -->
                 </tr>
             <% } %>
         </tbody>
     </table>
 
+    <!-- Button container for pagination -->
     <div class="btn-container">
         <% if (hasMore) { %>
+            <!-- Form to load more orders by submitting the next offset -->
             <form method="GET" action="/cashier/orders">
                 <input type="hidden" name="offset" value="<%= nextOffset %>">
                 <button type="submit" class="btn">Load 20 More Orders</button>
             </form>
         <% } else { %>
+            <!-- Message when there are no more orders to load -->
             <p>No more orders to load.</p>
         <% } %>
     </div>
