@@ -216,7 +216,7 @@ Elias: No
 
 3.	What will you work on before the end?
 
-Zach: Make graph display database data based on entered dates, add form for employee email, modify addons table when adding/removing addon, and polish look of manager pages.
+Zach: Make graph display database data based on entered dates, add form for employee email, modify addons table when adding/removing addon, display x report, and polish look of manager pages.
 Vikrum: Images for menu items, allergy and nutrition, and make it look better.
 Elias: Sending orders to database, allergy and nutrition, and make it look better.
 Anuraag: Weather API.
