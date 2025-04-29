@@ -28,7 +28,7 @@ function finalizeTransaction(){
   const now = new Date();
   const isoDate = now.toISOString(); 
 
-  fetch("/submit-order", {
+  fetch("/cashier/submit-order", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

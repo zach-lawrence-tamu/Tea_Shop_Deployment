@@ -10,16 +10,50 @@
     <!-- Weather should be dislayed here at the top right-->
       <div class = "dropdown">
         <button class = "dropbtn">Welcome [User]</button>
-        <div class = "dropdown-content">
-            <h1> <a href="/"> This is a link to home page</a></h1>
-            <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
-            <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
-            <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
-            <p>Logout</p>
-        </div>
+        =
       </div>
+      <div id="weather-widget" style="justify-self: right;">
+        Loading weather...
+    </div>
+    <script>
+        async function fetchWeather() {
+            try {
+                const response = await fetch('/weather');
+                const data = await response.json();
+                console.log('Weather Data:', data);
+        
+                if (data.temperature !== undefined && data.weatherDescription !== undefined) {
+                    document.getElementById('weather-widget').innerHTML = `
+                        🌤️ ${data.weatherDescription}<br>
+                        🌡️ ${data.temperature}°C
+                    `;
+                } else {
+                    document.getElementById('weather-widget').innerText = 'Weather info unavailable';
+                }
+            } catch (err) {
+                console.error('Error fetching weather:', err);
+                document.getElementById('weather-widget').innerText = 'Unable to load weather';
+            }
+        }
+        fetchWeather();
+        </script>
     </header>
-    
+    <!-- Google Translate widget container positioned fixed in bottom right -->
+    <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+    <!-- Google Translate Initialization Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ko,ru,ar', // Supported languages
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+</script>
+
+<!-- Load Google Translate API script -->
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <div class = "wrapper-class">
         <div class= "menu-items">
@@ -42,7 +76,9 @@
         </div>
     </div>
 
-    <footer></footer>
+    <footer>
+        <div id="google_translate_element"></div>
+    </footer>
 
 <script src="/js/cashier-logic.js"></script>
 
