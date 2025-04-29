@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <head>
+    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="css/landing_page_style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
 
+<!-- Google Translate widget container positioned fixed in bottom right -->
 <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
 
+<!-- Google Translate Initialization Script -->
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
@@ -18,9 +21,11 @@
     }
 </script>
 
+<!-- Load Google Translate API script -->
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <body>
+    <!-- Main page wrapper -->
     <div class="page-wrapper">
         <div class="nav-links">
             <a href="/">Home</a> |
@@ -29,8 +34,10 @@
             <a href="/cashier/transactions">Transactions</a>
         </div>
 
+        <!-- Login section -->
         <div class="login-container">
             <h2>Login</h2>
+            <!-- Traditional login form -->
             <form id="loginForm" method="POST" action="/login">
                 <label for="username">Username (employee_id)</label>
                 <input type="text" id="username" name="username" required>
@@ -41,11 +48,13 @@
                 <button type="submit" class="button-login">Login</button>
             </form>
             
+            <!-- Google OAuth login button -->
             <a href="/auth/google">
                 <button type="button" class="button-google">Login with Google</button>
             </a>
         </div>
 
+        <!-- Start Order button for customers -->
         <div class="order-container">
             <a href="/customer">
                 <button type="button" class="button-order">Start Order</button>
@@ -53,10 +62,12 @@
         </div>
     </div>
 
+    <!-- Weather widget placeholder -->
     <div id="weather-widget">
         Loading weather...
     </div>
     
+    <!-- Weather Fetching Script -->
     <script>
     async function fetchWeather() {
         try {
