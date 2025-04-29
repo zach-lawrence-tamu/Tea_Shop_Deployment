@@ -41,7 +41,6 @@ function updateCheckout(){
     const flavor = document.getElementById("flavor-display").innerText;
     const sugar = document.querySelector("#sugar-slider input").value;
     const ice = document.querySelector("#ice-slider input").value;
-
     const totalPrice = (parseFloat(teaPrice) + getAddonTotal())*quantity;
   
     const addons = Array.from(document.querySelectorAll("input[name='addon']:checked"))
@@ -50,27 +49,24 @@ function updateCheckout(){
     const item = {
       name: teaType,
       price: totalPrice,
-      quantity,
-      flavor,
+      quantity: quantity,
+      flavor: flavor,
       sugar: sugarLevelMap[sugar],
       ice: iceLevelMap[ice],
-      addons,
+      addons: addons,
+      teaPrice: teaPrice
     };
   
 
     let items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
-    items.push(item);
+    if (typeof window.editingIndex === "number") {
+      items[window.editingIndex] = item;
+      delete window.editingIndex;
+    } else {
+      items.push(item);
+    }
     localStorage.setItem("checkoutItems", JSON.stringify(items));
-  
-    const container = document.getElementById("checkout-items");
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <p>${item.name} - ${item.quantity}x ($${item.price})</p>
-      <p>Flavor: ${item.flavor}, Sugar: ${item.sugar}, Ice: ${item.ice}</p>
-      <p>Addons: ${item.addons.join(", ")}</p>
-    `;
-    container.appendChild(div);
-  
+    loadOrder();
     overlay.classList.remove("active");
 
 
@@ -110,13 +106,21 @@ function returnToMenu(){
 //Helper function: gets total based on addons selected
 function getAddonTotal() {
   let total = 0;
-  document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
-    const price = parseFloat(cb.dataset.price);
+  const checkedAddons = document.querySelectorAll('.addon-checkbox:checked');
+  console.log("Checked Addons:", checkedAddons);
+
+  checkedAddons.forEach(cb => {
+    const name = cb.dataset.name;
+    const priceStr = cb.dataset.price;
+    const price = parseFloat(priceStr);
+    console.log(`Addon: ${name}, Price (raw): ${priceStr}, Parsed: ${price}`);
+
     if (!isNaN(price)) {
       total += price;
+    } else {
+      console.warn(`Invalid price for addon "${name}": ${priceStr}`);
     }
   });
-  console.log(total);
   return total;
 }
 
@@ -136,14 +140,17 @@ function updateSugarSlider(){
 
 //In case a user goes back from checkout.ejs... 
 //updates div id="checkout.ejs" to reflect current order
-function loadOrder(){
+function loadOrder() {
   const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
   const container = document.getElementById("checkout-items");
+  container.innerHTML = ""; // Clear the display
 
-  items.forEach(item => {
+  items.forEach((item, index) => {
     const div = document.createElement("div");
     div.innerHTML = `
-      <p>${item.quantity}x ${item.name} - $${item.price.toFixed(2)}</p>
+      <p>${item.quantity}x ${item.name} - $${item.price.toFixed(2)}
+         <button onclick="removeFromCart(${index})">❌</button></p>
+         <button onclick="editCartItem(${index})">✏️ Edit</button>
       <p>Flavor: ${item.flavor}, Sugar: ${item.sugar}, Ice: ${item.ice}</p>
       <p>Addons: ${item.addons.join(", ")}</p>
     `;
@@ -154,3 +161,37 @@ function loadOrder(){
 window.onload = function() {
   loadOrder();
 };
+
+//Logic to remove items from the cart
+function removeFromCart(index) {
+  let items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+
+  if (index >= 0 && index < items.length) {
+    items.splice(index, 1);
+    localStorage.setItem("checkoutItems", JSON.stringify(items));
+    loadOrder();
+  }
+}
+
+//Logic to reopen order if customers want to edit it
+function editCartItem(index) {
+  const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+  const item = items[index];
+  if (!item) return;
+
+  window.editingIndex = index;
+
+  openPopup(item.name, item.teaPrice); 
+  
+  document.getElementById("Quantity").value = item.quantity;
+  document.getElementById("flavor-display").innerHTML = item.flavor;
+
+  const sugarValue = Object.keys(sugarLevelMap).find(key => sugarLevelMap[key] === item.sugar);
+  document.querySelector("#sugar-slider input").value = sugarValue || 80;
+  document.getElementById("sugar-level").innerHTML = item.sugar;
+
+  const iceValue = Object.keys(iceLevelMap).find(key => iceLevelMap[key] === item.ice);
+  document.querySelector("#ice-slider input").value = iceValue || 2;
+  document.getElementById("ice-level").innerHTML = item.ice;
+
+}
