@@ -70,9 +70,30 @@ th {
     z-index: 1000;
 }
 
-#weather-widget {
+.logout-btn {
     position: fixed;
     top: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+#weather-widget {
+    position: fixed;
+    top: 70px;
     right: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
