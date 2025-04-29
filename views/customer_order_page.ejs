@@ -387,31 +387,108 @@
         // Submit order data to backend
         document.querySelector('.pay-button').addEventListener('click', function () {
             const tip = (parseFloat(document.getElementById('tipAmount').value) || 0).toFixed(2);
+            
+            const addonData = checkoutItems.map(item => {
+                const addons = {
+                    Pearls: false,
+                    Pudding: false,
+                    Jelly: false,
+                    "Ice Cream": false,
+                    Creama: false,
+                    Boba: false
+                };
+                let addon_price = 0;
+
+                // Collect the selected addons and calculate their price
+                item.modifications.addons.forEach(addon => {
+                    const cb = document.querySelector(`input[value="${addon}"]`);
+                    if (cb && cb.checked) {
+                        // Set the corresponding addon to true
+                        addons[addon] = true;
+                        addon_price += parseFloat(cb.getAttribute('data-price')) || 0;
+                    }
+                });
+
+                return {
+                    tea_type: item.name,
+                    addons,  // This now contains the correct true/false values
+                    addon_price
+                };
+            });
+
+            // Get the sugar and ice level values from the sliders
+            const sugar = document.getElementById('sugar-slider').value;
+            const ice = document.getElementById('ice-slider').value;
+
+            // Map the sugar level slider to the correct string
+            let sugarLevel;
+            switch (sugar) {
+                case "0":
+                    sugarLevel = "no sugar";
+                    break;
+                case "1":
+                    sugarLevel = "30% sugar";
+                    break;
+                case "2":
+                    sugarLevel = "50% sugar";
+                    break;
+                case "3":
+                    sugarLevel = "80% sugar";
+                    break;
+                case "4":
+                    sugarLevel = "100% sugar";
+                    break;
+                default:
+                    sugarLevel = "no sugar"; // default if no match
+                    break;
+            }
+
+            // Map the ice level slider to the correct string
+            let iceLevel;
+            switch (ice) {
+                case "0":
+                    iceLevel = "no ice";
+                    break;
+                case "1":
+                    iceLevel = "light";
+                    break;
+                case "2":
+                    iceLevel = "regular";
+                    break;
+                case "3":
+                    iceLevel = "extra";
+                    break;
+                default:
+                    iceLevel = "no ice"; // default if no match
+                    break;
+            }
+
+            // Send the correct addon data in the request
             const orderData = {
                 tip,
                 orders: checkoutItems.map(item => {
                     const quantity = item.quantity || 1;
-                    let addon_price = 0;
-                    item.modifications.addons.forEach(addon => {
-                        const cb = document.querySelector(`input[value="${addon}"]`);
-                        if (cb) addon_price += parseFloat(cb.getAttribute('data-price')) || 0;
-                    });
-                    const cost = (parseFloat(item.price) + addon_price) * quantity;
+                    const cost = (parseFloat(item.price) + (addonData.find(data => data.tea_type === item.name)?.addon_price || 0)) * quantity;
+
                     return {
                         tea_type: item.name,
                         flavor: item.modifications.flavor,
                         quantity,
                         cost: cost.toFixed(2),
                         menu_item_price: item.price,
-                        addon_price
+                        addon_price: addonData.find(data => data.tea_type === item.name)?.addon_price || 0,
+                        addon_data: item.modifications.addons,
+                        sugar_level: sugarLevel,  // Pass sugar level from the frontend
+                        ice_level: iceLevel,      // Pass ice level from the frontend
                     };
                 })
             };
 
+            // Send both orderData and addonData
             fetch('/customer/submit-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify({ orderData, addonData })
             })
             .then(res => res.json())
             .then(data => {
@@ -427,7 +504,6 @@
                 alert('There was an error with your order.');
             });
         });
-
         // Recalculate total with tip
         function updateTotalWithTip() {
             const tip = parseFloat(document.getElementById('tipAmount').value) || 0;
