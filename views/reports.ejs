@@ -9,12 +9,29 @@
     <script src="/js/manager_logic.js"></script>
 </head>
 
+<div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ko,ru,ar', // Supported languages
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<a href="/logout" class="logout-btn">
+    Logout
+</a>
+
 <body>
     <header>
         <h1>Reports</h1>
 
         <nav>
-            <a href="/">Home</a>
             <a href="/manager/employees">Employees</a>
             <a href="/manager/reports">Reports</a>
             <a href="/manager/menu_inventory">Inventory and Menu</a>
@@ -59,4 +76,32 @@
     </div>
     
     <script src="/js/chart_generation.js"></script>
+
+    <div id="weather-widget">
+        Loading weather...
+    </div>
+    
+    <script>
+    async function fetchWeather() {
+        try {
+            const response = await fetch('/weather');
+            const data = await response.json();
+            console.log('Weather Data:', data);
+    
+            if (data.temperature !== undefined && data.weatherDescription !== undefined) {
+                document.getElementById('weather-widget').innerHTML = `
+                    🌤️ ${data.weatherDescription}<br>
+                    🌡️ ${data.temperature}°C
+                `;
+            } else {
+                document.getElementById('weather-widget').innerText = 'Weather info unavailable';
+            }
+        } catch (err) {
+            console.error('Error fetching weather:', err);
+            document.getElementById('weather-widget').innerText = 'Unable to load weather';
+        }
+    }
+    
+    fetchWeather();
+    </script>
 </body>
