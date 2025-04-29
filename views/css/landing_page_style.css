@@ -23,6 +23,7 @@ body {
 
 .nav-links a:hover {
     background-color: rgb(197, 197, 197);
+    transition: background-color 0.3s ease;
 }
 
 .page-wrapper {
@@ -83,4 +84,48 @@ input {
 
 .button-order:hover {
     background-color: #0056b3;
+}
+
+#google_translate_element {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+.button-google {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #db4437;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.button-google:hover {
+    background-color: #a33329;
+}
+
+#weather-widget {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    min-width: 120px;
+    font-family: 'Arial', sans-serif;
 }
