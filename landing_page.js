@@ -27,4 +27,39 @@ router.get('/', (req, res) => {
     res.render('landing_page', data);
 });
 
+// POST: Handle Manual Login (employee_id + password)
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const result = await pool.query(
+            'SELECT * FROM employees WHERE employee_id::text = $1 AND password = $2',
+            [username, password]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).send('Invalid credentials');
+        }
+
+        const user = result.rows[0];
+
+        req.session.user = {
+            id: user.employee_id,
+            isManager: user.manager_access
+        };
+
+        const isManager = user.manager_access === true || user.manager_access === 't' || user.manager_access === 'true';
+
+        if (isManager) {
+            return res.redirect('/manager/reports');
+        } else {
+            return res.redirect('/cashier');
+        }
+
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;
