@@ -145,3 +145,162 @@ footer{
     right: 0;
     border-radius: 20px;
 }
+
+#google_translate_element {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.logout-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+
+#weather-widget {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+  min-width: 120px;
+  font-family: 'Arial', sans-serif;
+}
+.addon-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: start;
+  margin-top: 10px;
+}
+
+.addon-item {
+  width: calc(50% - 10px); /* two per line with spacing */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.addon-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px ;
+}
+
+.order-summary{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px ;
+}
+.payment-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 10px;
+  border: 1px solid #000;
+}
+
+.checkout-btn-container {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.checkout-btn {
+  flex: 1;
+  height: 50px;
+  font-size: 16px;
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 10px;
+}
+
+.order-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.order-details {
+  flex: 1;
+}
+
+.order-totals {
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.logout {
+  text-align: left;  /* Align contents to the left */
+  padding: 10px;     /* Optional for spacing */
+}
+.logout-btn {
+  display: inline-block;
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: static !important;
+}
+
+.h1{
+  align-items: center;
+  text-align: center;
+}

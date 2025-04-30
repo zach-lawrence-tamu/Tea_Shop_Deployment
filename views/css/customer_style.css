@@ -1,6 +1,7 @@
 /* Body background color */
 body {
     background-color: #f1f3f5;
+    margin: 0; /* Remove default body margin */
 }
 
 /* Header text color */
@@ -52,6 +53,13 @@ h1, h2 {
     border-radius: 6px;
     font-weight: bold;
     color: #6c757d;
+}
+
+.img-box img {
+    width: 100%;
+    border-radius: 6px;
+    height: auto;
+    object-fit: cover;
 }
 
 /* Details section takes up full width */
@@ -119,6 +127,12 @@ h1, h2 {
     margin-top: 8px;
 }
 
+/* Checkout item actions: Quantity input box size */
+.checkout-item-actions input[type="number"] {
+    width: 30px !important; /* Adjusted the width to make the input box smaller */
+    padding: 5px; /* Optional: Adjust padding for a more consistent look */
+}
+
 /* Edit and delete button styles */
 .edit-button, .delete-button {
     padding: 6px 12px;
@@ -172,7 +186,7 @@ h1, h2 {
     background-color: #e0a800;
 }
 
-/* Popup modal styling */
+/* Popup window (should sit on top of .dim) */
 .popup {
     position: fixed;
     top: 50%;
@@ -185,7 +199,7 @@ h1, h2 {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    z-index: 1000;
+    z-index: 1100;
     text-align: center;
 }
 
@@ -206,4 +220,235 @@ h1, h2 {
 }
 .popup button:hover {
     background-color: #0056b3;
+}
+
+/* Dropdown menu styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    z-index: 1001;
+    text-align: left;
+}
+
+.dropdown-content div {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.dropdown-content div:hover {
+    background-color: #f1f1f1;
+}
+
+/* Dim background */
+.dim {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+/* Hide elements */
+.hidden {
+    display: none;
+}
+
+/* Updated addon section styling */
+.addon-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.addon-section label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 5px;
+}
+
+/* Green Confirm Button */
+.popup .confirm-button {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+.popup .confirm-button:hover {
+    background-color: #218838; /* Darker Green */
+}
+
+/* Thank you popup */
+.thank-you-popup {
+    padding: 60px 0;
+    min-width: 400px;  
+    max-width: 700px;
+    text-align: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px; 
+    min-height: 80px;
+    height: auto;
+}
+
+.thank-you-popup h2 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.thank-you-popup p {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+/* Banner style */
+.banner {
+    background-color: #007bff;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    color: black;
+    font-size: 24px;
+    position: relative;
+    margin-bottom: 20px; /* Gap between banner and content */
+}
+
+.banner h1 {
+    margin: 0;
+    color: rgb(48, 48, 48);  /* Customer Order Page text is black */
+}
+
+/* Home button on the top-right */
+.home-button {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    background-color: #ffc107;
+    color: #343a40;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.home-button:hover {
+    background-color: #e0a800;
+}
+
+/* Contains allergens section */
+.contains-section {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+/* Allergen circle container */
+.allergen-circles {
+    display: flex;
+    gap: 8px; /* space between circles */
+    margin-top: 4px;
+}
+
+/* Each allergen circle */
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: #e9ecef; /* light gray background */
+    border-radius: 50%;
+    overflow: hidden; /* make sure images stay inside circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ced4da; /* subtle border */
+}
+
+/* Images inside circles */
+.circle img {
+    width: 105%; 
+    height: 105%;
+}
+
+
+/* Addon label flex layout */
+.addon-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+/* Small circle container after checkbox */
+.addon-allergen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+/* Allergen circle design */
+.addon-allergen .circle {
+    width: 25px;
+    height: 25px;
+    background-color: #e9ecef;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ced4da;
+}
+
+/* Image inside allergen circle */
+.addon-allergen .circle img {
+    width: 110%;
+    height: 110%;
+}
+
+#weather-widget {
+    position: absolute;
+    top: 100%;
+    right: 30px;
+    margin-top: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    text-align: center;
+    min-width: 120px;
+    font-family: 'Arial', sans-serif;
+}
+
+#google_translate_element {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    z-index: 1000;
 }

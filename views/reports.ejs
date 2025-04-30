@@ -9,12 +9,33 @@
     <script src="/js/manager_logic.js"></script>
 </head>
 
+<!-- Google Translate widget container positioned fixed in bottom right -->
+<div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+<!-- Google Translate Initialization Script -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ko,ru,ar', // Supported languages
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+
+<!-- Load Google Translate API script -->
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Google OAuth logout button  -->
+<a href="/logout" class="logout-btn">
+    Logout
+</a>
+
 <body>
     <header>
         <h1>Reports</h1>
 
         <nav>
-            <a href="/">Home</a>
             <a href="/manager/employees">Employees</a>
             <a href="/manager/reports">Reports</a>
             <a href="/manager/menu_inventory">Inventory and Menu</a>
@@ -25,8 +46,8 @@
         <!--Container that holds the graph which graphs inventory and addons used-->
         <div class="graph-area">
             <h1>Graph</h1>
-            <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-            <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <input type="date" id="start" value="2024-05-22" min="2024-01-01" max="2030-12-31" />
+            <input type="date" id="end" value="2025-04-22" min="2024-01-01" max="2030-12-31" />
             <button onclick="display_graph()">Graph</button>
             
             <!--When dynamically counting addons, use the addon column names and use a for loop for dynamics-->
@@ -50,13 +71,50 @@
 
         <!--Container that holds the x report data into a table -->
         <div class="x-report">
-            <h1>X-Report for today</h1>
-            <table id="hourly-sales" cellspacing=0 border=1>
-                
-            </table>
+            <h1 id="x-report-header">X-Report for Today</h1>
             <button onclick="display_x_report()">Display X-Report</button>
+        
+            <table id="x-sales-table" cellspacing=0 border=1 class="table">
+                <!-- Hourly sales data will be injected here -->
+            </table>
+        
+            <canvas id="xChart"></canvas>
         </div>
     </div>
     
     <script src="/js/chart_generation.js"></script>
+<<<<<<< HEAD
 </body>
+=======
+
+    <!-- Weather widget placeholder -->
+    <div id="weather-widget">
+        Loading weather...
+    </div>
+    
+    <!-- Weather Fetching Script -->
+    <script>
+    async function fetchWeather() {
+        try {
+            const response = await fetch('/weather');
+            const data = await response.json();
+            console.log('Weather Data:', data);
+    
+            if (data.temperature !== undefined && data.weatherDescription !== undefined) {
+                document.getElementById('weather-widget').innerHTML = `
+                    🌤️ ${data.weatherDescription}<br>
+                    🌡️ ${data.temperature}°C
+                `;
+            } else {
+                document.getElementById('weather-widget').innerText = 'Weather info unavailable';
+            }
+        } catch (err) {
+            console.error('Error fetching weather:', err);
+            document.getElementById('weather-widget').innerText = 'Unable to load weather';
+        }
+    }
+    
+    fetchWeather();
+    </script>
+</body>
+>>>>>>> 263f33c4e72e225dde086f0542f2c1f182ac9f42

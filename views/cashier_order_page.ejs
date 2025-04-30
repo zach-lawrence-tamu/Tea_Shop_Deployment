@@ -7,27 +7,64 @@
 <body>
     <header>
     <h1>Orders</h1>
-    <!-- Weather should be dislayed here at the top right-->
-      <div class = "dropdown">
-        <button class = "dropbtn">Welcome [User]</button>
-        <div class = "dropdown-content">
-            <h1> <a href="/"> This is a link to home page</a></h1>
-            <h1> <a href="/cashier"> This is a link to cashier page</a></h1>
-            <h1> <a href="/cashier/orders"> This is a link to orders page</a></h1>
-            <h1> <a href="/cashier/transactions"> This is a link to transactions page</a></h1>
-            <p>Logout</p>
-        </div>
+        <!--This is where the logout button should be -->
+      <div class = "logout">
+        <a href="/logout" class="logout-btn"><button class = "logout-btn">Logout [user]</button></a>
       </div>
+      <!-- Weather should be dislayed here at the top right-->
+      <div id="weather-widget" style="justify-self: right;">
+        Loading weather...
+    </div>
+    <script>
+        async function fetchWeather() {
+            try {
+                const response = await fetch('/weather');
+                const data = await response.json();
+                console.log('Weather Data:', data);
+        
+                if (data.temperature !== undefined && data.weatherDescription !== undefined) {
+                    document.getElementById('weather-widget').innerHTML = `
+                        🌤️ ${data.weatherDescription}<br>
+                        🌡️ ${data.temperature}°C
+                    `;
+                } else {
+                    document.getElementById('weather-widget').innerText = 'Weather info unavailable';
+                }
+            } catch (err) {
+                console.error('Error fetching weather:', err);
+                document.getElementById('weather-widget').innerText = 'Unable to load weather';
+            }
+        }
+        fetchWeather();
+        </script>
+
     </header>
-    
+    <!-- Google Translate widget container positioned fixed in bottom right -->
+    <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+    <!-- Google Translate Initialization Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ko,ru,ar', // Supported languages
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+</script>
+
+<!-- Load Google Translate API script -->
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <div class = "wrapper-class">
         <div class= "menu-items">
             <!--Will display all the available menu items using the database-->
-            <% for (var i in menu_items) {%>
+            <% for (var i in menu_items) {
+                let safeName = menu_items[i].name.toLowerCase().replace(/\s+/g, '_');
+                %>
                 <button class = "menu-item-button" 
                     onclick="openPopup('<%=menu_items[i].name%>', '<%=menu_items[i].price%>')">
-                    <img>
+                    <img src="/tea_images/<%= safeName %>.png" alt="<%= menu_items[i].name %>">
                     <h4>Name: <%=menu_items[i].name%></h4>
                     <h6>Price: <%=menu_items[i].price%></h6>
                 </button>
@@ -41,16 +78,7 @@
     </div>
 
     <footer>
-        <div class = "dropdown">
-            <!--Will host the ability to change languages-->
-            <button class = "dropbtn">Change Language</button>
-            <div class = "dropdown-content">
-                <p>English</p>
-                <p>Spanish</p>
-                <p>Vietnamese</p>
-            </div>
-          </div>
-
+        <div id="google_translate_element"></div>
     </footer>
 
 <script src="/js/cashier-logic.js"></script>
@@ -69,8 +97,8 @@
             </div>
         </div>
         <div>
-            <label for="Quantity" style="padding: 20px;" value="1">Quantity:</label>
-            <input type="text" id="Quantity" name="Quantity">
+            <label for="Quantity" style="padding: 20px;" value="1" >Quantity:</label>
+            <input type="text" id="Quantity" name="Quantity"oninput="validatePopupInputs()">
         </div>
 
         <div class = "slider-container" id="sugar-slider" style="padding: 20px;">
@@ -85,19 +113,20 @@
             <span>Extra Ice</span>
             <div>Ice Level:<span id="ice-level">Regular</span></div>
         </div>
-        <div>
-            <!--Will display all addons through the database-->
-            <% for (var i in addons){%>
-                <input type="checkbox" name="addon" value="false" data-name = "<%=addons[i].name%>" data-price="<%=addons[i].price%>">
-                <label for="addon" style="display: block;">
-                    <img height="20px" width="20px"><br>
-                    <h4><%=addons[i].name%></h4><br>
-                    <h6>Price: <%=addons[i].price%></h6>
-                </label>
-            <%}%>
+        <div class="addon-container">
+            <% for (var i in addons) {
+                let addon = addons[i];
+                let safeName = addon.name.toLowerCase().replace(/\s+/g, '_');
+            %>
+                <div>
+                <input type="checkbox" class="addon-checkbox" name="<%= addon.name %>" value="false" data-name="<%= addon.name %>" data-price="<%= addon.price %>">
+                    <img height="150px" width="150px" src="/addon_images/<%= safeName %>.png" alt="<%= addon.name %> image"><br>
+                    <span><%= addon.name %> ($<%= addon.price %>)</span><br>
+                </div>
+            <% } %>
         </div>
-        <button onclick="returnToMenu()">Return to menu</button>
-        <button onclick="updateCheckout()">Proceed to checkout</button>
+        <button id="return-btn" onclick="returnToMenu()">Return to menu</button>
+        <button id="proceed-btn" onclick="updateCheckout()" disabled>Proceed to checkout</button>
     </div>
 </div>
 </html>
