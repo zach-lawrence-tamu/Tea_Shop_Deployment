@@ -37,6 +37,7 @@
         }
         fetchWeather();
         </script>
+
     </header>
     <!-- Google Translate widget container positioned fixed in bottom right -->
     <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
@@ -96,8 +97,8 @@
             </div>
         </div>
         <div>
-            <label for="Quantity" style="padding: 20px;" value="1">Quantity:</label>
-            <input type="text" id="Quantity" name="Quantity">
+            <label for="Quantity" style="padding: 20px;" value="1" >Quantity:</label>
+            <input type="text" id="Quantity" name="Quantity"oninput="validatePopupInputs()">
         </div>
 
         <div class = "slider-container" id="sugar-slider" style="padding: 20px;">
@@ -112,17 +113,20 @@
             <span>Extra Ice</span>
             <div>Ice Level:<span id="ice-level">Regular</span></div>
         </div>
-        <div>
-            <!--Will display all addons through the database-->
-            <% for (var i in addons){%>
-                <input type="checkbox" class="addon-checkbox" name = "<%= addons[i].name %>" value="false" data-name = "<%= addons[i].name %>" data-price="<%= addons[i].price %>">
-                    <img height="20px" width="20px"><br>
-                    <span></span>
-                    <span><%= addons[i].name %> ($<%= addons[i].price %>)</span><br>
-            <%}%>
+        <div class="addon-container">
+            <% for (var i in addons) {
+                let addon = addons[i];
+                let safeName = addon.name.toLowerCase().replace(/\s+/g, '_');
+            %>
+                <div>
+                <input type="checkbox" class="addon-checkbox" name="<%= addon.name %>" value="false" data-name="<%= addon.name %>" data-price="<%= addon.price %>">
+                    <img height="150px" width="150px" src="/addon_images/<%= safeName %>.png" alt="<%= addon.name %> image"><br>
+                    <span><%= addon.name %> ($<%= addon.price %>)</span><br>
+                </div>
+            <% } %>
         </div>
-        <button onclick="returnToMenu()">Return to menu</button>
-        <button onclick="updateCheckout()">Proceed to checkout</button>
+        <button id="return-btn" onclick="returnToMenu()">Return to menu</button>
+        <button id="proceed-btn" onclick="updateCheckout()" disabled>Proceed to checkout</button>
     </div>
 </div>
 </html>

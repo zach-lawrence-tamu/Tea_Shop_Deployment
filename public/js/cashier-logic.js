@@ -28,6 +28,7 @@ function openPopup(teaType = "none", teaPrice=0.0){
     popup.classList.add("active");
     popup.dataset.itemId = teaType;
     popup.dataset.price = teaPrice;
+    validatePopupInputs();
 }
 //Will grab all data from the popup, turn it to the correct values, 
 //add it to window data, then display in div id="checkout-menu"
@@ -128,6 +129,7 @@ function getAddonTotal() {
 //it is reflected in the popup
 function flavorDropdownUpdate(selectedflavor){
   document.getElementById("flavor-display").innerHTML = selectedflavor;
+  validatePopupInputs();
 }
 
 function updateIceSlider(){
@@ -194,4 +196,23 @@ function editCartItem(index) {
   document.querySelector("#ice-slider input").value = iceValue || 2;
   document.getElementById("ice-level").innerHTML = item.ice;
 
+}
+
+function validatePopupInputs() {
+  const quantity = document.getElementById("Quantity").value.trim();
+  const flavor = document.getElementById("flavor-display").innerText.trim();
+  const proceedBtn = document.getElementById("proceed-btn");
+
+  const isFlavorChosen = flavor !== "Choose a flavor ↓" && flavor !== "Choose a flavor &darr;";
+  const isQuantityValid = !isNaN(quantity) && quantity > 1 ;
+
+  if(isQuantityValid) document.getElementById("Quantity").value = Math.round(quantity); 
+
+  proceedBtn.disabled = !(isFlavorChosen && isQuantityValid);
+}
+
+const quantityInput = document.getElementById("Quantity");
+if (quantityInput) {
+  quantityInput.addEventListener("input", validatePopupInputs); // triggered as user types
+  quantityInput.addEventListener("change", validatePopupInputs); // triggered when focus leaves
 }

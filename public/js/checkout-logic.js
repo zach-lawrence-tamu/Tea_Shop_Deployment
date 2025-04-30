@@ -1,18 +1,40 @@
 
-//Will grab order from the window to display in div id="order-summary"
-function loadOrder(){
-    const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
-    const container = document.getElementById("order-summary");
+//Will grab order from the window to display in div id="order-totals"
+function loadOrder() {
+  const items = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+  const container = document.getElementById("order-summary");
+  const totalsDiv = document.getElementById("order-totals");
 
-    items.forEach(item => {
-      const div = document.createElement("div");
-      div.innerHTML = `
+  let subtotal = 0;
+
+  items.forEach(item => {
+    const safeName = item.name.toLowerCase().replace(/\s+/g, '_');
+    const imageSrc = `/tea_images/${safeName}.png`;
+
+    const div = document.createElement("div");
+    div.className = "order-item";
+    div.innerHTML = `
+      <img src="${imageSrc}" alt="${item.name}" class="order-image">
+      <div class="order-details">
         <p>${item.quantity}x ${item.name} - $${item.price.toFixed(2)}</p>
         <p>Flavor: ${item.flavor}, Sugar: ${item.sugar}, Ice: ${item.ice}</p>
         <p>Addons: ${item.addons.join(", ")}</p>
-      `;
-      container.appendChild(div);
-    });
+      </div>
+    `;
+    container.appendChild(div);
+
+    subtotal += item.price;
+  });
+
+  const taxRate = 0.0825;
+  const tax = subtotal * taxRate;
+  const total = subtotal + tax;
+
+  totalsDiv.innerHTML = `
+    <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+    <p><strong>Tax (8.25%):</strong> $${tax.toFixed(2)}</p>
+    <p><strong>Total:</strong> $${total.toFixed(2)}</p>
+  `;
 }
 
 //Calls the "/submit-order" in index.js to finalize the transaction and send the transaction to the database
@@ -53,7 +75,7 @@ function finalizeTransaction(){
   });
 
     localStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/cashier";
 }
 
 // helper function to force call loadOrder() on loading checkou view
