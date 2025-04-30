@@ -50,6 +50,8 @@ router.get('/menu_inventory', async (req, res) => {
     }
 });
 
+//
+
 router.post('/delete_inventory', (req, res) => {
     console.log("post:", req.body);
     console.log("id", req.body.id);
@@ -150,7 +152,6 @@ router.get("/x_report", (req, res) => {
     const currentTime = new Date();
     const hours = currentTime.getHours();
     var date = currentDate.getFullYear() + "-";
-
     
     if (currentDate.getMonth() < 10)
         date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
