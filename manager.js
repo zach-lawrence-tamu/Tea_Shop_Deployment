@@ -152,10 +152,9 @@ router.get("/x_report", (req, res) => {
     var date = currentDate.getFullYear() + "-";
 
     
-    if (currentDate.getMonth() < 10)
-        date += '0' + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
-    else
-        date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    date += `${month}-${day}`;
 
     console.log(date, " ", hours);
     
@@ -214,6 +213,7 @@ router.get("/z_report", async (req, res) => {
         }
 
         //test date is 2024-05-28
+        date = "2024-05-28";
         count_queries += "FROM orders " +
                         "WHERE date = '" + date + "' " +
                         "GROUP BY date;";
@@ -242,8 +242,29 @@ ALTER TABLE addon ADD COLUMN beets bool DEFAULT f;
 ALTER TABLE addon DROP COLUMN beets; 
 */
 
-router.get("/graph", (req, res) => {
+router.get("/graph", async (req, res) => {
     console.log("graph get request");
+    
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ error: 'Missing start or end date' });
+    }
+
+    try {
+        const query = `
+            SELECT flavor, COUNT(*) AS count
+            FROM orders
+            WHERE date BETWEEN $1 AND $2
+            GROUP BY flavor
+            ORDER BY count DESC
+        `;
+        const result = await pool.query(query, [start, end]);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error fetching ingredient usage:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 })
 
 //employees
