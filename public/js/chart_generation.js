@@ -1,21 +1,5 @@
 let myChart = null;
 
-<<<<<<< HEAD
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Vanilla', 'Chocolate', 'Milk', 'Tea', 'Sugar', 'Strawberries', 'Blueberries'],
-        datasets: [{
-            label: 'Inventory Amount Used',
-            data: [128, 190, 330, 1200, 900, 300, 1010],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-=======
 function updateChartData(labels, values) {
     if (myChart) {
         myChart.data.labels = labels;
@@ -42,7 +26,6 @@ function updateChartData(labels, values) {
                 y: {
                     beginAtZero: true
                 }
->>>>>>> 263f33c4e72e225dde086f0542f2c1f182ac9f42
             }
         }
     });
