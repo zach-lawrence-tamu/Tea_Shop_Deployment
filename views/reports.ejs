@@ -46,8 +46,8 @@
         <!--Container that holds the graph which graphs inventory and addons used-->
         <div class="graph-area">
             <h1>Graph</h1>
-            <input type="date" id="start" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
-            <input type="date" id="end" value="2018-07-22" min="2016-01-01" max="2030-12-31" />
+            <input type="date" id="start" value="2024-05-22" min="2024-01-01" max="2030-12-31" />
+            <input type="date" id="end" value="2025-04-22" min="2024-01-01" max="2030-12-31" />
             <button onclick="display_graph()">Graph</button>
             
             <!--When dynamically counting addons, use the addon column names and use a for loop for dynamics-->
@@ -71,11 +71,14 @@
 
         <!--Container that holds the x report data into a table -->
         <div class="x-report">
-            <h1>X-Report for today</h1>
-            <table id="hourly-sales" cellspacing=0 border=1>
-                
-            </table>
+            <h1 id="x-report-header">X-Report for Today</h1>
             <button onclick="display_x_report()">Display X-Report</button>
+        
+            <table id="x-sales-table" cellspacing=0 border=1 class="table">
+                <!-- Hourly sales data will be injected here -->
+            </table>
+        
+            <canvas id="xChart"></canvas>
         </div>
     </div>
     
