@@ -65,9 +65,9 @@ app.get('/auth/google/callback',
         const isManager = req.user.isManager === true || req.user.isManager === 't';
     
         if (isManager) {
-            return res.redirect('/manager/reports');
+            return res.redirect('manager/reports');
         } else {
-            return res.redirect('/cashier');
+            return res.redirect('cashier');
         }
     }
 );
