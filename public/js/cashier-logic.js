@@ -204,7 +204,7 @@ function validatePopupInputs() {
   const proceedBtn = document.getElementById("proceed-btn");
 
   const isFlavorChosen = flavor !== "Choose a flavor ↓" && flavor !== "Choose a flavor &darr;";
-  const isQuantityValid = !isNaN(quantity) && quantity > 1 ;
+  const isQuantityValid = !isNaN(quantity) && quantity >= 1 ;
 
   if(isQuantityValid) document.getElementById("Quantity").value = Math.round(quantity); 
 
