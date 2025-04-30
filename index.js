@@ -56,8 +56,15 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        // Redirect based on manager flag from `employees` table
-        if (req.user.isManager === true || req.user.isManager === 't') {
+        if (!req.user) {
+            console.error("No user found after OAuth login.");
+            return res.redirect('/');
+        }
+    
+        // Normalize isManager just in case
+        const isManager = req.user.isManager === true || req.user.isManager === 't';
+    
+        if (isManager) {
             return res.redirect('/manager/reports');
         } else {
             return res.redirect('/cashier');
