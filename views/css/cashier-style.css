@@ -280,3 +280,27 @@ footer{
   font-size: 16px;
   line-height: 1.5;
 }
+
+.logout {
+  text-align: left;  /* Align contents to the left */
+  padding: 10px;     /* Optional for spacing */
+}
+.logout-btn {
+  display: inline-block;
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: static !important;
+}
+
+.h1{
+  align-items: center;
+  text-align: center;
+}
