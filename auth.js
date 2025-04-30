@@ -48,10 +48,12 @@ async (accessToken, refreshToken, profile, done) => {
         }
 
         const employee = result.rows[0];
+        const isManager = employee.manager_access === true || employee.manager_access === 't';
+
         return done(null, {
             email: email,
             id: employee.employee_id,
-            isManager: employee.manager_access
+            isManager: isManager
         });
 
     } catch (err) {
