@@ -287,12 +287,74 @@ var display_employee_adder = function () {
 
 async function display_x_report() {
     console.log("X report");
+
     await fetch('x_report')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            const table = document.getElementById("x-sales-table");
+            table.innerHTML = `
+                <tr>
+                    <th>Hour</th>
+                    <th>Total Sales ($)</th>
+                </tr>
+            `;
+
+            const rows = data.menu_items;
+            if (!rows || rows.length === 0) {
+                document.getElementById("x-report-header").innerHTML = "X-Report: No sales for selected date.";
+                return;
+            }
+
+            const labels = [];
+            const totals = [];
+
+            for (const row of rows) {
+                const hourFormatted = `${row.sale_hour}:00`;
+                table.innerHTML += `
+                    <tr>
+                        <td>${hourFormatted}</td>
+                        <td>${parseFloat(row.total_revenue).toFixed(2)}</td>
+                    </tr>
+                `;
+                labels.push(hourFormatted);
+                totals.push(parseFloat(row.total_revenue));
+            }
+
+            document.getElementById("x-report-header").innerHTML = "X-Report (Hourly Sales): 2024-05-28";
+
+            // Render Chart
+            const chartCanvas = document.getElementById("xChart");
+            new Chart(chartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Revenue',
+                        data: totals,
+                        backgroundColor: '#28a745'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Hourly Sales Chart (X-Report)'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Sales ($)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Hour of Day' }
+                        }
+                    }
+                }
+            });
         })
-        .catch(error => console.log(error));
+        .catch(error => console.error("X-report error:", error));
 }
 
 async function display_z_report() {
@@ -360,7 +422,31 @@ async function display_z_report() {
         .catch(error => console.log(error));
 }
 
-var display_graph = function () {
-    console.log("Graph");
-    fetch('graph');
+async function display_graph() {
+    const start = document.getElementById("start").value;
+    const end = document.getElementById("end").value;
+
+    if (!start || !end) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/manager/graph?start=${start}&end=${end}`);
+        const data = await response.json();
+
+        if (!data.length) {
+            alert("No ingredient usage found.");
+            return;
+        }
+
+        const labels = data.map(row => row.flavor);     // or tea_type
+        const values = data.map(row => parseInt(row.count));
+
+        updateChartData(labels, values);  // 🔥 Your original chart logic stays untouched
+
+    } catch (err) {
+        console.error("Graph fetch failed:", err);
+        alert("Could not load chart data.");
+    }
 }
