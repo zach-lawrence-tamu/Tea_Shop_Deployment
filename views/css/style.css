@@ -115,7 +115,7 @@ button {
 .graph-area {
     border: 2px solid black;
     width: 500px;
-    height: 500px;
+    height: auto;
 }
 
 .graph-area h1 {
