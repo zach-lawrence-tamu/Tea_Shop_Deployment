@@ -160,7 +160,7 @@ router.get("/x_report", (req, res) => {
     console.log(date, " ", hours);
     
     //for testing date = 2024-05-28
-    date = "2024-05-28";
+    //date = "2024-05-28";
 
     console.log("activated x report get request");
 
@@ -214,7 +214,7 @@ router.get("/z_report", async (req, res) => {
         }
 
         //test date is 2024-05-28
-        date = "2024-05-28";
+        //date = "2024-05-28";
         count_queries += "FROM orders " +
                         "WHERE date = '" + date + "' " +
                         "GROUP BY date;";
