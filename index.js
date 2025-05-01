@@ -73,9 +73,13 @@ app.get('/auth/google/callback',
 );
 
 // Logout route
-app.get('/logout', (req, res) => {
-    req.logout(() => {
-        res.redirect('/');
+app.get('/logout', (req, res, next) => {
+    req.logout(err => {
+        if (err) return next(err);
+        req.session.destroy(() => {
+            // Redirect to Google's logout, then return to homepage
+            res.redirect('https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://tea-shop-deployment.onrender.com');
+        });
     });
 });
 // Google OAuth2 auth routes
@@ -111,4 +115,3 @@ app.get('/weather', async (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
-
