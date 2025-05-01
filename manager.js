@@ -160,7 +160,7 @@ router.get("/x_report", (req, res) => {
     console.log(date, " ", hours);
     
     //for testing date = 2024-05-28
-    //date = "2024-05-28";
+    date = "2025-05-01";
 
     console.log("activated x report get request");
 
@@ -189,6 +189,7 @@ router.get("/z_report", async (req, res) => {
     else
         date += (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
     
+    date = "2025-05-01";
     try {
         const[all_menu_items, all_flavors] = await Promise.all([
             pool.query('SELECT * FROM valid_tea_types'),
